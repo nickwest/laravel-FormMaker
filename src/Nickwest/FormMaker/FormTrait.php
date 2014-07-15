@@ -38,6 +38,28 @@ trait FormTrait{
 		return $this->Form;
 	}
 	
+	public function setAllFormValues(){
+		foreach($this->attributes as $key => $value){
+			if(is_object($this->Form()->{$key})){
+				$this->Form()->{$key}->value = $value;
+			}else{
+				\Helpers::Pre($key);
+			}
+		}
+	}
+	
+	public function isColumn($field_name){
+		if(sizeof($this->valid_columns) <= 0){
+			$this->getAllColumns();
+		}
+		
+		if(isset($this->valid_columns[$field_name])){
+			return true;
+		}
+		
+		return false;
+	}
+	
 	
 	// Get a list of form data to build a form
 	protected function generateFormData(){
@@ -77,7 +99,7 @@ trait FormTrait{
 */
 		}
 	}
-
+	
 	/**
 	 * Get a list of all valid columns on the model using this trait
 	 *

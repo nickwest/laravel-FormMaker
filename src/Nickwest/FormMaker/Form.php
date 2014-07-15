@@ -158,6 +158,22 @@ class Form{
 	}
 	
 	/**
+	 * add $display_field to the display array after $after_field
+	 *
+	 * @param string $display_field, string $after_field
+	 * @return bool
+	 */
+	public function setDisplayAfter($display_field, $after_field){
+		foreach($this->display_fields as $key => $value){
+			if($value == $after_field){
+				$this->display_fields = array_merge(array_slice($this->display_fields, 0, $key+1), array($display_field), array_slice($this->display_fields, $key+1));
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Remove a single field from the form
 	 *
 	 * @param array $field_name
