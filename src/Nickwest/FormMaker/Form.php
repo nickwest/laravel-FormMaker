@@ -72,7 +72,12 @@ class Form{
 		return $this->Fields;
 	}
 	
-	
+	/**
+	 * Make a view and extend $extends in section $section, $blade_data is the data array to pass to View::make()
+	 *
+	 * @param array $blade_data, string $extends, string $section
+	 * @return View
+	 */	
 	public function makeView($blade_data, $extends='', $section=''){
 		$blade_data['Form'] = $this;
 		$blade_data['extends'] = $extends;
@@ -128,14 +133,36 @@ class Form{
 			unset($this->Fields[$field_name]);
 		}
 	}
+
+	/**
+	 * Is $field_name a field
+	 *
+	 * @param string $field_name
+	 * @return bool
+	 */
+	public function isField($field_name){
+		return isset($this->Fields[$field_name]) && is_object($this->Fields[$field_name]);
+	}
 	
-	public function setDisplayFields($fields){
-		if(is_array($fields)){
-			$this->display_fields = $fields;
+	/**
+	 * Set the array of fields to be displayed (order matters)
+	 *
+	 * @param array $field_names
+	 * @return void
+	 */
+	public function setDisplayFields($field_names){
+		// TODO: add validation on field_names?
+		if(is_array($field_names)){
+			$this->display_fields = $field_names;
 		}		
 	}
 	
-	
+	/**
+	 * Remove a single field from the form
+	 *
+	 * @param array $field_name
+	 * @return void
+	 */	
 	public function getDisplayFields(){
 		if(is_array($this->display_fields) && sizeof($this->display_fields) > 0){
 			$Fields = array();
@@ -147,18 +174,6 @@ class Form{
 		}
 		
 		return $this->Fields;
-	}
-	
-	
-	
-	/**
-	 * Is $field_name a field
-	 *
-	 * @param string $field_name
-	 * @return bool
-	 */
-	public function isField($field_name){
-		return isset($this->Fields[$field_name]) && is_object($this->Fields[$field_name]);
 	}
 	
 	/**
@@ -177,6 +192,12 @@ class Form{
 		}
 	}
 	
+	/**
+	 * Get a list of all labels for the given $field_names, if $field_names is blank, get labels for all fields
+	 *
+	 * @param array $field_names
+	 * @return array 
+	 */
 	public function getLabels($field_names=array()){
 		if(!is_array($field_names)){
 			$field_names = $this->getFields();

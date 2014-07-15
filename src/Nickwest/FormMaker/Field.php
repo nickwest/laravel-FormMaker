@@ -137,57 +137,35 @@ class Field{
 		$this->setProperty($property, $value);
 		
 	}
-	
-	protected function setProperty($key, $value){
-		$this->{$key} = $value;
+
+	/**
+	 * Allows the setting of Field properties from client code (__set magic method is an alias to this)
+	 *
+	 * @param string $property, mixed $value
+	 * @return void
+	 */	
+	public function setProperty($property, $value){
+		$this->{$property} = $value;
 	}
-	
+
+	/**
+	 * Make a label for the given field, uses $this->label if available, otherwises generates based on field name
+	 *
+	 * @return string 
+	 */		
 	protected function makeLabel(){
-        // If no label use the name
-        if (trim($this->label) == '')
-                $this->label = ucfirst(str_replace('_',' ',$this->name));
-
-        // Remove any ":" from the label
-        if (substr($this->label,-1) == ':')
-                $this->label = substr($this->label,0,-1);
-                
-        // If this is a question or period leave it
-        if (substr(strip_tags($this->label),-1) == '?' || substr(strip_tags($this->label),-1) == '.')
-                return $this->label;
-        
-        return $this->label;
-	}
-	
-/*
-	protected function assignTemplate($template=''){
-		if($template != ''){
-			$this->template = $template;
-			return;
-		}
+		// If no label use the name
+		if (trim($this->label) == '')
+		        $this->label = ucfirst(str_replace('_',' ',$this->name));
 		
-		$this->template = $this->type;
+		// Remove any ":" from the label
+		if (substr($this->label,-1) == ':')
+		        $this->label = substr($this->label,0,-1);
+		        
+		// If this is a question or period leave it
+		if (substr(strip_tags($this->label),-1) == '?' || substr(strip_tags($this->label),-1) == '.')
+		        return $this->label;
+		
+		return $this->label;
 	}
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
