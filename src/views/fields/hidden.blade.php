@@ -1,0 +1,1 @@
+{{ Form::hidden($field->name, $field->value, array('id' => $field->id, 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) }}

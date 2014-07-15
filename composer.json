@@ -1,0 +1,24 @@
+{
+    "name": "nickwest/form-maker",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nick West",
+            "email": "nickwest@uw.edu"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations",
+            "src/traits"
+        ],
+        "psr-0": {
+            "Nickwest\\FormMaker\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
