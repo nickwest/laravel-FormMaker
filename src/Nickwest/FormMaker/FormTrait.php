@@ -30,73 +30,88 @@ trait FormTrait{
 	 *
 	 * @var bool
 	 */
-	public function Form(){
-		if(!is_object($this->Form)){
+	public function Form()
+	{
+		if(!is_object($this->Form))
+		{
 			$this->Form = new Form();
 		}
 		
 		return $this->Form;
 	}
 	
-	public function setAllFormValues(){
-		foreach($this->attributes as $key => $value){
-			if(is_object($this->Form()->{$key})){
-				$this->Form()->{$key}->value = $value;
-			}else{
-				\Helpers::Pre($key);
+	/**
+	 * Set all of the form values to whatever the value on that attribute of the model is
+	 *
+	 * @return void
+	 */
+	public function setAllFormValues()
+	{
+		foreach($this->Form()->getFields() as $Field)
+		{
+			if($Field->type == 'daysofweek')
+			{
+				$data = (isset($this->{$Field->name}) ? explode('|', $this->{$Field->name}) : array());
+				foreach($this->Form()->getDaysOfWeekValues() as $key => $day){
+					if(in_array($key, $data))
+					{
+						$return[$key] = 1;	
+					}
+					else
+					{
+						$return[$key] = 0;
+					}
+				}
+				$this->Form()->{$Field->name}->value = $return;
+			}
+			elseif($Field->type == 'checkbox')
+			{
+				$this->Form()->{$Field->name}->value = (!isset($this->{$Field->name}) || $this->{$Field->name} == ''  ? array() : explode('|', $this->{$Field->name}));
+			}
+			else
+			{
+				$this->Form()->{$Field->name}->value = (isset($this->{$Field->name}) ? $this->{$Field->name} : '');
 			}
 		}
 	}
 	
-	public function isColumn($field_name){
-		if(sizeof($this->valid_columns) <= 0){
+	/**
+	 * Determine if $field_name is a Column in the table this model models
+	 *
+	 * @param string $field_name
+	 * @return bool
+	 */
+	public function isColumn($field_name)
+	{
+		if(sizeof($this->valid_columns) <= 0)
+		{
 			$this->getAllColumns();
 		}
 		
-		if(isset($this->valid_columns[$field_name])){
+		if(isset($this->valid_columns[$field_name]))
+		{
 			return true;
 		}
 		
 		return false;
 	}
 	
-	
-	// Get a list of form data to build a form
-	protected function generateFormData(){
+	/**
+	 * Get a list of form data to build a form
+	 *
+	 * @return void
+	 */
+	protected function generateFormData()
+	{
 		$columns = $this->getAllColumns();
 				
-		foreach($columns as $column){
+		foreach($columns as $column)
+		{
 			$this->Form()->addField($column['name']);
 			$this->Form()->{$column['name']}->options = $column['values'];
 			$this->Form()->{$column['name']}->max_length = $column['length'];
 			$this->Form()->{$column['name']}->default_value = $column['default'];
 			$this->Form()->{$column['name']}->type = $this->getFormTypeFromColumnType($column['type']);
-			
-/*
-			$this->form_data['fields'][$column['name']] = array(
-				'key' => $column['name'],
-				'name' => $this->getPreset('name', $column['name']),
-				'required' => ($this->getPreset('required', $column['name']) != '' ? $this->getPreset('required', $column['name']) : in_array($column['name'], $this->form_required_fields)),
-				'type' => ($this->getPreset('type', $column['name']) != '' ? $this->getPreset('type', $column['name']) : $this->getFormType($column['type'])),
-				'default' => ($this->getPreset('default', $column['name']) != '' ? $this->getPreset('default', $column['name']) : $column['default']),
-				'max_length' => ($this->getPreset('length', $column['name']) != '' ? $this->getPreset('length', $column['name']) : $column['length']),
-				'value' => $this->{$column['name']},
-				'values' => ($this->getPreset('values', $column['name']) != '' ? $this->getPreset('values', $column['name']) : $column['values']),
-			);
-
-			if($this->form_data['fields'][$column['name']]['type'] == 'days_of_week'){
-				$days = explode('|', $this->form_data['fields'][$column['name']]['value']);
-				$this->form_data['fields'][$column['name']]['value'] = array();
-				
-				foreach($this->day_abbreviations as $day){
-					if(in_array($day, $days)){
-						$this->form_data['fields'][$column['name']]['value'][$day] = true;
-					}else{
-						$this->form_data['fields'][$column['name']]['value'][$day] = false;
-					}
-				}
-			}
-*/
 		}
 	}
 	
@@ -105,11 +120,13 @@ trait FormTrait{
 	 *
 	 * @return array
 	 */
-	protected function getAllColumns(){
+	protected function getAllColumns()
+	{
         $query = 'SHOW COLUMNS FROM '.$this->table;
         
         $columns = array();
-        foreach(DB::select($query) as $column){
+        foreach(DB::select($query) as $column)
+        {
             $columns[$column->Field] = array(
             	'name' => $column->Field,
             	'type' => $this->getType($column->Type),
@@ -123,8 +140,14 @@ trait FormTrait{
         return $columns;
 	}
 
-	// isolate and return the column type
-	private function getType($type){
+	/**
+	 * Isolate and return the column type
+	 *
+	 * @param string $type
+	 * @return string
+	 */
+	private function getType($type)
+	{
 		$types = array(
 			'int', 'tinyint', 'smallint', 'mediumint', 'bigint', 
 			'decimal', 'float', 'double', 'real', 
@@ -138,19 +161,28 @@ trait FormTrait{
 		);
 		
 		
-		foreach($types as $key){
-			if(strpos($type, $key) === 0){
+		foreach($types as $key)
+		{
+			if(strpos($type, $key) === 0)
+			{
 				return $key;
 			}
 		}
 	}
 
-	// isolate and return the column length
-	private function getLength($type){
+	/**
+	 * Isolate and return the column length
+	 *
+	 * @param string $type
+	 * @return int
+	 */
+	private function getLength($type)
+	{
 		if(strpos($type, 'enum') === 0)
 			return;
 		
-		if(strpos($type, '(') !== false){
+		if(strpos($type, '(') !== false)
+		{
 			return substr($type, strpos($type, '(')+1, strpos($type, ')') - strpos($type, '(')-1);
 		}
 
@@ -162,33 +194,52 @@ trait FormTrait{
 			
 		);
 				
-		foreach($lengths as $key => $length){
-			if(strpos($type, $key) === 0){
+		foreach($lengths as $key => $length)
+		{
+			if(strpos($type, $key) === 0)
+			{
 				return $length;
 			}
 		}
 
 	}
 
-	// isolate and return the values for enums
-	private function getEnumOptions($type){
+	/**
+	 * Isolate and return the values for enums
+	 *
+	 * @param string $type
+	 * @return array
+	 */
+	private function getEnumOptions($type)
+	{
 		if(strpos($type, 'enum') !== 0)
 			return;
 		$values = explode(',', str_replace("'", '', substr($type, strpos($type, '(')+1, strpos($type, ')') - strpos($type, '(')-1)));
 		
-		foreach($values as $value){
-			if($value == ''){
+		foreach($values as $value)
+		{
+			if($value == '')
+			{
 				$return_array[$value] = $this->blank_select_text;
-			}else{
+			}
+			else
+			{
 				$return_array[$value] = $value;
 			}
 		}
 		return $return_array;
 	}
 	
-	// Get the form type based on column type
-	private function getFormTypeFromColumnType($type){
-		switch($type){
+	/**
+	 * Get the field type based on column type
+	 *
+	 * @param string $type
+	 * @return string
+	 */
+	private function getFormTypeFromColumnType($type)
+	{
+		switch($type)
+		{
 			case 'enum':
 				return 'select';
 				

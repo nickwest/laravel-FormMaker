@@ -78,7 +78,7 @@ class Field{
 	 *
 	 * @var string
 	 */
-	protected $is_multi_field = false;
+	protected $is_multi = false;
 
 	/**
 	 * Classes to put on this field

@@ -31,14 +31,21 @@ class Form{
 	 *
 	 * @var bool
 	 */
-	public $allow_delete = false;
+	protected $allow_delete = false;
 	
 	/**
 	 * Post URL
 	 *
 	 * @var string
 	 */
-	public $url = '';
+	protected $url = '';
+	
+	/**
+	 * The Days of the week that we use for storing daysofweek fields
+	 *
+	 * @var array
+	 */
+	protected $daysofweek = array('M' => 'Mon', 'T' => 'Tue', 'W' => 'Wed', 'R' => 'Thu', 'F' => 'Fri', 'S' => 'Sat', 'U' => 'Sun');
 		
 	/**
 	 * Constructor
@@ -61,6 +68,32 @@ class Form{
 		}
 		
 		return null;
+	}
+
+	/**
+	 * Field mutator
+	 *
+	 * @param string $key, string $value
+	 * @return void
+	 */	
+	public function __set($key, $value){
+		return $this->setProperty($key, $value);
+	}
+	
+	/**
+	 * Field mutator
+	 *
+	 * @param string $key, string $value
+	 * @return void
+	 */	
+	public function setProperty($key, $value){
+		if(isset($this->{$key})){
+			$this->{$key} = $value;
+		}
+	}
+	
+	public function getDaysOfWeekValues(){
+		return $this->daysofweek;
 	}
 	
 	/**
