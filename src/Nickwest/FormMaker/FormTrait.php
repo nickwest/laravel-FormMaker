@@ -51,7 +51,7 @@ trait FormTrait{
 		{
 			if($Field->type == 'daysofweek')
 			{
-				$data = (isset($this->{$Field->name}) ? explode('|', $this->{$Field->name}) : array());
+				$data = (isset($this->{$Field->name}) ? explode('|', $this->{$Field->name}) : ($this->Form()->{$Field->name}->default_value != '' ? $this->Form()->{$Field->name}->default_value : array()));
 				foreach($this->Form()->getDaysOfWeekValues() as $key => $day){
 					if(in_array($key, $data))
 					{
@@ -66,11 +66,11 @@ trait FormTrait{
 			}
 			elseif($Field->type == 'checkbox')
 			{
-				$this->Form()->{$Field->name}->value = (!isset($this->{$Field->name}) || $this->{$Field->name} == ''  ? array() : explode('|', $this->{$Field->name}));
+				$this->Form()->{$Field->name}->value = (!isset($this->{$Field->name}) || $this->{$Field->name} == ''  ? ($this->Form()->{$Field->name}->default_value != '' ? $this->Form()->{$Field->name}->default_value : array()) : explode('|', $this->{$Field->name}));
 			}
 			else
 			{
-				$this->Form()->{$Field->name}->value = (isset($this->{$Field->name}) ? $this->{$Field->name} : '');
+				$this->Form()->{$Field->name}->value = (isset($this->{$Field->name}) ? $this->{$Field->name} : ($this->Form()->{$Field->name}->default_value != '' ? $this->Form()->{$Field->name}->default_value : ''));
 			}
 		}
 	}
