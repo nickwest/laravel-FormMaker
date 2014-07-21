@@ -106,6 +106,15 @@ class Form{
 	}
 	
 	/**
+	 * Get the allow_delete value
+	 *
+	 * @return bool
+	 */
+	public function getAllowDelete($value=''){		
+		return $this->allow_delete;
+	}
+	
+	/**
 	 * Make a view and extend $extends in section $section, $blade_data is the data array to pass to View::make()
 	 *
 	 * @param array $blade_data, string $extends, string $section
