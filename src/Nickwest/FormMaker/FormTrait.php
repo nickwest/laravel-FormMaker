@@ -1,6 +1,7 @@
 <?php namespace Nickwest\FormMaker;
 
 use DB;
+use Validator;
 
 trait FormTrait{
 	/**
@@ -28,7 +29,7 @@ trait FormTrait{
 	/**
 	 * Boot the trait. Adds an observer class for form
 	 *
-	 * @var bool
+	 * @return Form
 	 */
 	public function Form()
 	{
@@ -38,6 +39,72 @@ trait FormTrait{
 		}
 		
 		return $this->Form;
+	}
+
+	/**
+	 * Set the values from a post data array to $this model, 
+	 * returned bool indicates if anything changed
+	 *
+	 * @param array $post_data
+	 * @return bool
+	 */
+	public function setPostValues($post_data){
+		$different = false;
+		foreach($post_data as $field_name => $value)
+		{
+			if($this->isColumn($field_name))
+			{
+				if(is_array($value))
+				{
+					$value = implode('|', $value);
+				}
+				if($this->{$field_name} != $value)
+				{
+					$this->{$field_name} = $value;
+					$different = true;
+				}
+			}	
+		}
+		
+		// Make sure no Form fields were omitted from the post array (checkboxes can be when none are set)
+		foreach($this->Form()->getDisplayFields() as $Field)
+		{
+			if(isset($post_data[$Field->name]))
+				continue;
+				
+			// Else set it to an empty string
+			if($this->{$Field->name} != '')
+			{
+				$this->{$Field->name} = '';
+				$different = true;
+			}
+		}
+		
+		return $different;
+	}
+	
+	/**
+	 * Validation of required fields and stuff
+	 *
+	 * @var bool
+	 */
+	public function isValid(){
+		$Fields = $this->Form()->getFields();
+		
+		$field_rules = array();
+		foreach($Fields as $Field){			
+			if($Field->is_required){
+				$field_rules[$Field->name] = array('required');
+			}
+		}
+		
+		$Validator = Validator::make(
+			$this->getAttributes(),
+			$field_rules
+		);
+		
+		return !$Validator->fails();
+		
 	}
 	
 	/**
