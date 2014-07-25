@@ -147,6 +147,32 @@ class Field{
 	public function setProperty($property, $value){
 		$this->{$property} = $value;
 	}
+	
+	/**
+	 * Return the formatted value of the Field's value
+	 *
+	 * @return string
+	 */	
+	public function getFormattedValue(){
+		return $this->formatValue($this->value);
+		
+	}
+
+	/**
+	 * Return the formatted value of the $value
+	 *
+	 * @param string value
+	 * @return string
+	 */	
+	public function formatValue($value){
+		if(is_array($this->options) && isset($this->options[$value])){
+			return $this->options[$value];
+		}
+		
+		// TODO: Add other formatting options here, specifically for dates
+
+		return $value;
+	}
 
 	/**
 	 * Make a label for the given field, uses $this->label if available, otherwises generates based on field name

@@ -140,6 +140,15 @@ class Form{
 		}
 	}
 	
+	
+	public function formatValue($field_name, $value){
+		if(isset($this->Fields[$field_name])){
+			return $this->Fields[$field_name]->formatValue($value);
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * Add a single field to the form
 	 *
