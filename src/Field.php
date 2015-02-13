@@ -1,5 +1,6 @@
 <?php namespace Nickwest\FormMaker;
 
+use View;
 
 class Field{
 	
@@ -16,6 +17,13 @@ class Field{
 	 * @var string
 	 */
 	protected $label = '';
+
+	/**
+	 * Something to stick at the end of a label (ex: ':')
+	 *
+	 * @var string
+	 */
+	protected $label_postfix = '';
 	
 	/**
 	 * An example to show by the field
@@ -136,6 +144,12 @@ class Field{
 		
 		$this->setProperty($property, $value);
 		
+	}
+	
+	
+	public function makeView($options=array())
+	{
+		return View::make('form-maker::fields.'.$this->type, array('field' => $this, 'multi_key' => (isset($options['multi_key']) ? $options['multi_key'] : '')));
 	}
 
 	/**

@@ -40,6 +40,16 @@ trait FormTrait{
 		
 		return $this->Form;
 	}
+	
+	/**
+	 * Make a View for the field and return the output
+	 *
+	 * @return View
+	 */
+	public function getFieldView($field_name)
+	{
+		return $this->Form()->$field_name->makeView();
+	}
 
 	/**
 	 * Set the values from a post data array to $this model, 

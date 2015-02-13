@@ -24,6 +24,8 @@ class FormMakerServiceProvider extends ServiceProvider {
 		
 		// Create a rawLabel macro for the Illuminate\Html\Form class
 		Form::Macro('rawLabel', function($name, $value = null, $options = array()){
+		    if($value == '') return '';
+		    
 		    $label = Form::label($name, '%s', $options);
 		
 		    return sprintf($label, $value);
