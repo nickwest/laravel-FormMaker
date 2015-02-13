@@ -1,6 +1,7 @@
 <?php namespace Nickwest\FormMaker;
 
 use Illuminate\Support\ServiceProvider;
+use Form;
 
 class FormMakerServiceProvider extends ServiceProvider {
 
@@ -18,7 +19,16 @@ class FormMakerServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('nickwest/form-maker');
+    	$this->loadViewsFrom(__DIR__.'/views', 'form-maker');
+		//$this->package('nickwest/form-maker');
+		
+		// Create a rawLabel macro for the Illuminate\Html\Form class
+		Form::Macro('rawLabel', function($name, $value = null, $options = array()){
+		    $label = Form::label($name, '%s', $options);
+		
+		    return sprintf($label, $value);
+		});
+		
 	}
 
 	/**

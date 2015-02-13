@@ -182,7 +182,7 @@ class Field{
 	protected function makeLabel(){
 		// If no label use the name
 		if (trim($this->label) == '')
-		        $this->label = ucfirst(str_replace('_',' ',$this->name));
+		        $this->label = ucwords(str_replace('_',' ',$this->name));
 		
 		// Remove any ":" from the label
 		if (substr($this->label,-1) == ':')

@@ -192,7 +192,7 @@ trait FormTrait{
         $query = 'SHOW COLUMNS FROM '.$this->table;
         
         $columns = array();
-        foreach(DB::select($query) as $column)
+        foreach(DB::connection($this->connection)->select($query) as $column)
         {
             $columns[$column->Field] = array(
             	'name' => $column->Field,
