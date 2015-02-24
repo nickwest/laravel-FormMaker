@@ -1,4 +1,8 @@
-<div id="field-{{ $field->name }}" class="field {{ $field->type }}">
-	{!! Form::rawLabel($field->id, $field->label.($field->label_postfix != '' ? $field->label_postfix : '').($field->is_required ? ' <em>*</em>' : '')) !!}
-	{!! Form::file($field->name, $field->value, array('id' => $field->id, 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
+<div id="field-{{ $field->name.($field->multi_key != '' ? '_'.$field->multi_key : '') }}" class="field {{ $field->type }}{{ ($field->error_message ? ' error' : '') }}">
+	@if($field->label != ''){!! Form::rawLabel($field->id, $field->label.($field->label_postfix != '' ? $field->label_postfix : '').($field->is_required ? ' <em>*</em>' : '')) !!}@endif
+	@if($field->value == '')
+		{!! Form::file($field->name.($field->multi_key != '' ? '['.$field->multi_key.']' : '')) !!}
+	@else 
+		<div class="file-link">{{ $field->value }} {!! Form::submit('remove', array('name' => $field->name.($field->multi_key != '' ? '['.$field->multi_key.']' : ''))) !!}</div>
+	@endif
 </div>

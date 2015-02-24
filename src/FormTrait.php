@@ -46,9 +46,9 @@ trait FormTrait{
 	 *
 	 * @return View
 	 */
-	public function getFieldView($field_name)
+	public function getFieldView($field_name, $options=array())
 	{
-		return $this->Form()->$field_name->makeView();
+		return $this->Form()->$field_name->makeView($options);
 	}
 
 	/**
@@ -62,7 +62,7 @@ trait FormTrait{
 		$different = false;
 		foreach($post_data as $field_name => $value)
 		{
-			if($this->isColumn($field_name))
+			if($this->isColumn($field_name) && $this->isFillable($field_name))
 			{
 				if(is_array($value))
 				{
@@ -79,7 +79,7 @@ trait FormTrait{
 		// Make sure no Form fields were omitted from the post array (checkboxes can be when none are set)
 		foreach($this->Form()->getDisplayFields() as $Field)
 		{
-			if(isset($post_data[$Field->name]))
+			if(isset($post_data[$Field->name]) || !$this->isFillable($Field->name))
 				continue;
 				
 			// Else set it to an empty string

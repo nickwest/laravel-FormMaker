@@ -120,6 +120,13 @@ class Field{
 		$this->type = 'text';
 		$this->id = 'input-'.$field_name;
 		
+		// Is this field disabled?
+		$this->disabled = false;
+		
+		// if not false, use this as the multi-key on the field name eg: field_name[key]
+		$this->multi_key = false;
+		
+		// Options for multi-choice fields
 		$this->options = array();
 	}
 	
@@ -146,10 +153,19 @@ class Field{
 		
 	}
 	
-	
-	public function makeView($options=array())
+	/**
+	 * Make a view for this field
+	 *
+	 *	Valid Options: 
+	 * 		multi_key (key for a multi-field; adds [$key] to field name)
+	 *		name (alternate field name to use)
+	 *
+	 * @param array $options
+	 * @return View
+	 */
+	public function makeView()
 	{
-		return View::make('form-maker::fields.'.$this->type, array('field' => $this, 'multi_key' => (isset($options['multi_key']) ? $options['multi_key'] : '')));
+		return View::make('form-maker::fields.'.$this->type, array('field' => $this));
 	}
 
 	/**
