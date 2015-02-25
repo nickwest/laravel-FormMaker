@@ -14,7 +14,8 @@ trait FormTrait{
 	
 	protected $valid_columns = array();
 	
-	public $blank_select_text = '-- Select One --';
+	protected $blank_select_text = '-- Select One --';
+	protected $label_postfix = '';
 		
 	/**
 	 * Boot the trait. Adds an observer class for form
@@ -186,6 +187,7 @@ trait FormTrait{
 		{
 			$this->Form()->addField($column['name']);
 			$this->Form()->{$column['name']}->options = $column['values'];
+			$this->Form()->{$column['name']}->label_postfix = $this->label_postfix;
 			$this->Form()->{$column['name']}->max_length = $column['length'];
 			$this->Form()->{$column['name']}->default_value = $column['default'];
 			$this->Form()->{$column['name']}->type = $this->getFormTypeFromColumnType($column['type']);
