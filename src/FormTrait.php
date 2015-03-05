@@ -51,6 +51,12 @@ trait FormTrait{
 	{
 		return $this->Form()->$field_name->makeView($options);
 	}
+	
+	public function getFieldDisplayView($field_name, $options=array())
+	{
+		return $this->Form()->$field_name->makeDisplayView($options);
+	}
+	
 
 	/**
 	 * Set the values from a post data array to $this model, 

@@ -167,6 +167,11 @@ class Field{
 	{
 		return View::make('form-maker::fields.'.$this->type, array('field' => $this));
 	}
+	
+	public function makeDisplayView()
+	{
+		return View::make('form-maker::fields.display', array('field' => $this));
+	}
 
 	/**
 	 * Allows the setting of Field properties from client code (__set magic method is an alias to this)
