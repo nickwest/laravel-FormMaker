@@ -128,6 +128,9 @@ class Field{
 		
 		// Options for multi-choice fields
 		$this->options = array();
+		
+		// Attributes to apply to input tag
+		$this->attributes = array();
 	}
 	
 	/**
@@ -165,6 +168,18 @@ class Field{
 	 */
 	public function makeView()
 	{
+		$this->attributes = array(
+			'id' => $this->id, 
+			'class' => (isset($this->classes) && $this->classes != '' ? ' '.$this->classes : '' ),
+		);
+		
+		if($this->disabled)
+		{
+			$this->attributes['disabled'] = 'disabled';
+			$this->attributes['class'] = trim($this->attributes['class'].' disabled');
+		}
+		
+		
 		return View::make('form-maker::fields.'.$this->type, array('field' => $this));
 	}
 	
