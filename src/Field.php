@@ -77,9 +77,16 @@ class Field{
 	/**
 	 * Options to populate select, radio, checkbox, and other multi-option fields
 	 *
-	 * @var string
+	 * @var array
 	 */
 	private $options;
+	
+	/**
+	 * Options to that are disabled inside of a radio, checkbox or other multi-option field
+	 *
+	 * @var array
+	 */	
+	private $disabled_options = array();
 
 	/**
 	 * If there are multiples of this field in the form (appends [] to the field name)
@@ -186,6 +193,21 @@ class Field{
 	public function makeDisplayView()
 	{
 		return View::make('form-maker::fields.display', array('field' => $this));
+	}
+	
+	public function makeOptionView($key)
+	{
+		$this->attributes = array(
+			'id' => $this->id.'_'.$key,
+		);
+		
+		if(in_array($key, $this->disabled_options))
+		{
+			$this->attributes['disabled'] = 'disabled';			
+			$this->attributes['class'] = 'disabled';
+		}
+		
+		return View::make('form-maker::fields.'.$this->type.'_option', array('field' => $this, 'key' => $key));
 	}
 
 	/**
