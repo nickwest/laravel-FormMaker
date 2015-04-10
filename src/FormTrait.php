@@ -150,7 +150,19 @@ trait FormTrait{
 			}
 			elseif($Field->type == 'checkbox')
 			{
-				$this->Form()->{$Field->name}->value = (!isset($this->{$Field->name}) || $this->{$Field->name} == ''  ? ($this->Form()->{$Field->name}->default_value != '' ? $this->Form()->{$Field->name}->default_value : array()) : explode('|', $this->{$Field->name}));
+				if((!isset($this->{$Field->name}) || $this->{$Field->name} == '') && $this->Form()->{$Field->name}->default_value != '')
+				{
+					$this->Form()->{$Field->name}->value = $this->Form()->{$Field->name}->default_value;
+				}
+				else
+				{
+					$values = array();
+					foreach(explode('|', $this->{$Field->name}) as $value)
+					{
+						$values[$value] = $value;
+					}
+					$this->Form()->{$Field->name}->value = $values;
+				}
 			}
 			else
 			{

@@ -186,6 +186,10 @@ class Field{
 			$this->attributes['class'] = trim($this->attributes['class'].' disabled');
 		}
 		
+		if($this->max_length > 0)
+		{
+			$this->attributes['maxlength'] = $this->max_length;	
+		}
 		
 		return View::make('form-maker::fields.'.$this->type, array('field' => $this));
 	}
