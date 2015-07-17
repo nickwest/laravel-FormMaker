@@ -92,6 +92,18 @@ class Form{
 		}
 	}
 	
+	/**
+	 * Property accessor
+	 *
+	 * @param string $key
+	 * @return void
+	 */	
+	public function getProperty($key){
+		if(isset($this->{$key})){
+			return $this->{$key};
+		}
+	}
+	
 	public function getDaysOfWeekValues(){
 		return $this->daysofweek;
 	}
@@ -124,6 +136,7 @@ class Form{
 		$blade_data['Form'] = $this;
 		$blade_data['extends'] = $extends;
 		$blade_data['section'] = $section;
+		$blade_data['daysofweek'] = $this->daysofweek;
 		
 		return View::make('form-maker::form', $blade_data);
 	}
