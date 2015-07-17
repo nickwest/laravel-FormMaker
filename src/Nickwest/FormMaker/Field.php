@@ -69,9 +69,16 @@ class Field{
 	/**
 	 * Options to populate select, radio, checkbox, and other multi-option fields
 	 *
-	 * @var string
+	 * @var array
 	 */
 	private $options;
+
+	/**
+	 * Blade data to pass through to the subform
+	 *
+	 * @var array
+	 */
+	protected $subform_data;
 
 	/**
 	 * If there are multiples of this field in the form (appends [] to the field name)
@@ -113,6 +120,7 @@ class Field{
 		$this->id = 'input-'.$field_name;
 		
 		$this->options = array();
+		$this->subform_data = array();
 	}
 	
 	/**

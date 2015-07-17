@@ -9,7 +9,11 @@
 {{ Form::open(array('url' => $Form->url)) }}
 	<fieldset>
 	@foreach($Form->getDisplayFields() as $field)
-		@include('form-maker::fields.'.$field->type, array('field' => $field))
+		@if($field->type != 'subform')
+			@include('form-maker::fields.'.$field->type, array('field' => $field))
+		@else
+			{{ $field->subform->makeSubformView($field->subform_data) }}
+		@endif
 	@endforeach
 	</fieldset>
 	
