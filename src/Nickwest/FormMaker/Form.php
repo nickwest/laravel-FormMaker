@@ -153,6 +153,26 @@ class Form{
 		
 		return View::make('form-maker::subform', $blade_data);
 	}
+	
+	/**
+	 * Make a view of a single field
+	 *
+	 * @param array $field (field name)
+	 * @param array $blade_data
+	 * @return View
+	 */
+	public function makeFieldView($field, &$blade_data) 
+	{
+		if(!is_object($this->{$field})){
+			return false;
+		}
+		//\Helpers::Pre($this->{$field});die;
+		//@include('form-maker::fields.'.$field->type, array('field' => $field))
+		// $field->view, array('field', $field)
+		$blade_data['field'] = $this->{$field};
+		return View::make('form-maker::fields.'.$this->{$field}->type, $blade_data);
+	}
+	
 		
 	/**
 	 * add a bunch of fields to the form
