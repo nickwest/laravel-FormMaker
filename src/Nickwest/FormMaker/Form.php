@@ -39,7 +39,14 @@ class Form{
 	 * @var string
 	 */
 	protected $url = '';
-	
+
+	/**
+	 * Form ID
+	 *
+	 * @var string
+	 */
+	protected $form_id = '';
+
 	/**
 	 * The Days of the week that we use for storing daysofweek fields
 	 *

@@ -6,7 +6,7 @@
 	@section($section)
 @endif
 
-{{ Form::open(array('url' => $Form->url)) }}
+{{ Form::open(array('url' => $Form->getProperty('url'), 'id' => $Form->getProperty('form_id'))) }}
 	<fieldset>
 	@foreach($Form->getDisplayFields() as $field)
 		@if($field->type != 'subform')
