@@ -24,15 +24,15 @@ class Form{
 	 * @var array
 	 */
 	protected $valid_columns = array();
-	
-	
+
+
 	/**
 	 * Add Delete button?
 	 *
 	 * @var bool
 	 */
 	protected $allow_delete = false;
-	
+
 	/**
 	 * Post URL
 	 *
@@ -53,16 +53,16 @@ class Form{
 	 * @var array
 	 */
 	protected $daysofweek = array('M' => 'Mon', 'T' => 'Tue', 'W' => 'Wed', 'R' => 'Thu', 'F' => 'Fri', 'S' => 'Sat', 'U' => 'Sun');
-		
+
 	/**
 	 * Constructor
 	 *
 	 * @return void
 	 */
 	public function __construct(){
-	
+
 	}
-	
+
 	/**
 	 * Field  accessor
 	 *
@@ -73,7 +73,7 @@ class Form{
 		if(isset($this->Fields[$field_name])){
 			return $this->Fields[$field_name];
 		}
-		
+
 		return null;
 	}
 
@@ -82,39 +82,39 @@ class Form{
 	 *
 	 * @param string $key, string $value
 	 * @return void
-	 */	
+	 */
 	public function __set($key, $value){
 		return $this->setProperty($key, $value);
 	}
-	
+
 	/**
 	 * Field mutator
 	 *
 	 * @param string $key, string $value
 	 * @return void
-	 */	
+	 */
 	public function setProperty($key, $value){
 		if(isset($this->{$key})){
 			$this->{$key} = $value;
 		}
 	}
-	
+
 	/**
 	 * Property accessor
 	 *
 	 * @param string $key
 	 * @return void
-	 */	
+	 */
 	public function getProperty($key){
 		if(isset($this->{$key})){
 			return $this->{$key};
 		}
 	}
-	
+
 	public function getDaysOfWeekValues(){
 		return $this->daysofweek;
 	}
-	
+
 	/**
 	 * Get the whole Fields array
 	 *
@@ -123,44 +123,44 @@ class Form{
 	public function getFields(){
 		return $this->Fields;
 	}
-	
+
 	/**
 	 * Get the allow_delete value
 	 *
 	 * @return bool
 	 */
-	public function getAllowDelete($value=''){		
+	public function getAllowDelete($value=''){
 		return $this->allow_delete;
 	}
-	
+
 	/**
 	 * Make a view and extend $extends in section $section, $blade_data is the data array to pass to View::make()
 	 *
 	 * @param array $blade_data, string $extends, string $section
 	 * @return View
-	 */	
+	 */
 	public function makeView($blade_data, $extends='', $section=''){
 		$blade_data['Form'] = $this;
 		$blade_data['extends'] = $extends;
 		$blade_data['section'] = $section;
 		$blade_data['daysofweek'] = $this->daysofweek;
-		
+
 		return View::make('form-maker::form', $blade_data);
 	}
-	
+
 	/**
 	 * Make a view, $blade_data is the data array to pass to View::make()
 	 *
 	 * @param array $blade_data
 	 * @return View
-	 */	
+	 */
 	public function makeSubformView($blade_data){
 		$blade_data['Form'] = $this;
 		$blade_data['daysofweek'] = $this->daysofweek;
-		
+
 		return View::make('form-maker::subform', $blade_data);
 	}
-	
+
 	/**
 	 * Make a view of a single field
 	 *
@@ -168,7 +168,7 @@ class Form{
 	 * @param array $blade_data
 	 * @return View
 	 */
-	public function makeFieldView($field, &$blade_data) 
+	public function makeFieldView($field, &$blade_data)
 	{
 		if(!is_object($this->{$field})){
 			return false;
@@ -179,8 +179,8 @@ class Form{
 		$blade_data['field'] = $this->{$field};
 		return View::make('form-maker::fields.'.$this->{$field}->type, $blade_data);
 	}
-	
-		
+
+
 	/**
 	 * add a bunch of fields to the form
 	 *
@@ -192,7 +192,7 @@ class Form{
 			$this->Fields[$field_name] = new Field($field_name);
 		}
 	}
-	
+
 	/**
 	 * add a Subform into the current form
 	 *
@@ -203,7 +203,7 @@ class Form{
 		$this->addField($name);
 		$this->Fields[$name]->type = 'subform';
 		$this->Fields[$name]->subform = $Form;
-		
+
 		if($before_field != null){
 			foreach($this->display_fields as $key => $value){
 				if($value == $before_field){
@@ -214,16 +214,16 @@ class Form{
 		}
 		$this->display_fields[] = $name;
 	}
-	
-	
+
+
 	public function formatValue($field_name, $value){
 		if(isset($this->Fields[$field_name])){
 			return $this->Fields[$field_name]->formatValue($value);
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Add a single field to the form
 	 *
@@ -269,7 +269,7 @@ class Form{
 	public function isField($field_name){
 		return isset($this->Fields[$field_name]) && is_object($this->Fields[$field_name]);
 	}
-	
+
 	/**
 	 * Set the array of fields to be displayed (order matters)
 	 *
@@ -279,10 +279,15 @@ class Form{
 	public function setDisplayFields($field_names){
 		// TODO: add validation on field_names?
 		if(is_array($field_names)){
+			foreach($field_names as $field_name){
+				if(!$this->isField($field_name)){
+					throw new \Exception($field_name.' is not a valid field');
+				}
+			}
 			$this->display_fields = $field_names;
-		}		
+		}
 	}
-	
+
 	/**
 	 * add $display_field to the display array after $after_field
 	 *
@@ -298,26 +303,26 @@ class Form{
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Remove a single field from the form
 	 *
 	 * @param array $field_name
 	 * @return void
-	 */	
+	 */
 	public function getDisplayFields(){
 		if(is_array($this->display_fields) && sizeof($this->display_fields) > 0){
 			$Fields = array();
 			foreach($this->display_fields as $field_name){
 				$Fields[$field_name] = $this->{$field_name};
 			}
-			
+
 			return $Fields;
 		}
-		
+
 		return $this->Fields;
 	}
-	
+
 	/**
 	 * Set multiple field labels at once [field_name] => value
 	 *
@@ -326,32 +331,32 @@ class Form{
 	 */
 	public function setLabels($labels){
 		if(!is_array($labels)) return;
-		
+
 		foreach($labels as $field_name => $label){
 			if(isset($this->Fields[$field_name])){
 				$this->Fields[$field_name]->label = $label;
 			}
 		}
 	}
-	
+
 	/**
 	 * Get a list of all labels for the given $field_names, if $field_names is blank, get labels for all fields
 	 *
 	 * @param array $field_names
-	 * @return array 
+	 * @return array
 	 */
 	public function getLabels($field_names=array()){
 		if(!is_array($field_names)){
 			$field_names = $this->getFields();
 		}
-		
+
 		$labels = array();
 		foreach($field_names as $field_name){
 			if(isset($this->Fields[$field_name])){
 				$labels[$field_name] = $this->Fields[$field_name]->label;
 			}
 		}
-		
+
 		return $labels;
 	}
 
@@ -363,7 +368,7 @@ class Form{
 	 */
 	public function setValues($values){
 		if(!is_array($values)) return;
-		
+
 		foreach($values as $field_name => $value){
 			if(isset($this->Fields[$field_name])){
 				$this->Fields[$field_name]->value = $value;
@@ -379,7 +384,7 @@ class Form{
 	 */
 	public function setTypes($types){
 		if(!is_array($types)) return;
-		
+
 		foreach($types as $field_name => $type){
 			if(isset($this->Fields[$field_name])){
 				$this->Fields[$field_name]->type = $type;
@@ -395,7 +400,7 @@ class Form{
 	 */
 	public function setExamples($examples){
 		if(!is_array($examples)) return;
-		
+
 		foreach($examples as $field_name => $example){
 			if(isset($this->Fields[$field_name])){
 				$this->Fields[$field_name]->example = $example;
@@ -411,7 +416,7 @@ class Form{
 	 */
 	public function setDefaultValues($default_values){
 		if(!is_array($default_values)) return;
-		
+
 		foreach($default_values as $field_name => $default_value){
 			if(isset($this->Fields[$field_name])){
 				$this->Fields[$field_name]->default_value = $default_value;
@@ -427,12 +432,12 @@ class Form{
 	 */
 	public function setRequiredFields($required_fields){
 		if(!is_array($required_fields)) return;
-		
+
 		foreach($required_fields as $field_name){
 			if(isset($this->Fields[$field_name])){
 				$this->Fields[$field_name]->is_required = true;
 			}
 		}
 	}
-	
+
 }
