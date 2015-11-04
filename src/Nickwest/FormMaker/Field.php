@@ -2,7 +2,7 @@
 
 
 class Field{
-	
+
 	/**
 	 * Name of hte field
 	 *
@@ -16,7 +16,7 @@ class Field{
 	 * @var string
 	 */
 	protected $label = '';
-	
+
 	/**
 	 * An example to show by the field
 	 *
@@ -31,6 +31,12 @@ class Field{
 	 */
 	protected $value = '';
 
+	/**
+	 * Disable the field?
+	 *
+	 * @var bool
+	 */
+	protected $is_disabled = false;
 	/**
 	 * A default value (prepopulated if field is blank)
 	 *
@@ -100,14 +106,14 @@ class Field{
 	 * @var string
 	 */
 	protected $id = '';
-	
+
 	/**
 	 * The template that this field should use
 	 *
 	 * @var string
 	 */
 	protected $template = '';
-	
+
 	/**
 	 * Constructor
 	 *
@@ -118,11 +124,11 @@ class Field{
 		$this->label = $this->makeLabel();
 		$this->type = 'text';
 		$this->id = 'input-'.$field_name;
-		
+
 		$this->options = array();
 		$this->subform_data = array();
 	}
-	
+
 	/**
 	 * Field property accessor
 	 *
@@ -133,7 +139,7 @@ class Field{
 		//\Helpers::Pre($this->{$property});
 		return $this->{$property};
 	}
-	
+
 	/**
 	 * Field property mutator
 	 *
@@ -141,9 +147,9 @@ class Field{
 	 * @return void
 	 */
 	public function __set($property, $value){
-		
+
 		$this->setProperty($property, $value);
-		
+
 	}
 
 	/**
@@ -151,19 +157,19 @@ class Field{
 	 *
 	 * @param string $property, mixed $value
 	 * @return void
-	 */	
+	 */
 	public function setProperty($property, $value){
 		$this->{$property} = $value;
 	}
-	
+
 	/**
 	 * Return the formatted value of the Field's value
 	 *
 	 * @return string
-	 */	
+	 */
 	public function getFormattedValue(){
 		return $this->formatValue($this->value);
-		
+
 	}
 
 	/**
@@ -171,12 +177,12 @@ class Field{
 	 *
 	 * @param string value
 	 * @return string
-	 */	
+	 */
 	public function formatValue($value){
 		if(is_array($this->options) && isset($this->options[$value])){
 			return $this->options[$value];
 		}
-		
+
 		// TODO: Add other formatting options here, specifically for dates
 
 		return $value;
@@ -185,21 +191,21 @@ class Field{
 	/**
 	 * Make a label for the given field, uses $this->label if available, otherwises generates based on field name
 	 *
-	 * @return string 
-	 */		
+	 * @return string
+	 */
 	protected function makeLabel(){
 		// If no label use the name
 		if (trim($this->label) == '')
 		        $this->label = ucfirst(str_replace('_',' ',$this->name));
-		
+
 		// Remove any ":" from the label
 		if (substr($this->label,-1) == ':')
 		        $this->label = substr($this->label,0,-1);
-		        
+
 		// If this is a question or period leave it
 		if (substr(strip_tags($this->label),-1) == '?' || substr(strip_tags($this->label),-1) == '.')
 		        return $this->label;
-		
+
 		return $this->label;
 	}
 }
