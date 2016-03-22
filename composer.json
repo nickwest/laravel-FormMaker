@@ -9,9 +9,9 @@
     ],
     "license": "MIT",
     "require": {
-        "php": ">=5.4.0",
-        "laravel/framework": "~5.0",
-		"illuminate/html": "~5.0"
+        "php": ">=5.5.0",
+        "laravel/framework": "~5.2",
+		"laravelcollective/html": "~5.0"
     },
     "autoload": {
         "classmap": [
