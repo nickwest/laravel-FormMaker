@@ -3,7 +3,7 @@
 use View;
 
 class Field{
-	
+
 	/**
 	 * Name of hte field
 	 *
@@ -24,7 +24,7 @@ class Field{
 	 * @var string
 	 */
 	protected $label_postfix = '';
-	
+
 	/**
 	 * An example to show by the field
 	 *
@@ -80,12 +80,12 @@ class Field{
 	 * @var array
 	 */
 	private $options;
-	
+
 	/**
 	 * Options to that are disabled inside of a radio, checkbox or other multi-option field
 	 *
 	 * @var array
-	 */	
+	 */
 	private $disabled_options = array();
 
 	/**
@@ -108,14 +108,14 @@ class Field{
 	 * @var string
 	 */
 	protected $id = '';
-	
+
 	/**
 	 * The template that this field should use
 	 *
 	 * @var string
 	 */
 	protected $template = '';
-	
+
 	/**
 	 * Constructor
 	 *
@@ -126,20 +126,20 @@ class Field{
 		$this->label = $this->makeLabel();
 		$this->type = 'text';
 		$this->id = 'input-'.$field_name;
-		
+
 		// Is this field disabled?
 		$this->disabled = false;
-		
+
 		// if not false, use this as the multi-key on the field name eg: field_name[key]
 		$this->multi_key = false;
-		
+
 		// Options for multi-choice fields
 		$this->options = array();
-		
+
 		// Attributes to apply to input tag
 		$this->attributes = array();
 	}
-	
+
 	/**
 	 * Field property accessor
 	 *
@@ -150,7 +150,7 @@ class Field{
 		//\Helpers::Pre($this->{$property});
 		return $this->{$property};
 	}
-	
+
 	/**
 	 * Field property mutator
 	 *
@@ -158,15 +158,15 @@ class Field{
 	 * @return void
 	 */
 	public function __set($property, $value){
-		
+
 		$this->setProperty($property, $value);
-		
+
 	}
-	
+
 	/**
 	 * Make a view for this field
 	 *
-	 *	Valid Options: 
+	 *	Valid Options:
 	 * 		multi_key (key for a multi-field; adds [$key] to field name)
 	 *		name (alternate field name to use)
 	 *
@@ -176,41 +176,42 @@ class Field{
 	public function makeView()
 	{
 		$this->attributes = array(
-			'id' => $this->id, 
+			'id' => $this->id,
 			'class' => (isset($this->classes) && $this->classes != '' ? ' '.$this->classes : '' ),
+			'placeholder' => $this->example,
 		);
-		
+
 		if($this->disabled)
 		{
 			$this->attributes['disabled'] = 'disabled';
 			$this->attributes['class'] = trim($this->attributes['class'].' disabled');
 		}
-		
+
 		if($this->max_length > 0)
 		{
-			$this->attributes['maxlength'] = $this->max_length;	
+			$this->attributes['maxlength'] = $this->max_length;
 		}
-		
+
 		return View::make('form-maker::fields.'.$this->type, array('field' => $this));
 	}
-	
+
 	public function makeDisplayView()
 	{
 		return View::make('form-maker::fields.display', array('field' => $this));
 	}
-	
+
 	public function makeOptionView($key)
 	{
 		$this->attributes = array(
 			'id' => $this->id.'_'.$key,
 		);
-		
+
 		if(in_array($key, $this->disabled_options))
 		{
-			$this->attributes['disabled'] = 'disabled';			
+			$this->attributes['disabled'] = 'disabled';
 			$this->attributes['class'] = 'disabled';
 		}
-		
+
 		return View::make('form-maker::fields.'.$this->type.'_option', array('field' => $this, 'key' => $key));
 	}
 
@@ -219,19 +220,19 @@ class Field{
 	 *
 	 * @param string $property, mixed $value
 	 * @return void
-	 */	
+	 */
 	public function setProperty($property, $value){
 		$this->{$property} = $value;
 	}
-	
+
 	/**
 	 * Return the formatted value of the Field's value
 	 *
 	 * @return string
-	 */	
+	 */
 	public function getFormattedValue(){
 		return $this->formatValue($this->value);
-		
+
 	}
 
 	/**
@@ -239,12 +240,12 @@ class Field{
 	 *
 	 * @param string value
 	 * @return string
-	 */	
+	 */
 	public function formatValue($value){
 		if(is_array($this->options) && isset($this->options[$value])){
 			return $this->options[$value];
 		}
-		
+
 		// TODO: Add other formatting options here, specifically for dates
 
 		return $value;
@@ -253,21 +254,21 @@ class Field{
 	/**
 	 * Make a label for the given field, uses $this->label if available, otherwises generates based on field name
 	 *
-	 * @return string 
-	 */		
+	 * @return string
+	 */
 	protected function makeLabel(){
 		// If no label use the name
 		if (trim($this->label) == '')
 		        $this->label = ucwords(str_replace('_',' ',$this->name));
-		
+
 		// Remove any ":" from the label
 		if (substr($this->label,-1) == ':')
 		        $this->label = substr($this->label,0,-1);
-		        
+
 		// If this is a question or period leave it
 		if (substr(strip_tags($this->label),-1) == '?' || substr(strip_tags($this->label),-1) == '.')
 		        return $this->label;
-		
+
 		return $this->label;
 	}
 }
