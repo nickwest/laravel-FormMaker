@@ -125,7 +125,7 @@ class Form{
 		$blade_data['extends'] = $extends;
 		$blade_data['section'] = $section;
 		if($extends != '')
-			return View::make('form-maker::form-extends', $blade_data);
+			return View::make('form-maker::form-extend', $blade_data);
 
 			return View::make('form-maker::form', $blade_data);
 	}
