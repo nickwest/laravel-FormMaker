@@ -1,3 +1,11 @@
+@if(isset($extends) && $extends != '')
+	@extends($extends)
+@endif
+
+@if(isset($section) && $section != '')
+	@section($section)
+@endif
+
 {!! Form::open(array('url' => $Form->url)) !!}
 	<fieldset>
 	@foreach($Form->getDisplayFields() as $field)
@@ -13,3 +21,7 @@
 	</fieldset>
 
 {!! Form::close() !!}
+
+@if(isset($section) && $section != '')
+	@stop
+@endif
