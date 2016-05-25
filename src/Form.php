@@ -1,6 +1,6 @@
 <?php namespace Nickwest\FormMaker;
 
-use View;
+use Illuminate\Support\Facades\View;
 
 class Form{
 
@@ -89,6 +89,8 @@ class Form{
 	public function setProperty($key, $value){
 		if(isset($this->{$key})){
 			$this->{$key} = $value;
+		}else{
+			throw new \Exception('Invalid property');
 		}
 	}
 
