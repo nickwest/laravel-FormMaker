@@ -11,12 +11,13 @@ trait FormTrait{
 	 */
 
 	protected $Form = null;
-	
+
 	protected $valid_columns = array();
-	
+	protected $columns = array();
+
 	protected $blank_select_text = '-- Select One --';
 	protected $label_postfix = '';
-		
+
 	/**
 	 * Boot the trait. Adds an observer class for form
 	 *
@@ -38,10 +39,10 @@ trait FormTrait{
 		{
 			$this->Form = new Form();
 		}
-		
+
 		return $this->Form;
 	}
-	
+
 	/**
 	 * Make a View for the field and return the output
 	 *
@@ -51,15 +52,15 @@ trait FormTrait{
 	{
 		return $this->Form()->$field_name->makeView($options);
 	}
-	
+
 	public function getFieldDisplayView($field_name, $options=array())
 	{
 		return $this->Form()->$field_name->makeDisplayView($options);
 	}
-	
+
 
 	/**
-	 * Set the values from a post data array to $this model, 
+	 * Set the values from a post data array to $this model,
 	 * returned bool indicates if anything changed
 	 *
 	 * @param array $post_data
@@ -80,15 +81,15 @@ trait FormTrait{
 					$this->{$field_name} = $value;
 					$different = true;
 				}
-			}	
+			}
 		}
-		
+
 		// Make sure no Form fields were omitted from the post array (checkboxes can be when none are set)
 		foreach($this->Form()->getDisplayFields() as $Field)
 		{
 			if(isset($post_data[$Field->name]) || !$this->isFillable($Field->name))
 				continue;
-				
+
 			// Else set it to an empty string
 			if($this->{$Field->name} != '')
 			{
@@ -96,10 +97,10 @@ trait FormTrait{
 				$different = true;
 			}
 		}
-		
+
 		return $different;
 	}
-	
+
 	/**
 	 * Validation of required fields and stuff
 	 *
@@ -107,23 +108,23 @@ trait FormTrait{
 	 */
 	public function isValid(){
 		$Fields = $this->Form()->getFields();
-		
+
 		$field_rules = array();
-		foreach($Fields as $Field){			
+		foreach($Fields as $Field){
 			if($Field->is_required){
 				$field_rules[$Field->name] = array('required');
 			}
 		}
-		
+
 		$Validator = Validator::make(
 			$this->getAttributes(),
 			$field_rules
 		);
-		
+
 		return !$Validator->fails();
-		
+
 	}
-	
+
 	/**
 	 * Set all of the form values to whatever the value on that attribute of the model is
 	 *
@@ -139,7 +140,7 @@ trait FormTrait{
 				foreach($this->Form()->getDaysOfWeekValues() as $key => $day){
 					if(in_array($key, $data))
 					{
-						$return[$key] = 1;	
+						$return[$key] = 1;
 					}
 					else
 					{
@@ -170,7 +171,7 @@ trait FormTrait{
 			}
 		}
 	}
-	
+
 	/**
 	 * Determine if $field_name is a Column in the table this model models
 	 *
@@ -183,15 +184,15 @@ trait FormTrait{
 		{
 			$this->getAllColumns();
 		}
-		
+
 		if(isset($this->valid_columns[$field_name]))
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Get a list of form data to build a form
 	 *
@@ -200,7 +201,7 @@ trait FormTrait{
 	protected function generateFormData()
 	{
 		$columns = $this->getAllColumns();
-				
+
 		foreach($columns as $column)
 		{
 			$this->Form()->addField($column['name']);
@@ -211,7 +212,7 @@ trait FormTrait{
 			$this->Form()->{$column['name']}->type = $this->getFormTypeFromColumnType($column['type']);
 		}
 	}
-	
+
 	/**
 	 * Get a list of all valid columns on the model using this trait
 	 *
@@ -219,22 +220,47 @@ trait FormTrait{
 	 */
 	protected function getAllColumns()
 	{
-        $query = 'SHOW COLUMNS FROM '.$this->table;
-        
-        $columns = array();
-        foreach(DB::connection($this->connection)->select($query) as $column)
-        {
-            $columns[$column->Field] = array(
-            	'name' => $column->Field,
-            	'type' => $this->getType($column->Type),
-            	'default' => $column->Default,
-            	'length' => $this->getLength($column->Type),
-            	'values' => $this->getEnumOptions($column->Type),
-            );
-            $this->valid_columns[$column->Field] = $column->Field;
-        }
-        
-        return $columns;
+		if(count($this->columns) > 0)
+		{
+			return $this->columns;
+		}
+
+		$query = 'SHOW COLUMNS FROM '.$this->table;
+
+		foreach(DB::connection($this->connection)->select($query) as $column)
+		{
+			$this->addColumn(
+				$column->Field,
+				$this->getType($column->Type),
+				$column->Default,
+				$this->getLength($column->Type),
+				$this->getEnumOptions($column->Type)
+			);
+			$this->valid_columns[$column->Field] = $column->Field;
+		}
+
+		return $this->columns;
+	}
+
+	/**
+	 * Get a list of all valid columns on the model using this trait
+	 *
+	 * @param string $name
+	 * @param string $type
+	 * @param string $default
+	 * @param int $length
+	 * @param mixed $values
+	 * @return void
+	 */
+	protected function addColumn($name, $type, $default, $length, $values)
+	{
+		$this->columns[$name] = array(
+			'name' => $name,
+			'type' => $type,
+			'default' => $default,
+			'length' => $length,
+			'values' => $values,
+		);
 	}
 
 	/**
@@ -246,18 +272,18 @@ trait FormTrait{
 	private function getType($type)
 	{
 		$types = array(
-			'int', 'tinyint', 'smallint', 'mediumint', 'bigint', 
-			'decimal', 'float', 'double', 'real', 
+			'int', 'tinyint', 'smallint', 'mediumint', 'bigint',
+			'decimal', 'float', 'double', 'real',
 			'bit', 'boolean', 'serial',
-			'date', 'datetime', 'timestamp', 'time', 'year', 
-			'char', 'varchar', 
-			'tinytext', 'text', 'mediumtext', 'longtext', 
+			'date', 'datetime', 'timestamp', 'time', 'year',
+			'char', 'varchar',
+			'tinytext', 'text', 'mediumtext', 'longtext',
 			'binary', 'varbinary',
 			'tinyblob', 'mediumblob', 'blob', 'longblob',
 			'enum', 'set',
 		);
-		
-		
+
+
 		foreach($types as $key)
 		{
 			if(strpos($type, $key) === 0)
@@ -277,7 +303,7 @@ trait FormTrait{
 	{
 		if(strpos($type, 'enum') === 0)
 			return;
-		
+
 		if(strpos($type, '(') !== false)
 		{
 			return substr($type, strpos($type, '(')+1, strpos($type, ')') - strpos($type, '(')-1);
@@ -288,9 +314,9 @@ trait FormTrait{
 			'text' => 65535,
 			'mediumtext' => 1677215,
 			'longtext' => 4294967295,
-			
+
 		);
-				
+
 		foreach($lengths as $key => $length)
 		{
 			if(strpos($type, $key) === 0)
@@ -312,7 +338,7 @@ trait FormTrait{
 		if(strpos($type, 'enum') !== 0)
 			return;
 		$values = explode(',', str_replace("'", '', substr($type, strpos($type, '(')+1, strpos($type, ')') - strpos($type, '(')-1)));
-		
+
 		foreach($values as $value)
 		{
 			if($value == '')
@@ -326,7 +352,7 @@ trait FormTrait{
 		}
 		return $return_array;
 	}
-	
+
 	/**
 	 * Get the field type based on column type
 	 *
@@ -339,17 +365,17 @@ trait FormTrait{
 		{
 			case 'enum':
 				return 'select';
-				
+
 			case 'text':
 			case 'tinytext':
 			case 'mediumtext':
 			case 'longtext':
 				return 'textarea';
-				
+
 			default:
-				return 'text';		
+				return 'text';
 		}
 	}
-	
+
 
 }
