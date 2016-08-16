@@ -164,6 +164,21 @@ class Field{
 	}
 
 	/**
+	 * Change a single option value
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @return void
+	 */
+	public function setOption($key, $value){
+		if($value == null){
+			unset($this->options[$key]);
+			return;
+		}
+		$this->options[$key] = $value;
+	}
+
+	/**
 	 * Make a view for this field
 	 *
 	 *	Valid Options:
