@@ -123,6 +123,8 @@ class Form{
 	 * @return View
 	 */
 	public function makeView($blade_data, $extends='', $section=''){
+		$this->validateFormStructure();
+
 		$blade_data['Form'] = $this;
 		$blade_data['extends'] = $extends;
 		$blade_data['section'] = $section;
@@ -130,6 +132,20 @@ class Form{
 			return View::make('form-maker::form-extend', $blade_data);
 
 			return View::make('form-maker::form', $blade_data);
+	}
+
+	/**
+	 * Step through fields and make sure they're legit
+	 *
+	 * @return void
+	 */
+	public function validateFormStructure()
+	{
+		foreach($this->Fields as $Field){
+			$Field->validateFieldStructure();
+		}
+
+		// TODO: Add any additional Form validation here
 	}
 
 	/**

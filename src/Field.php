@@ -179,6 +179,22 @@ class Field{
 	}
 
 	/**
+	 * Make sure the field has all required options and stuff set
+	 *
+	 * @return void
+	 */
+	public function validateFieldStructure(){
+		switch($this->type){
+
+			// TODO: Expand on this so it's more comprehensive
+			
+			case 'select':
+				if(!is_array($this->options) || count($this->options) == 0){
+					throw new \Exception('Field validation error: Field "'.$this->name.'" must have options set');
+				}
+		}
+	}
+	/**
 	 * Make a view for this field
 	 *
 	 *	Valid Options:
