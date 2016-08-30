@@ -125,6 +125,10 @@ class Form{
 	public function makeView($blade_data, $extends='', $section=''){
 		$this->validateFormStructure();
 
+		foreach($this->display_fields as $field){
+			$this->Fields[$field]->setupAttributes();
+		}
+
 		$blade_data['Form'] = $this;
 		$blade_data['extends'] = $extends;
 		$blade_data['section'] = $section;

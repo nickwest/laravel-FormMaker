@@ -187,7 +187,7 @@ class Field{
 		switch($this->type){
 
 			// TODO: Expand on this so it's more comprehensive
-			
+
 			case 'select':
 				if(!is_array($this->options) || count($this->options) == 0){
 					throw new \Exception('Field validation error: Field "'.$this->name.'" must have options set');
@@ -244,6 +244,32 @@ class Field{
 		}
 
 		return View::make('form-maker::fields.'.$this->type.'_option', array('field' => $this, 'key' => $key));
+	}
+
+
+	/**
+	 * Setup the attributes array to be used in the field views
+	 *
+	 * @return void
+	 */
+	public function setupAttributes(){
+		$this->attributes = array(
+			'id' => $this->id,
+			'class' => (isset($this->classes) && $this->classes != '' ? ' '.$this->classes : '' ),
+			'placeholder' => $this->example,
+		);
+
+		if($this->disabled)
+		{
+			$this->attributes['disabled'] = 'disabled';
+			$this->attributes['class'] = trim($this->attributes['class'].' disabled');
+		}
+
+		if($this->max_length > 0)
+		{
+			$this->attributes['maxlength'] = $this->max_length;
+		}
+
 	}
 
 	/**
