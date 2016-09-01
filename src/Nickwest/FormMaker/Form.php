@@ -139,13 +139,14 @@ class Form{
 	 * @param array $blade_data, string $extends, string $section
 	 * @return View
 	 */
-	public function makeView($blade_data, $extends='', $section=''){
+	public function makeView($blade_data, $extends='', $section='', $view_only=false){
 		$blade_data['Form'] = $this;
 		$blade_data['extends'] = $extends;
 		$blade_data['section'] = $section;
 		$blade_data['daysofweek'] = $this->daysofweek;
 
-		return View::make('form-maker::form', $blade_data);
+    return $view_only ? View::make('form-maker::form-viewonly', $blade_data) : View::make('form-maker::form', $blade_data);
+		//return View::make('form-maker::form', $blade_data);
 	}
 
 	/**
@@ -154,11 +155,11 @@ class Form{
 	 * @param array $blade_data
 	 * @return View
 	 */
-	public function makeSubformView($blade_data){
+	public function makeSubformView($blade_data, $view_only=false){
 		$blade_data['Form'] = $this;
 		$blade_data['daysofweek'] = $this->daysofweek;
 
-		return View::make('form-maker::subform', $blade_data);
+		return $view_only ? View::make('form-maker::subform-viewonly', $blade_data) : View::make('form-maker::subform', $blade_data);
 	}
 
 	/**
@@ -268,6 +269,19 @@ class Form{
 	 */
 	public function isField($field_name){
 		return isset($this->Fields[$field_name]) && is_object($this->Fields[$field_name]);
+	}
+
+	/**
+	 * Remove a field from being displayed
+	 * @param  string $field_name Name of the field to be removed
+	 * @return void
+	 */
+	public function removeDisplayField($field_name){
+		foreach($this->display_fields as $key => $value){
+			if($value == $field_name){
+				unset($this->display_fields[$key]);
+			}
+		}
 	}
 
 	/**
