@@ -164,6 +164,28 @@ class Form{
 		}
 	}
 
+	/**
+	 * 
+	 * add a Subform into the current form
+	 *
+	 * @param string $name, Form $form, string $before_field
+	 * @return void
+	 */
+	public function addSubform($name, $Form, $before_field=null){
+		$this->addField($name);
+		$this->Fields[$name]->type = 'subform';
+		$this->Fields[$name]->subform = $Form;
+
+		if($before_field != null){
+			foreach($this->display_fields as $key => $value){
+				if($value == $before_field) {
+					$this->display_fields = array_merge(array_slice($this->display_fields, 0, $key), array($name), array_slice($this->display_fields, $key));
+					return true;
+				}
+			}
+		}
+		$this->display_fields[] = $name;
+	}
 
 	public function formatValue($field_name, $value){
 		if(isset($this->Fields[$field_name])){
