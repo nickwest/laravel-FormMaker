@@ -16,7 +16,7 @@ class Form{
 	 *
 	 * @var array
 	 */
-	protected $display_fields;
+	protected $display_fields = array();
 
 	/**
 	 * Array of valid columns for hte model using this trait
@@ -220,6 +220,20 @@ class Form{
 	}
 
 	/**
+	 * Add a single multiple display fields field
+	 *
+	 *@param array $field_names
+	 *@return void
+	 */
+	public function addDisplayFields($field_names){
+		if(is_array($field_names)){
+			foreach($field_names as $field) {
+				$this->display_fields[$field] = $field;
+			}
+		}
+	}
+
+	/**
 	 * Set the array of fields to be displayed (order matters)
 	 *
 	 * @param array $field_names
@@ -265,6 +279,22 @@ class Form{
 		}
 
 		return $this->Fields;
+	}
+
+	/**
+	 * Add field labels to the existing labels
+	 *
+	 *
+	 *
+	 */
+	public function addLabels($labels){
+		if(!is_array($labels)) return;
+
+		foreach($labels as $field_name => $label) {
+			if(isset($this->Fields[$field_name])){
+				$this->Fields[$field_name]->label = $label;
+			}
+		}
 	}
 
 	/**
