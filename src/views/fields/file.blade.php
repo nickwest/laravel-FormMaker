@@ -6,4 +6,5 @@
 		<div class="file-link">{{ $field->value }} {!! Form::submit('remove', array('name' => $field->name.($field->multi_key != '' ? '['.$field->multi_key.']' : ''))) !!}</div>
 	@endif
 	@include('form-maker::pieces.note')
+	@include('form-maker::pieces.error')
 </div>

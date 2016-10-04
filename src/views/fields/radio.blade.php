@@ -9,4 +9,5 @@
 		@if($field->label != ''){!! Form::rawLabel($field->id, $field->label.($field->is_required ? ' <em>*</em>' : '')) !!}@endif
 	@endif
 	@include('form-maker::pieces.note')
+	@include('form-maker::pieces.error')
 </div>

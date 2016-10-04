@@ -2,7 +2,4 @@
 	@if($field->label != ''){!! Form::rawLabel($field->id, $field->label.($field->label_postfix != '' ? $field->label_postfix : '').($field->is_required ? ' <em>*</em>' : '')) !!}@endif
 	{!! Form::text($field->name.($field->multi_key != '' ? '['.$field->multi_key.']' : ''), ($field->value == '' ? $field->default_value : $field->value), $field->attributes) !!}
 	@include('form-maker::pieces.note')
-	@if($field->error_message)
-		<div class="error_message">{{ $field->error_message }}</div>
-	@endif
 </div>
