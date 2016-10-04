@@ -11,7 +11,8 @@
     "require": {
         "php": ">=5.5.0",
         "laravel/framework": "~5.2",
-		"laravelcollective/html": "~5.0"
+		"laravelcollective/html": "~5.0",
+		"nesbot/carbon": "^1.21"
     },
     "autoload": {
         "classmap": [
