@@ -97,7 +97,7 @@ class Form{
 	public function setMultiTrue($fields) {
 		if(is_array($fields)) {
 			foreach($fields as $field) {
-				$this->$field->is_multi = true;
+				$this->$field->multi_key = true;
 			}
 		}
 	}
