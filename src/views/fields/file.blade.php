@@ -2,7 +2,8 @@
 	@if($field->label != ''){!! Form::rawLabel($field->id, $field->label.($field->label_postfix != '' ? $field->label_postfix : '').($field->is_required ? ' <em>*</em>' : '')) !!}@endif
 	@if($field->value == '')
 		{!! Form::file($field->name.($field->multi_key != '' ? '['.$field->multi_key.']' : '')) !!}
-	@else 
+	@else
 		<div class="file-link">{{ $field->value }} {!! Form::submit('remove', array('name' => $field->name.($field->multi_key != '' ? '['.$field->multi_key.']' : ''))) !!}</div>
 	@endif
+	@include('form-maker::pieces.note')
 </div>

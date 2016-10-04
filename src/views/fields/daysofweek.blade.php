@@ -7,4 +7,5 @@
 	<div class="day"><label for="{{{ $field->id }}}_5">Fri</label><input type="checkbox" name="{{{ $field->name }}}[]" value="F" id="{{{ $field->id }}}_5" {!! ($field->value['F'] ? 'checked="checked" ' : '' ) !!}/></div>
 	<div class="day"><label for="{{{ $field->id }}}_6">Sat</label><input type="checkbox" name="{{{ $field->name }}}[]" value="S" id="{{{ $field->id }}}_6" {!! ($field->value['S'] ? 'checked="checked" ' : '' ) !!}/></div>
 	<div class="day"><label for="{{{ $field->id }}}_7">Sun</label><input type="checkbox" name="{{{ $field->name }}}[]" value="U" id="{{{ $field->id }}}_7" {!! ($field->value['U'] ? 'checked="checked" ' : '' ) !!}/></div>
+	@include('form-maker::pieces.note')
 </div>

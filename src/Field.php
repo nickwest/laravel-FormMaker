@@ -103,6 +103,13 @@ class Field{
 	protected $classes;
 
 	/**
+	 * A note to display below the field
+	 *
+	 * @var string
+	 */
+	protected $note;
+
+	/**
 	 * The field's id
 	 *
 	 * @var string

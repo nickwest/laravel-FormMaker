@@ -11,4 +11,5 @@
 		{!! Form::checkbox($field->name.($field->multi_key != '' ? '['.$field->multi_key.']' : ''), $field->options, (isset($field->value[$field->options]) != '' ? true : false), array('id' => $field->id, 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
 		@if($field->label != ''){!! Form::rawLabel($field->id, $field->label.($field->is_required ? ' <em>*</em>' : '')) !!}@endif
 	@endif
+	@include('form-maker::pieces.note')
 </div>
