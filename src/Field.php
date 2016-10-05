@@ -82,6 +82,13 @@ class Field{
 	private $options;
 
 	/**
+	 * Blade data to pass through to the subform
+	 *
+	 * @var array
+	 */
+	protected $subform_data;
+
+	/**
 	 * Options to that are disabled inside of a radio, checkbox or other multi-option field
 	 *
 	 * @var array
@@ -142,6 +149,7 @@ class Field{
 
 		// Options for multi-choice fields
 		$this->options = array();
+		$this->subform_data = array();
 
 		// Attributes to apply to input tag
 		$this->attributes = array();

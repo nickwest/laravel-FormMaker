@@ -140,10 +140,26 @@ class Form{
 		$blade_data['Form'] = $this;
 		$blade_data['extends'] = $extends;
 		$blade_data['section'] = $section;
-		if($extends != '')
-			return View::make('form-maker::form-extend', $blade_data);
 
-			return View::make('form-maker::form', $blade_data);
+		if($extends != '')
+		{
+			return View::make('form-maker::form-extend', $blade_data);
+		}
+
+		return View::make('form-maker::form', $blade_data);
+	}
+
+	/**
+	 * Make a view, $blade_data is the data array to pass to View::make()
+	 *
+	 * @param array $blade_data
+	 * @return View
+	 */
+	public function makeSubformView($blade_data){
+		$blade_data['Form'] = $this;
+		$blade_data['daysofweek'] = $this->daysofweek;
+
+		return View::make('form-maker::subform', $blade_data);
 	}
 
 	/**
@@ -172,6 +188,27 @@ class Form{
 		}
 	}
 
+	/**
+	 * add a Subform into the current form
+	 *
+	 * @param string $name, Form $form, string $before_field
+	 * @return void
+	 */
+	public function addSubform($name, $Form, $before_field=null){
+		$this->addField($name);
+		$this->Fields[$name]->type = 'subform';
+		$this->Fields[$name]->subform = $Form;
+
+		if($before_field != null){
+			foreach($this->display_fields as $key => $value){
+				if($value == $before_field){
+					$this->display_fields = array_merge(array_slice($this->display_fields, 0, $key), array($name), array_slice($this->display_fields, $key));
+					return true;
+				}
+			}
+		}
+		$this->display_fields[] = $name;
+	}
 
 	public function formatValue($field_name, $value){
 		if(isset($this->Fields[$field_name])){

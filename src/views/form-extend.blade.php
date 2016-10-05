@@ -6,10 +6,16 @@
 	@section($section)
 @endif
 
+@yield('above_form')
+
 {!! Form::open(array('url' => $Form->url)) !!}
 	<fieldset>
 	@foreach($Form->getDisplayFields() as $field)
-		@include('form-maker::fields.'.$field->type, array('field' => $field))
+		@if($field->type != 'subform')
+			@include('form-maker::fields.'.$field->type, array('field' => $field))
+		@else
+			{!! $field->subform->makeSubformView($field->subform_data)->render() !!}
+		@endif
 	@endforeach
 	</fieldset>
 
@@ -21,6 +27,8 @@
 	</fieldset>
 
 {!! Form::close() !!}
+
+@yield('below_form')
 
 @if(isset($section) && $section != '')
 	@stop
