@@ -5,6 +5,13 @@ use View;
 class Field{
 
 	/**
+	 * Original name when field created
+	 *
+	 * @var string
+	 */
+	protected $original_name = '';
+
+	/**
 	 * Name of hte field
 	 *
 	 * @var string
@@ -103,6 +110,13 @@ class Field{
 	protected $is_multi = false;
 
 	/**
+	 * A set key to use if this is a multi field
+	 *
+	 * @var string
+	 */
+	protected $multi_key;
+
+	/**
 	 * Classes to put on this field
 	 *
 	 * @var string
@@ -136,6 +150,7 @@ class Field{
 	 * @return void
 	 */
 	public function __construct($field_name){
+		$this->original_name = $field_name;
 		$this->name = $field_name;
 		$this->label = $this->makeLabel();
 		$this->type = 'text';
@@ -143,9 +158,6 @@ class Field{
 
 		// Is this field disabled?
 		$this->disabled = false;
-
-		// if not false, use this as the multi-key on the field name eg: field_name[key]
-		$this->multi_key = false;
 
 		// Options for multi-choice fields
 		$this->options = array();

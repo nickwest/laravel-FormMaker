@@ -87,13 +87,13 @@ trait FormTrait{
 		// Make sure no Form fields were omitted from the post array (checkboxes can be when none are set)
 		foreach($this->Form()->getDisplayFields() as $Field)
 		{
-			if(isset($post_data[$Field->name]) || !$this->isFillable($Field->name))
+			if(isset($post_data[$Field->name]) || !$this->isFillable($Field->original_name))
 				continue;
 
 			// Else set it to an empty string
-			if($this->{$Field->name} != '')
+			if($this->{$Field->original_name} != '')
 			{
-				$this->{$Field->name} = '';
+				$this->{$Field->original_name} = '';
 				$different = true;
 			}
 		}
@@ -112,7 +112,7 @@ trait FormTrait{
 		$field_rules = array();
 		foreach($Fields as $Field){
 			if($Field->is_required){
-				$field_rules[$Field->name] = array('required');
+				$field_rules[$Field->original_name] = array('required');
 			}
 		}
 
@@ -136,7 +136,7 @@ trait FormTrait{
 		{
 			if($Field->type == 'daysofweek')
 			{
-				$data = (isset($this->{$Field->name}) ? explode('|', $this->{$Field->name}) : ($this->Form()->{$Field->name}->default_value != '' ? $this->Form()->{$Field->name}->default_value : array()));
+				$data = (isset($this->{$Field->original_name}) ? explode('|', $this->{$Field->original_name}) : ($this->Form()->{$Field->original_name}->default_value != '' ? $this->Form()->{$Field->original_name}->default_value : array()));
 				foreach($this->Form()->getDaysOfWeekValues() as $key => $day){
 					if(in_array($key, $data))
 					{
@@ -147,27 +147,27 @@ trait FormTrait{
 						$return[$key] = 0;
 					}
 				}
-				$this->Form()->{$Field->name}->value = $return;
+				$this->Form()->{$Field->original_name}->value = $return;
 			}
 			elseif($Field->type == 'checkbox')
 			{
-				if((!isset($this->{$Field->name}) || $this->{$Field->name} == '') && $this->Form()->{$Field->name}->default_value != '')
+				if((!isset($this->{$Field->original_name}) || $this->{$Field->original_name} == '') && $this->Form()->{$Field->original_name}->default_value != '')
 				{
-					$this->Form()->{$Field->name}->value = $this->Form()->{$Field->name}->default_value;
+					$this->Form()->{$Field->original_name}->value = $this->Form()->{$Field->original_name}->default_value;
 				}
 				else
 				{
 					$values = array();
-					foreach(explode('|', $this->{$Field->name}) as $value)
+					foreach(explode('|', $this->{$Field->original_name}) as $value)
 					{
 						$values[$value] = $value;
 					}
-					$this->Form()->{$Field->name}->value = $values;
+					$this->Form()->{$Field->original_name}->value = $values;
 				}
 			}
 			else
 			{
-				$this->Form()->{$Field->name}->value = (isset($this->{$Field->name}) ? $this->{$Field->name} : ($this->Form()->{$Field->name}->default_value != '' ? $this->Form()->{$Field->name}->default_value : ''));
+				$this->Form()->{$Field->original_name}->value = (isset($this->{$Field->original_name}) ? $this->{$Field->original_name} : ($this->Form()->{$Field->original_name}->default_value != '' ? $this->Form()->{$Field->original_name}->default_value : ''));
 			}
 		}
 	}
