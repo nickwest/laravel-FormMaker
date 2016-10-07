@@ -1,4 +1,4 @@
-<div id="field-{{ $field->name.($field->multi_key != '' ? '_'.$field->multi_key : '') }}" class="field {{ $field->type }}{{ ($field->error_message ? ' error' : '') }}"{{ $field->max_length > 0 ? ' maxlength="'.$field->max_length.'"' : '' }}>
+<div id="field-{{ $field->name.($field->multi_key != '' ? '_'.$field->multi_key : '') }}" class="field {{ $field->type }}{{ ($field->error_message ? ' error' : '') }} {{ $field->class }}"{{ $field->max_length > 0 ? ' maxlength="'.$field->max_length.'"' : '' }}>
 	@if($field->label != '')
 		{!! Form::rawLabel($field->id, $field->label.($field->label_postfix != '' ? $field->label_postfix : '').($field->is_required ? ' <em>*</em>' : '')) !!}
 	@endif

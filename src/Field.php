@@ -138,6 +138,13 @@ class Field{
 	protected $id = '';
 
 	/**
+	 * The field's class(es)
+	 *
+	 * @var string
+	 */
+	protected $class = '';
+
+	/**
 	 * The template that this field should use
 	 *
 	 * @var string
