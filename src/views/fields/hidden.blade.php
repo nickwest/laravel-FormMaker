@@ -1,1 +1,1 @@
-{!! Form::hidden($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), $field->value, array('id' => $field->id, 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
+{!! Form::hidden($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), $field->value, array('id' => $field->attributes['id'], 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}

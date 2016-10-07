@@ -7,15 +7,15 @@
 
 		@foreach($field->options as $key => $option)
 			<div class="option">
-				{!! Form::checkbox($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), $key, (isset($field->value[$key]) != '' || $field->value == $key ? true : false), array('id' => $field->id.'_'.$key, 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
-				{!! Form::rawLabel($field->id.'_'.$key, $option) !!}
+				{!! Form::checkbox($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), $key, (isset($field->value[$key]) != '' || $field->value == $key ? true : false), array('id' => $field->attributes['id'].'_'.$key, 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
+				{!! Form::rawLabel($field->attributes['id'].'_'.$key, $option) !!}
 			</div>
 		@endforeach
 
 	@else
-		{!! Form::checkbox($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), $field->options, (isset($field->value[$field->options]) != '' ? true : false), array('id' => $field->id, 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
+		{!! Form::checkbox($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), $field->options, (isset($field->value[$field->options]) != '' ? true : false), array('id' => $field->attributes['id'], 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
 		@if($field->label != '')
-			{!! Form::rawLabel($field->id, $field->label.($field->is_required ? ' <em>*</em>' : '')) !!}
+			{!! Form::rawLabel($field->attributes['id'], $field->label.($field->is_required ? ' <em>*</em>' : '')) !!}
 		@endif
 	@endif
 

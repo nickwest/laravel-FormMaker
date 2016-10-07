@@ -7,9 +7,9 @@
 			{!! $field->makeOptionView($key) !!}
 		@endforeach
 	@else
-		{!! Form::radio($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), 1, ($field->value == 1 ? true : false), array('id' => $field->id, 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
+		{!! Form::radio($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), 1, ($field->value == 1 ? true : false), array('id' => $field->attributes['id'], 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
 		@if($field->label != '')
-			{!! Form::rawLabel($field->id, $field->label.($field->is_required ? ' <em>*</em>' : '')) !!}
+			{!! Form::rawLabel($field->attributes['id'], $field->label.($field->is_required ? ' <em>*</em>' : '')) !!}
 		@endif
 	@endif
 

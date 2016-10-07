@@ -241,7 +241,7 @@ class Field{
 	public function makeView()
 	{
 		$this->attributes = array(
-			'id' => $this->id,
+			'id' => 'input-'.$this->name.($this->multi_key != '' ? '_'.$this->multi_key : ''),
 			'class' => (isset($this->classes) && $this->classes != '' ? ' '.$this->classes : '' ),
 			'placeholder' => $this->example,
 		);
@@ -268,7 +268,7 @@ class Field{
 	public function makeOptionView($key)
 	{
 		$this->attributes = array(
-			'id' => $this->id.'_'.$key,
+			'id' => 'input-'.$this->name.($this->multi_key != '' ? '_'.$this->multi_key : '').'_'.$key,
 		);
 
 		if(in_array($key, $this->disabled_options))
@@ -288,7 +288,7 @@ class Field{
 	 */
 	public function setupAttributes(){
 		$this->attributes = array(
-			'id' => $this->id,
+			'id' => 'input-'.$this->name.($this->multi_key != '' ? '_'.$this->multi_key : ''),
 			'class' => (isset($this->classes) && $this->classes != '' ? ' '.$this->classes : '' ),
 			'placeholder' => $this->example,
 		);
@@ -303,7 +303,6 @@ class Field{
 		{
 			$this->attributes['maxlength'] = $this->max_length;
 		}
-
 	}
 
 	/**

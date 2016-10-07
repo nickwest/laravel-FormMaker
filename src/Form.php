@@ -166,6 +166,10 @@ class Form{
 		$blade_data['Form'] = $this;
 		$blade_data['daysofweek'] = $this->daysofweek;
 
+		foreach($this->display_fields as $field){
+			$this->Fields[$field]->setupAttributes();
+		}
+
 		return View::make('form-maker::subform', $blade_data);
 	}
 
