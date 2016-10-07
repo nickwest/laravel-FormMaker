@@ -1,4 +1,4 @@
-{!! Form::open(array('url' => $Form->url)) !!}
+{!! Form::open(array('url' => $Form->url, 'id' => $Form->form_id)) !!}
 	<fieldset>
 	@foreach($Form->getDisplayFields() as $field)
 		@include('form-maker::fields.'.$field->type, array('field' => $field))

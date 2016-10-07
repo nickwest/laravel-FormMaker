@@ -8,7 +8,7 @@
 
 @yield('above_form')
 
-{!! Form::open(array('url' => $Form->url)) !!}
+{!! Form::open(array('url' => $Form->url, 'id' => $Form->form_id)) !!}
 	<fieldset>
 	@foreach($Form->getDisplayFields() as $field)
 		@if($field->type != 'subform')
