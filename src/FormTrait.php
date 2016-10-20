@@ -151,7 +151,7 @@ trait FormTrait{
 			}
 			elseif($Field->type == 'checkbox')
 			{
-				if((!isset($this->{$Field->original_name}) || $this->{$Field->original_name} == '') && $this->Form()->{$Field->original_name}->default_value != '')
+				if((!isset($this->{$Field->original_name}) || ($this->{$Field->original_name} == '' && $this->{$Field->original_name} !== 0)) && $this->Form()->{$Field->original_name}->default_value != '')
 				{
 					$this->Form()->{$Field->original_name}->value = $this->Form()->{$Field->original_name}->default_value;
 				}
