@@ -21,6 +21,11 @@
 
 	<fieldset class="submit_button">
 		{!! Form::submit((isset($Form->submit_button) ? $Form->submit_button : 'Save'), array('name' => 'submit_button', 'class' => 'submit-green save')) !!}
+
+		@if($Form->getSubmit())
+			{!! Form::submit((isset($Form->submit_button) ? $Form->submit_button : 'Submit'), array('name' => 'submit_button', 'class' => 'submit-green submit')) !!}
+		@endif
+
 		@if($Form->getAllowDelete())
 			{!! Form::submit((isset($Form->delete_button) ? $Form->delete_button : 'Delete'), array('name' => 'submit_button', 'class' => 'submit-red delete')) !!}
 		@endif

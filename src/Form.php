@@ -34,6 +34,13 @@ class Form{
 	protected $allow_delete = false;
 
 	/**
+	 *Add a submission button
+	 *
+	 *
+	 */
+	protected $allow_submit = false;
+
+	/**
 	 * Post URL
 	 *
 	 * @var string
@@ -129,6 +136,16 @@ class Form{
 	 */
 	public function getAllowDelete($value=''){
 		return $this->allow_delete;
+	}
+
+	/**
+	 *
+	 * Get the allow_submit value
+	 *
+	 * @return bool
+	 */
+	public function getSubmit($value=''){
+		return $this->allow_submit;
 	}
 
 	/**
