@@ -55,6 +55,13 @@ class Form{
 	public $form_id = '';
 
 	/**
+	 * Submit Button name
+	 *
+	 * @var string
+	 */
+	public $submit_button = '';
+
+	/**
 	 * The Days of the week that we use for storing daysofweek fields
 	 *
 	 * @var array
