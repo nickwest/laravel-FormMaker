@@ -59,7 +59,7 @@ class Form{
 	 *
 	 * @var string
 	 */
-	public $submit_button = '';
+	public $submit_button = null;
 
 	/**
 	 * The Days of the week that we use for storing daysofweek fields
