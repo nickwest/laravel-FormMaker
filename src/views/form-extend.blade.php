@@ -20,10 +20,12 @@
 	</fieldset>
 
 	<fieldset class="submit_button">
-		{!! Form::submit((isset($Form->submit_button) ? $Form->submit_button : 'Save'), array('name' => 'submit_button', 'class' => 'submit-green save')) !!}
-
-		@if($Form->getSubmit())
-			{!! Form::submit((isset($Form->submit_button) ? $Form->submit_button : 'Submit'), array('name' => 'submit_button', 'class' => 'submit-green submit')) !!}
+		@if(count($Form->getSubmitButtons()) > 0)
+			@foreach($Form->getSubmitButtons() as $button)
+				{!! Form::submit($button['label'], array('name' => $button['name'], 'class' => $button['class'])) !!}
+			@endforeach
+		@else
+			{!! Form::submit((isset($Form->submit_button) ? $Form->submit_button : 'Save'), array('name' => 'submit_button', 'class' => 'submit-green save')) !!}
 		@endif
 
 		@if($Form->getAllowDelete())

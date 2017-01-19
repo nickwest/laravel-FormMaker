@@ -19,6 +19,13 @@ class Form{
 	protected $display_fields = array();
 
 	/**
+	 * Array of field_names to display
+	 *
+	 * @var array
+	 */
+	protected $submit_buttons = array();
+
+	/**
 	 * Array of valid columns for hte model using this trait
 	 *
 	 * @var array
@@ -32,13 +39,6 @@ class Form{
 	 * @var bool
 	 */
 	protected $allow_delete = false;
-
-	/**
-	 *Add a submission button
-	 *
-	 *
-	 */
-	protected $allow_submit = false;
 
 	/**
 	 * Post URL
@@ -55,7 +55,7 @@ class Form{
 	public $form_id = '';
 
 	/**
-	 * Submit Button name
+	 * Submit Button name (used for first submit button only)
 	 *
 	 * @var string
 	 */
@@ -137,22 +137,21 @@ class Form{
 	}
 
 	/**
+	 * Get the whole Fields array
+	 *
+	 * @return array
+	 */
+	public function getSubmitButtons(){
+		return $this->submit_buttons;
+	}
+
+	/**
 	 * Get the allow_delete value
 	 *
 	 * @return bool
 	 */
 	public function getAllowDelete($value=''){
 		return $this->allow_delete;
-	}
-
-	/**
-	 *
-	 * Get the allow_submit value
-	 *
-	 * @return bool
-	 */
-	public function getSubmit($value=''){
-		return $this->allow_submit;
 	}
 
 	/**
@@ -224,6 +223,20 @@ class Form{
 	}
 
 	/**
+	 * add a submit button to the form (If manually adding submit buttons, these will override the default options)
+	 *
+	 * @param string $name
+	 * @return void
+	 */
+	public function addSubmitButton($name, $label, $class=''){
+		$this->submit_buttons[] = array(
+			'name' => $name,
+			'label' => $label,
+			'class' => $class,
+		);
+	}
+
+	/**
 	 * add a Subform into the current form
 	 *
 	 * @param string $name, Form $form, string $before_field
@@ -280,12 +293,26 @@ class Form{
 	/**
 	 * Remove a single field from the form
 	 *
-	 * @param array $field_name
+	 * @param string $field_name
 	 * @return void
 	 */
 	public function removeField($field_name){
 		if(isset($this->Fields[$field_name])){
 			unset($this->Fields[$field_name]);
+		}
+	}
+
+	/**
+	 * Remove a custom submit button by label
+	 *
+	 * @param string $label
+	 * @return void
+	 */
+	public function removeSubmitButton($label){
+		foreach($this->submit_buttons as $key => $submit_button){
+			if($submit_button['label'] === $label){
+				unset($this->submit_buttons[$key]);
+			}
 		}
 	}
 
