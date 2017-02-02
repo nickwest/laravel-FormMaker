@@ -131,6 +131,13 @@ class Field{
 	protected $note;
 
 	/**
+	 * A link to display below the field
+	 *
+	 * @var string
+	 */
+	protected $link;
+
+	/**
 	 * The field's id
 	 *
 	 * @var string

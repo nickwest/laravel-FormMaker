@@ -12,6 +12,7 @@
 		</div>
 	@endif
 
+	@include('form-maker::pieces.link')
 	@include('form-maker::pieces.note')
 	@include('form-maker::pieces.error')
 </div>
