@@ -1,371 +1,370 @@
 <?php namespace Nickwest\FormMaker;
 
-use View;
+use Illuminate\Support\Facades\View;
 
 class Field{
 
-	/**
-	 * Original name when field created
-	 *
-	 * @var string
-	 */
-	protected $original_name = '';
+    /**
+     * Original name when field created
+     *
+     * @var string
+     */
+    protected $original_name = '';
 
-	/**
-	 * Name of hte field
-	 *
-	 * @var string
-	 */
-	protected $name = '';
+    /**
+     * Name of hte field
+     *
+     * @var string
+     */
+    protected $name = '';
 
-	/**
-	 * Human readable formatted name
-	 *
-	 * @var string
-	 */
-	protected $label = '';
+    /**
+     * Human readable formatted name
+     *
+     * @var string
+     */
+    protected $label = '';
 
-	/**
-	 * Something to stick at the end of a label (ex: ':')
-	 *
-	 * @var string
-	 */
-	protected $label_postfix = '';
+    /**
+     * Something to stick at the end of a label (ex: ':')
+     *
+     * @var string
+     */
+    protected $label_postfix = '';
 
-	/**
-	 * An example to show by the field
-	 *
-	 * @var string
-	 */
-	protected $example = '';
+    /**
+     * An example to show by the field
+     *
+     * @var string
+     */
+    protected $example = '';
 
-	/**
-	 * Field's current value
-	 *
-	 * @var string
-	 */
-	protected $value = '';
+    /**
+     * Field's current value
+     *
+     * @var string
+     */
+    protected $value = '';
 
-	/**
-	 * A default value (prepopulated if field is blank)
-	 *
-	 * @var string
-	 */
-	protected $default_value = '';
+    /**
+     * A default value (prepopulated if field is blank)
+     *
+     * @var string
+     */
+    protected $default_value = '';
 
-	/**
-	 * Error message to show on the field
-	 *
-	 * @var string
-	 */
-	protected $error_message = '';
+    /**
+     * Error message to show on the field
+     *
+     * @var string
+     */
+    protected $error_message = '';
 
-	/**
-	 * is this field required?
-	 *
-	 * @var bool
-	 */
-	protected $is_required = '';
+    /**
+     * is this field required?
+     *
+     * @var bool
+     */
+    protected $is_required = '';
 
-	/**
-	 * The maximum length of the field
-	 *
-	 * @var integer
-	 */
-	protected $max_length = '';
+    /**
+     * The maximum length of the field
+     *
+     * @var integer
+     */
+    protected $max_length = '';
 
-	/**
-	 * Field type [text,select,textarea,radio,checkbox,file] or a custom type
-	 *
-	 * @var string
-	 */
-	protected $type = '';
+    /**
+     * Field type [text,select,textarea,radio,checkbox,file] or a custom type
+     *
+     * @var string
+     */
+    protected $type = '';
 
-	/**
-	 * Options to populate select, radio, checkbox, and other multi-option fields
-	 *
-	 * @var array
-	 */
-	private $options;
+    /**
+     * Options to populate select, radio, checkbox, and other multi-option fields
+     *
+     * @var array
+     */
+    private $options;
 
-	/**
-	 * Blade data to pass through to the subform
-	 *
-	 * @var array
-	 */
-	protected $subform_data;
+    /**
+     * Blade data to pass through to the subform
+     *
+     * @var array
+     */
+    protected $subform_data;
 
-	/**
-	 * Options to that are disabled inside of a radio, checkbox or other multi-option field
-	 *
-	 * @var array
-	 */
-	private $disabled_options = array();
+    /**
+     * Options to that are disabled inside of a radio, checkbox or other multi-option field
+     *
+     * @var array
+     */
+    private $disabled_options = array();
 
-	/**
-	 * If there are multiples of this field in the form (appends [] to the field name)
-	 *
-	 * @var string
-	 */
-	protected $is_multi = false;
+    /**
+     * If there are multiples of this field in the form (appends [] to the field name)
+     *
+     * @var string
+     */
+    protected $is_multi = false;
 
-	/**
-	 * A set key to use if this is a multi field
-	 *
-	 * @var string
-	 */
-	protected $multi_key;
+    /**
+     * A set key to use if this is a multi field
+     *
+     * @var string
+     */
+    protected $multi_key;
 
-	/**
-	 * Classes to put on this field
-	 *
-	 * @var string
-	 */
-	protected $classes;
+    /**
+     * Classes to put on this field
+     *
+     * @var string
+     */
+    protected $classes;
 
-	/**
-	 * A note to display below the field
-	 *
-	 * @var string
-	 */
-	protected $note;
+    /**
+     * A note to display below the field
+     *
+     * @var string
+     */
+    protected $note;
 
-	/**
-	 * A link to display below the field
-	 *
-	 * @var string
-	 */
-	protected $link;
+    /**
+     * A link to display below the field
+     *
+     * @var string
+     */
+    protected $link;
 
-	/**
-	 * The field's id
-	 *
-	 * @var string
-	 */
-	protected $id = '';
+    /**
+     * The field's id
+     *
+     * @var string
+     */
+    protected $id = '';
 
-	/**
-	 * The field's class(es)
-	 *
-	 * @var string
-	 */
-	protected $class = '';
+    /**
+     * The field's class(es)
+     *
+     * @var string
+     */
+    protected $class = '';
 
-	/**
-	 * The template that this field should use
-	 *
-	 * @var string
-	 */
-	protected $template = '';
+    /**
+     * The template that this field should use
+     *
+     * @var string
+     */
+    protected $template = '';
 
-	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct($field_name){
-		$this->original_name = $field_name;
-		$this->name = $field_name;
-		$this->label = $this->makeLabel();
-		$this->type = 'text';
-		$this->id = 'input-'.$field_name;
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct($field_name){
+        $this->original_name = $field_name;
+        $this->name = $field_name;
+        $this->label = $this->makeLabel();
+        $this->type = 'text';
+        $this->id = 'input-'.$field_name;
 
-		// Is this field disabled?
-		$this->disabled = false;
+        // Is this field disabled?
+        $this->disabled = false;
 
-		// Options for multi-choice fields
-		$this->options = array();
-		$this->subform_data = array();
+        // Options for multi-choice fields
+        $this->options = array();
+        $this->subform_data = array();
 
-		// Attributes to apply to input tag
-		$this->attributes = array();
-	}
+        // Attributes to apply to input tag
+        $this->attributes = array();
+    }
 
-	/**
-	 * Field property accessor
-	 *
-	 * @param string $property
-	 * @return mixed
-	 */
-	public function __get($property){
-		//\Helpers::Pre($this->{$property});
-		return $this->{$property};
-	}
+    /**
+     * Field property accessor
+     *
+     * @param string $property
+     * @return mixed
+     */
+    public function __get($property){
+        return $this->{$property};
+    }
 
-	/**
-	 * Field property mutator
-	 *
-	 * @param string $property, mixed $value
-	 * @return void
-	 */
-	public function __set($property, $value){
+    /**
+     * Field property mutator
+     *
+     * @param string $property, mixed $value
+     * @return void
+     */
+    public function __set($property, $value){
 
-		$this->setProperty($property, $value);
+        $this->setProperty($property, $value);
 
-	}
+    }
 
-	/**
-	 * Change a single option value
-	 *
-	 * @param string $key
-	 * @param string $value
-	 * @return void
-	 */
-	public function setOption($key, $value){
-		if($value == null){
-			unset($this->options[$key]);
-			return;
-		}
-		$this->options[$key] = $value;
-	}
+    /**
+     * Change a single option value
+     *
+     * @param string $key
+     * @param string $value
+     * @return void
+     */
+    public function setOption($key, $value){
+        if($value == null){
+            unset($this->options[$key]);
+            return;
+        }
+        $this->options[$key] = $value;
+    }
 
-	/**
-	 * Make sure the field has all required options and stuff set
-	 *
-	 * @return void
-	 */
-	public function validateFieldStructure(){
-		switch($this->type){
+    /**
+     * Make sure the field has all required options and stuff set
+     *
+     * @return void
+     */
+    public function validateFieldStructure(){
+        switch($this->type){
 
-			// TODO: Expand on this so it's more comprehensive
+            // TODO: Expand on this so it's more comprehensive
 
-			case 'select':
-				if(!is_array($this->options) || count($this->options) == 0){
-					throw new \Exception('Field validation error: Field "'.$this->name.'" must have options set');
-				}
-		}
-	}
-	/**
-	 * Make a view for this field
-	 *
-	 *	Valid Options:
-	 * 		multi_key (key for a multi-field; adds [$key] to field name)
-	 *		name (alternate field name to use)
-	 *
-	 * @param array $options
-	 * @return View
-	 */
-	public function makeView()
-	{
-		$this->attributes = array(
-			'id' => 'input-'.$this->name.($this->multi_key != '' ? '_'.$this->multi_key : ''),
-			'class' => (isset($this->classes) && $this->classes != '' ? ' '.$this->classes : '' ),
-			'placeholder' => $this->example,
-		);
+            case 'select':
+                if(!is_array($this->options) || count($this->options) == 0){
+                    throw new \Exception('Field validation error: Field "'.$this->name.'" must have options set');
+                }
+        }
+    }
+    /**
+     * Make a view for this field
+     *
+     *    Valid Options:
+     *         multi_key (key for a multi-field; adds [$key] to field name)
+     *        name (alternate field name to use)
+     *
+     * @param array $options
+     * @return View
+     */
+    public function makeView()
+    {
+        $this->attributes = array(
+            'id' => 'input-'.$this->name.($this->multi_key != '' ? '_'.$this->multi_key : ''),
+            'class' => (isset($this->classes) && $this->classes != '' ? ' '.$this->classes : '' ),
+            'placeholder' => $this->example,
+        );
 
-		if($this->disabled)
-		{
-			$this->attributes['disabled'] = 'disabled';
-			$this->attributes['class'] = trim($this->attributes['class'].' disabled');
-		}
+        if($this->disabled)
+        {
+            $this->attributes['disabled'] = 'disabled';
+            $this->attributes['class'] = trim($this->attributes['class'].' disabled');
+        }
 
-		if($this->max_length > 0)
-		{
-			$this->attributes['maxlength'] = $this->max_length;
-		}
+        if($this->max_length > 0)
+        {
+            $this->attributes['maxlength'] = $this->max_length;
+        }
 
-		return View::make('form-maker::fields.'.$this->type, array('field' => $this));
-	}
+        return View::make('form-maker::fields.'.$this->type, array('field' => $this));
+    }
 
-	public function makeDisplayView()
-	{
-		return View::make('form-maker::fields.display', array('field' => $this));
-	}
+    public function makeDisplayView()
+    {
+        return View::make('form-maker::fields.display', array('field' => $this));
+    }
 
-	public function makeOptionView($key)
-	{
-		$this->attributes = array(
-			'id' => 'input-'.$this->name.($this->multi_key != '' ? '_'.$this->multi_key : '').'_'.$key,
-		);
+    public function makeOptionView($key)
+    {
+        $this->attributes = array(
+            'id' => 'input-'.$this->name.($this->multi_key != '' ? '_'.$this->multi_key : '').'_'.$key,
+        );
 
-		if(in_array($key, $this->disabled_options))
-		{
-			$this->attributes['disabled'] = 'disabled';
-			$this->attributes['class'] = 'disabled';
-		}
+        if(in_array($key, $this->disabled_options))
+        {
+            $this->attributes['disabled'] = 'disabled';
+            $this->attributes['class'] = 'disabled';
+        }
 
-		return View::make('form-maker::fields.'.$this->type.'_option', array('field' => $this, 'key' => $key));
-	}
+        return View::make('form-maker::fields.'.$this->type.'_option', array('field' => $this, 'key' => $key));
+    }
 
 
-	/**
-	 * Setup the attributes array to be used in the field views
-	 *
-	 * @return void
-	 */
-	public function setupAttributes(){
-		$this->attributes = array(
-			'id' => 'input-'.$this->name.($this->multi_key != '' ? '_'.$this->multi_key : ''),
-			'class' => (isset($this->classes) && $this->classes != '' ? ' '.$this->classes : '' ),
-			'placeholder' => $this->example,
-		);
+    /**
+     * Setup the attributes array to be used in the field views
+     *
+     * @return void
+     */
+    public function setupAttributes(){
+        $this->attributes = array(
+            'id' => 'input-'.$this->name.($this->multi_key != '' ? '_'.$this->multi_key : ''),
+            'class' => (isset($this->classes) && $this->classes != '' ? ' '.$this->classes : '' ),
+            'placeholder' => $this->example,
+        );
 
-		if($this->disabled)
-		{
-			$this->attributes['disabled'] = 'disabled';
-			$this->attributes['class'] = trim($this->attributes['class'].' disabled');
-		}
+        if($this->disabled)
+        {
+            $this->attributes['disabled'] = 'disabled';
+            $this->attributes['class'] = trim($this->attributes['class'].' disabled');
+        }
 
-		if($this->max_length > 0)
-		{
-			$this->attributes['maxlength'] = $this->max_length;
-		}
-	}
+        if($this->max_length > 0)
+        {
+            $this->attributes['maxlength'] = $this->max_length;
+        }
+    }
 
-	/**
-	 * Allows the setting of Field properties from client code (__set magic method is an alias to this)
-	 *
-	 * @param string $property, mixed $value
-	 * @return void
-	 */
-	public function setProperty($property, $value){
-		$this->{$property} = $value;
-	}
+    /**
+     * Allows the setting of Field properties from client code (__set magic method is an alias to this)
+     *
+     * @param string $property, mixed $value
+     * @return void
+     */
+    public function setProperty($property, $value){
+        $this->{$property} = $value;
+    }
 
-	/**
-	 * Return the formatted value of the Field's value
-	 *
-	 * @return string
-	 */
-	public function getFormattedValue(){
-		return $this->formatValue($this->value);
+    /**
+     * Return the formatted value of the Field's value
+     *
+     * @return string
+     */
+    public function getFormattedValue(){
+        return $this->formatValue($this->value);
 
-	}
+    }
 
-	/**
-	 * Return the formatted value of the $value
-	 *
-	 * @param string value
-	 * @return string
-	 */
-	public function formatValue($value){
-		if(is_array($this->options) && isset($this->options[$value])){
-			return $this->options[$value];
-		}
+    /**
+     * Return the formatted value of the $value
+     *
+     * @param string value
+     * @return string
+     */
+    public function formatValue($value){
+        if(is_array($this->options) && isset($this->options[$value])){
+            return $this->options[$value];
+        }
 
-		// TODO: Add other formatting options here, specifically for dates
+        // TODO: Add other formatting options here, specifically for dates
 
-		return $value;
-	}
+        return $value;
+    }
 
-	/**
-	 * Make a label for the given field, uses $this->label if available, otherwises generates based on field name
-	 *
-	 * @return string
-	 */
-	protected function makeLabel(){
-		// If no label use the name
-		if (trim($this->label) == '')
-		        $this->label = ucwords(str_replace('_',' ',$this->name));
+    /**
+     * Make a label for the given field, uses $this->label if available, otherwises generates based on field name
+     *
+     * @return string
+     */
+    protected function makeLabel(){
+        // If no label use the name
+        if (trim($this->label) == '')
+                $this->label = ucwords(str_replace('_',' ',$this->name));
 
-		// Remove any ":" from the label
-		if (substr($this->label,-1) == ':')
-		        $this->label = substr($this->label,0,-1);
+        // Remove any ":" from the label
+        if (substr($this->label,-1) == ':')
+                $this->label = substr($this->label,0,-1);
 
-		// If this is a question or period leave it
-		if (substr(strip_tags($this->label),-1) == '?' || substr(strip_tags($this->label),-1) == '.')
-		        return $this->label;
+        // If this is a question or period leave it
+        if (substr(strip_tags($this->label),-1) == '?' || substr(strip_tags($this->label),-1) == '.')
+                return $this->label;
 
-		return $this->label;
-	}
+        return $this->label;
+    }
 }
