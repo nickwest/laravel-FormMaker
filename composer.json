@@ -1,6 +1,6 @@
 {
     "name": "nickwest/form-maker",
-    "description": "",
+    "description": "Create Bulma compatible forms and tables directly from Eloquent Models and Collections",
     "authors": [
         {
             "name": "Nick West",
