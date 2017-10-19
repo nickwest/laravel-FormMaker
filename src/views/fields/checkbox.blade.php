@@ -5,18 +5,33 @@
             <div class="field_label"><strong>{!! $field->label.($field->label_postfix != '' ? $field->label_postfix : '').($field->is_required ? ' <em>*</em>' : '') !!}</strong></div>
         @endif
 
-        @foreach($field->options as $key => $option)
-            <div class="option">
-                {!! Form::checkbox($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), $key, (isset($field->value[$key]) != '' || $field->value == $key ? true : false), array('id' => $field->attributes['id'].'_'.$key, 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
-                {!! Form::rawLabel($field->attributes['id'].'_'.$key, $option) !!}
-            </div>
+        @foreach($field->options as $value => $label)
+            <label class="checkbox" for="{{ $field->attributes['id'] }}_{{ $loop->index }}">
+                <input
+                    type="checkbox"
+                    value="{{ $value }}"
+                    {{ isset($field->value[$field->options]) ? 'checked="checked"' : '' }}
+                    name="{{ $field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : '') }}"
+                    id="{{ $field->attributes['id'] }}_{{ $loop->index }}"
+                    class="{{ (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ) }}"
+                />
+                {{ $label }}
+            </label>
         @endforeach
 
     @else
-        {!! Form::checkbox($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), $field->options, (isset($field->value[$field->options]) != '' ? true : false), array('id' => $field->attributes['id'], 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
-        @if($field->label != '')
-            {!! Form::rawLabel($field->attributes['id'], $field->label.($field->is_required ? ' <em>*</em>' : '')) !!}
-        @endif
+        <label class="checkbox" for="{{ $field->attributes['id'] }}">
+            <input
+                type="checkbox"
+                value="{{ $field->options }}"
+                {{ $field->is_disabled ? 'disabled="disabled"' : '' }}
+                {{ isset($field->value[$field->options]) ? 'checked="checked" ' : '' }}
+                name="{{ $field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : '') }}"
+                id="{{ $field->attributes['id'] }}"
+                class="{{ (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ) }}"
+            />
+            {{ $field->label }}
+        </label>
     @endif
 
     @include('form-maker::pieces.note')

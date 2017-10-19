@@ -68,6 +68,13 @@ class Field{
     protected $is_required = '';
 
     /**
+     * is this field disabled?
+     *
+     * @var bool
+     */
+    protected $is_disabled = '';
+
+    /**
      * The maximum length of the field
      *
      * @var integer
@@ -171,7 +178,7 @@ class Field{
         $this->id = 'input-'.$field_name;
 
         // Is this field disabled?
-        $this->disabled = false;
+        $this->is_disabled = false;
 
         // Options for multi-choice fields
         $this->options = array();
@@ -252,7 +259,7 @@ class Field{
             'placeholder' => $this->example,
         );
 
-        if($this->disabled)
+        if($this->is_disabled)
         {
             $this->attributes['disabled'] = 'disabled';
             $this->attributes['class'] = trim($this->attributes['class'].' disabled');
@@ -299,7 +306,7 @@ class Field{
             'placeholder' => $this->example,
         );
 
-        if($this->disabled)
+        if($this->is_disabled)
         {
             $this->attributes['disabled'] = 'disabled';
             $this->attributes['class'] = trim($this->attributes['class'].' disabled');

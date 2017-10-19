@@ -32,7 +32,6 @@ class Form{
      */
     protected $valid_columns = array();
 
-
     /**
      * Add Delete button?
      *
@@ -60,6 +59,20 @@ class Form{
      * @var string
      */
     public $submit_button = null;
+
+    /**
+     * Form method (typically post or get)
+     *
+     * @var string
+     */
+    public $method = 'post';
+
+    /**
+     * Should the form accept uploads?
+     *
+     * @var string
+     */
+    public $multipart = false;
 
     /**
      * The Days of the week that we use for storing daysofweek fields
