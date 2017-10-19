@@ -40,6 +40,10 @@ class Attributes{
 		'required', 'disabled', 'readonly'
 	];
 
+	protected $type_classes = [
+		'text' => 'input',
+	];
+
 	/**
 	 * Field Attributes (defaults are set in constructor)
 	 *
@@ -100,6 +104,13 @@ class Attributes{
 		$output = [];
 		foreach($this->attributes as $key => $value)
 		{
+			if($key == 'class')
+			{
+				$classes = explode(' ', trim($value));
+				$classes[] = (isset($this->type_classes[$this->attributes['type']]) ? $this->type_classes[$this->attributes['type']] : $this->attributes['type']);
+				$value = implode(' ', $classes);
+			}
+
 			if(in_array($key, $this->flat_attributes))
 			{
 				if($value)
@@ -122,7 +133,7 @@ class Attributes{
 	 * @param string $key
 	 * @return bool
 	 */
-	protected function isValidAttribute($key)
+	public function isValidAttribute($key)
 	{
 		foreach($this->valid_attributes as $type => $attributes)
 		{

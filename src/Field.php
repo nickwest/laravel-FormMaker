@@ -99,6 +99,13 @@ class Field{
     protected $original_name = '';
 
     /**
+     * Original id when field created
+     *
+     * @var string
+     */
+    protected $original_id = '';
+
+    /**
      * Options to populate select, radio, checkbox, and other multi-option fields
      *
      * @var array
@@ -120,9 +127,10 @@ class Field{
         $this->attributes->name = $field_name;
         $this->attributes->type = $type != null ? $type : 'text';
         $this->attributes->id = 'input-'.$field_name;
-        $this->attributes->class = 'input';
+        $this->attributes->class = '';
 
-        $this->original_name = $field_name;
+        $this->original_name = $this->attributes->name;
+        $this->original_id = $this->attributes->id;
         $this->label = $this->makeLabel();
 
         // Options for multi-choice fields
@@ -146,11 +154,16 @@ class Field{
             return $this->{$property};
         }
 
+        if($this->attributes->isValidAttribute($property))
+        {
+            return $this->attributes->$property;
+        }
+
         return null;
     }
 
     /**
-     * Field property mutator
+     * Field property and attribute mutator
      *
      * @param string $property
      * @param mixed $value
@@ -167,6 +180,12 @@ class Field{
         if(property_exists(__CLASS__, $property))
         {
             $this->{$property} = $value;
+            return;
+        }
+
+        if($this->attributes->isValidAttribute($property))
+        {
+            $this->attributes->$property = $value;
             return;
         }
 
@@ -340,6 +359,7 @@ class Field{
      */
     public function makeOptionView($key)
     {
+        $this->attributes->id = $this->original_id.'-'.$key;
         return View::make('form-maker::fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
     }
 

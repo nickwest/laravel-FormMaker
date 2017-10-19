@@ -1,18 +1,22 @@
-<div id="field-{{ $field->name.($field->multi_key != '' ? '_'.$field->multi_key : '') }}" class="field {{ $field->type }}{{ ($field->error_message ? ' error' : '') }} {{ $field->class }}">
-    @if(is_array($field->options))
-        @if($field->label != '')
-            <div class="field_label"><strong>{!! $field->label.($field->label_postfix != '' ? $field->label_postfix : '').($field->is_required ? ' <em>*</em>' : '') !!}</strong></div>
-        @endif
-        @foreach($field->options as $key => $option)
-            {!! $field->makeOptionView($key) !!}
-        @endforeach
+<div id="field-{{ $Field->name.($Field->multi_key != '' ? '_'.$Field->multi_key : '') }}" class="control">
+
+    @if(is_array($Field->options))
+        <fieldset>
+            @if($Field->label != '')
+                <legend>{!! $Field->label.($Field->label_postfix != '' ? $Field->label_postfix : '').($Field->is_required ? ' <em>*</em>' : '') !!}</legend>
+            @endif
+            @foreach($Field->options as $key => $option)
+                {!! $Field->makeOptionView($key) !!}
+            @endforeach
+        </fieldset>
     @else
-        {!! Form::radio($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), 1, ($field->value == 1 ? true : false), array('id' => $field->attributes['id'], 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
-        @if($field->label != '')
-            {!! Form::rawLabel($field->attributes['id'], $field->label.($field->is_required ? ' <em>*</em>' : '')) !!}
-        @endif
+        <label class="radio" for={{ $Field->attributes->id }}>
+            <input {!! $Field->attributes !!}>
+            {{ $Field->label }}
+        </label>
     @endif
 
     @include('form-maker::pieces.note')
     @include('form-maker::pieces.error')
+
 </div>
