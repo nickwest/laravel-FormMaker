@@ -1,3 +1,3 @@
-@if($field->error_message)
-    <div class="error_message">{{ $field->error_message }}</div>
+@if($Field->error_message)
+    <p class="help is-danger">{!! $field->error_message !!}</p>
 @endif

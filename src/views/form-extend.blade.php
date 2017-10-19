@@ -10,11 +10,11 @@
 
 <form method="{{ $Form->method }}" action="{{ $Form->url }}" id="{{ $Form->form_id }}"{{ ($Form->multipart ? ' enctype="multipart/form-data"' : '') }}>
     <fieldset>
-    @foreach($Form->getDisplayFields() as $field)
-        @if($field->type != 'subform')
-            @include('form-maker::fields.'.$field->type, array('field' => $field))
+    @foreach($Form->getDisplayFields() as $Field)
+        @if($Field->attributes->type != 'subform')
+            @include('form-maker::fields.'.$Field->attributes->type, array('field' => $Field))
         @else
-            {!! $field->subform->makeSubformView($field->subform_data)->render() !!}
+            {!! $Field->subform->makeSubformView($Field->subform_data)->render() !!}
         @endif
     @endforeach
     </fieldset>

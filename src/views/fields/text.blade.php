@@ -1,9 +1,15 @@
-<div id="field-{{ $field->name.($field->multi_key != '' ? '_'.$field->multi_key : '') }}" class="field {{ $field->type }}{{ ($field->error_message ? ' error' : '') }} {{ $field->class }}"{{ $field->max_length > 0 ? ' maxlength="'.$field->max_length.'"' : '' }}>
-    @if($field->label != '')
-        {!! Form::rawLabel($field->attributes['id'], $field->label.($field->label_postfix != '' ? $field->label_postfix : '').($field->is_required ? ' <em>*</em>' : '')) !!}
+<div id="field-{{ $Field->attributes->name.($Field->multi_key != '' ? '_'.$Field->multi_key : '') }}" class="field {{ $Field->container_class }}{{ ($Field->attributes->required ? ' is-required' : '') }}">
+
+    @if($Field->label != '')
+        <label class="label" for="{{ $Field->attributes->id }}">
+            {{ $Field->label }}{{ $Field->label_suffix ? $Field->label_suffix : '' }}
+        </label>
     @endif
 
-    {!! Form::text($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), ($field->value == '' ? $field->default_value : $field->value), $field->attributes) !!}
-
+    <div class="control">
+        <input {!! $Field->attributes !!} />
+    </div>
+    @include('form-maker::pieces.error')
     @include('form-maker::pieces.note')
+
 </div>

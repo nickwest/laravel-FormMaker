@@ -111,7 +111,7 @@ trait FormTrait{
 
         $field_rules = array();
         foreach($Fields as $Field){
-            if($Field->is_required){
+            if($Field->attributes->required){
                 $field_rules[$Field->original_name] = array('required');
             }
         }
@@ -205,11 +205,10 @@ trait FormTrait{
         foreach($columns as $column)
         {
             $this->Form()->addField($column['name']);
-            $this->Form()->{$column['name']}->options = $column['values'];
-            $this->Form()->{$column['name']}->label_postfix = $this->label_postfix;
-            $this->Form()->{$column['name']}->max_length = $column['length'];
+            $this->Form()->{$column['name']}->setOptions($column['values']);
+            $this->Form()->{$column['name']}->attributes->maxlength = $column['length'];
             $this->Form()->{$column['name']}->default_value = $column['default'];
-            $this->Form()->{$column['name']}->type = $this->getFormTypeFromColumnType($column['type']);
+            $this->Form()->{$column['name']}->attributes->type = $this->getFormTypeFromColumnType($column['type']);
         }
     }
 

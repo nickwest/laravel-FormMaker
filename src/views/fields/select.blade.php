@@ -1,10 +1,18 @@
-<div id="field-{{ $field->name.($field->multi_key != '' ? '_'.$field->multi_key : '') }}" class="field {{ $field->type }}{{ ($field->error_message ? ' error' : '') }} {{ $field->class }}">
-    @if($field->label != '')
-        {!! Form::rawLabel($field->attributes['id'], $field->label.($field->label_postfix != '' ? $field->label_postfix : '').($field->is_required ? ' <em>*</em>' : '')) !!}
+<div class="field">
+    @if($Field->label != '')
+        <label class="label" for="{{ $Field->attributes->id }}">{{ $Field->label }}</label>
     @endif
 
-    {!! Form::select($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), $field->options, $field->value, array('id' => $field->attributes['id'], 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
-
-    @include('form-maker::pieces.note')
+    <div class="control">
+        <div class="select">
+            <select {!! $Field->attributes !!}>
+                @foreach($Field->options as $key => $value)
+                    <option value="{{ $key }}">{{ $value }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
     @include('form-maker::pieces.error')
+    @include('form-maker::pieces.note')
+
 </div>
