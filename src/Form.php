@@ -126,6 +126,12 @@ class Form{
      */
     public function __set(string $key, $value)
     {
+        if(isset($this->Fields[$key]))
+        {
+            $this->Fields[$key]->value = $value;
+            return;
+        }
+
         $this->setProperty($key, $value);
     }
 
@@ -609,32 +615,32 @@ class Form{
         return $labels;
     }
 
-    /**
-     * Set multiple field values at once [field_name] => value
-     *
-     * @param string $field_name
-     * @param mixed $values
-     * @return void
-     * @throws \Exception
-     */
-    public function setValue(string $field_name, $value)
-    {
-        if(isset($this->Fields[$field_name]))
-        {
-            if(is_array($value))
-            {
-                $this->Fields[$field_name]->multi_value = $value;
-            }
-            else
-            {
-                $this->Fields[$field_name]->value = $value;
-            }
-        }
-        else
-        {
-            throw new \Exception('"'.$field_name.'" does not exist');
-        }
-    }
+    // /**
+    //  * Set multiple field values at once [field_name] => value
+    //  *
+    //  * @param string $field_name
+    //  * @param mixed $values
+    //  * @return void
+    //  * @throws \Exception
+    //  */
+    // public function setValue(string $field_name, $value)
+    // {
+    //     if(isset($this->Fields[$field_name]))
+    //     {
+    //         if(is_array($value))
+    //         {
+    //             $this->Fields[$field_name]->multi_value = $value;
+    //         }
+    //         else
+    //         {
+    //             $this->Fields[$field_name]->value = $value;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         throw new \Exception('"'.$field_name.'" does not exist');
+    //     }
+    // }
 
     /**
      * Set multiple field values at once [field_name] => value
@@ -649,14 +655,15 @@ class Form{
         {
             if(isset($this->Fields[$field_name]))
             {
-                if(is_array($value))
-                {
-                    $this->Fields[$field_name]->multi_value = $value;
-                }
-                else
-                {
-                    $this->Fields[$field_name]->value = $value;
-                }
+                // if(is_array($value))
+                // {
+                //     $this->Fields[$field_name]->multi_value = $value;
+                // }
+                // else
+                // {
+                //     $this->Fields[$field_name]->value = $value;
+                // }
+                $this->Fields[$field_name]->value = $value;
             }
             else
             {

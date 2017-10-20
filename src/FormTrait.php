@@ -66,7 +66,7 @@ trait FormTrait{
      * returned bool indicates if anything changed
      *
      * @param array $post_data
-     * @return bool
+     * @return void
      */
     public function setPostValues($post_data){
         $different = false;
@@ -74,15 +74,7 @@ trait FormTrait{
         {
             if($this->isColumn($field_name) && $this->isFillable($field_name))
             {
-                if(is_array($value))
-                {
-                    $value = implode($this->multi_delimiter, $value);
-                }
-                if($this->{$field_name} != $value)
-                {
-                    $this->{$field_name} = $value;
-                    $different = true;
-                }
+                $this->Form()->{$field_name} = $value;
             }
         }
 
@@ -93,14 +85,11 @@ trait FormTrait{
                 continue;
 
             // Else set it to an empty string
-            if($this->{$Field->original_name} != '')
+            if($this->Form()->{$Field->original_name} != '')
             {
-                $this->{$Field->original_name} = '';
-                $different = true;
+                $this->Form()->{$Field->original_name} = '';
             }
         }
-
-        return $different;
     }
 
     /**
@@ -165,12 +154,12 @@ trait FormTrait{
                         $values[$value] = $value;
                     }
 
-                    $this->Form()->SetValue($Field->original_name, $values);
+                    $this->Form()->{$Field->original_name} = $values;
                 }
             }
             else
             {
-                $this->Form()->SetValue($Field->original_name,
+                $this->Form()->{$Field->original_name} =
                 (
                     isset($this->{$Field->original_name})
                     ? $this->{$Field->original_name}
@@ -179,7 +168,7 @@ trait FormTrait{
                         ? $this->Form()->{$Field->original_name}->default_value
                         : ''
                     )
-                ));
+                );
             }
         }
     }
