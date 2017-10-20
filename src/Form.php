@@ -459,7 +459,7 @@ class Form{
     }
 
     /**
-     * Add a single multiple display fields field
+     * Add multiple display fields field
      *
      * @param array $field_names
      * @return void
@@ -469,6 +469,23 @@ class Form{
         foreach($field_names as $field)
         {
             $this->display_fields[$field] = $field;
+        }
+    }
+
+    /**
+     * Remove multiple display fields field
+     *
+     * @param array $field_names
+     * @return void
+     */
+    public function removeDisplayFields(array $field_names)
+    {
+        foreach($field_names as $field)
+        {
+            if(isset($this->display_fields[$field]))
+            {
+                unset($this->display_fields[$field]);
+            }
         }
     }
 

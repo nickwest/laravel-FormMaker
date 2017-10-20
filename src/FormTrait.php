@@ -209,6 +209,7 @@ trait FormTrait{
             $this->Form()->{$column['name']}->attributes->maxlength = $column['length'];
             $this->Form()->{$column['name']}->default_value = $column['default'];
             $this->Form()->{$column['name']}->attributes->type = $this->getFormTypeFromColumnType($column['type']);
+            $this->Form()->addDisplayFields([$column['name']]);
         }
     }
 
