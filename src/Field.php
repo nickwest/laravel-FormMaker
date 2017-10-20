@@ -241,16 +241,28 @@ class Field{
         // If this is a radio or checkbox switch between multiples or single
         if($this->attributes->type == 'checkbox' && is_array($this->options))
         {
-            return 'form-maker::'.$this->theme.'.fields.checkboxes';
+            if(View::exists('form-maker::'.$this->theme.'.fields.checkboxes'))
+            {
+                return 'form-maker::'.$this->theme.'.fields.checkboxes';
+            }
+            return 'form-maker::core.fields.checkboxes';
         }
 
         // If this is a radio or checkbox switch between multiples or single
         if($this->attributes->type == 'radio' && is_array($this->options))
         {
-            return 'form-maker::'.$this->theme.'.fields.radios';
+            if(View::exists('form-maker::'.$this->theme.'.fields.radios'))
+            {
+                return 'form-maker::'.$this->theme.'.fields.radios';
+            }
+            return 'form-maker::core.fields.radios';
         }
 
-        return 'form-maker::'.$this->theme.'.fields.'.$this->attributes->type;
+        if(View::exists('form-maker::'.$this->theme.'.fields.'.$this->attributes->type))
+        {
+            return 'form-maker::'.$this->theme.'.fields.'.$this->attributes->type;
+        }
+        return 'form-maker::core.fields.'.$this->attributes->type;
     }
 
     /**
@@ -381,7 +393,11 @@ class Field{
             $this->addClass('is-danger');
         }
 
-        return View::make('form-maker::'.$this->theme.'.fields.'.$this->attributes->type, array('Field' => $this));
+        if(View::exists('form-maker::'.$this->theme.'.fields.'.$this->attributes->type))
+        {
+            return View::make('form-maker::'.$this->theme.'.fields.'.$this->attributes->type, array('Field' => $this));
+        }
+        return View::make('form-maker::core.fields.'.$this->attributes->type, array('Field' => $this));
     }
 
     /**
@@ -391,7 +407,11 @@ class Field{
      */
     public function makeDisplayView()
     {
-        return View::make('form-maker::'.$this->theme.'.fields.display', array('Field' => $this));
+        if(View::exists('form-maker::'.$this->theme.'.fields.display'))
+        {
+            return View::make('form-maker::'.$this->theme.'.fields.display', array('Field' => $this));
+        }
+        return View::make('form-maker::core.fields.display', array('Field' => $this));
     }
 
     /**
@@ -402,7 +422,11 @@ class Field{
     public function makeOptionView($key)
     {
         $this->attributes->id = $this->original_id.'-'.$key;
-        return View::make('form-maker::'.$this->theme.'.fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
+        if(View::exists('form-maker::'.$this->theme.'.fields.'.$this->attributes->type.'_option'))
+        {
+            return View::make('form-maker::'.$this->theme.'.fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
+        }
+        return View::make('form-maker::core.fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
     }
 
 

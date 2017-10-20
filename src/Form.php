@@ -220,10 +220,17 @@ class Form{
 
         if($extends != '')
         {
-            return View::make('form-maker::'.$this->theme.'.form-extend', $blade_data);
+            if(View::exists('form-maker::'.$this->theme.'.form-extend'))
+            {
+                return View::make('form-maker::'.$this->theme.'.form-extend', $blade_data);
+            }
+            return View::make('form-maker::core.form-extend', $blade_data);
         }
-
-        return View::make('form-maker::'.$this->theme.'.form', $blade_data);
+        if(View::exists('form-maker::'.$this->theme.'.form'))
+        {
+            return View::make('form-maker::'.$this->theme.'.form', $blade_data);
+        }
+        return View::make('form-maker::core.form', $blade_data);
     }
 
     /**
@@ -242,7 +249,11 @@ class Form{
         //     $this->Fields[$field]->setupAttributes();
         // }
 
-        return View::make('form-maker::'.$this->theme.'.subform', $blade_data);
+        if(View::exists('form-maker::'.$this->theme.'.subform'))
+        {
+            return View::make('form-maker::'.$this->theme.'.subform', $blade_data);
+        }
+        return View::make('form-maker::core.subform', $blade_data);
     }
 
     /**
