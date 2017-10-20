@@ -178,6 +178,22 @@ class Form{
     }
 
     /**
+     * Set the theme
+     *
+     * @param string $theme
+     * @return void
+     */
+    public function setTheme(string $theme)
+    {
+        $this->theme = $theme;
+        foreach($this->Fields as $key => $Field)
+        {
+            $this->Fields[$key]->theme = $theme;
+        }
+    }
+
+
+    /**
      * Get the Submit button array
      *
      * @return array
@@ -283,6 +299,7 @@ class Form{
         foreach($field_names as $field_name)
         {
             $this->Fields[$field_name] = new Field($field_name);
+            $this->Fields[$field_name]->theme = $this->theme;
         }
     }
 
@@ -379,6 +396,7 @@ class Form{
     public function addField(string $field_name)
     {
         $this->Fields[$field_name] = new Field($field_name);
+        $this->Fields[$field_name]->theme = $this->theme;
     }
 
     /**
