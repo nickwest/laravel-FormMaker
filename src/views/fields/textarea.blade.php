@@ -1,11 +1,15 @@
-<div id="field-{{ $field->name.($field->multi_key != '' ? '_'.$field->multi_key : '') }}" class="field {{ $field->type }}{{ ($field->error_message ? ' error' : '') }} {{ $field->class }}">
-    @if($field->label != '')
-        {!! Form::rawLabel($field->attributes['id'], $field->label.($field->label_postfix != '' ? $field->label_postfix : '').($field->is_required ? ' <em>*</em>' : '')) !!}
-    @endif
+@formmaker_component('form-maker::components.field', ['Field' => $Field])
 
-    {!! Form::textarea($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), $field->value, array('id' => $field->attributes['id'], 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
+    @slot('field_markup')
+        @formmaker_include($Field->view_namespace.'::pieces.label', ['Field' => $Field])
 
-    @formmaker_include($Field->view_namespace.'::pieces.example')
-    @formmaker_include($Field->view_namespace.'::pieces.error')
-    @formmaker_include($Field->view_namespace.'::pieces.note')
-</div>
+        <div class="{{ $Field->input_wrapper_class }}">
+            <textarea class="{{ $Field->attributes->class }}" id="{{ $Field->attributes->id }}" name="{{ $Field->attributes->name }}" class="{{ $Field->attributes->class }}" placeholder="{{ $Field->attributes->placeholder }}">{!! $Field->value !!}</textarea>
+        </div>
+
+        @formmaker_include($Field->view_namespace.'::pieces.example')
+        @formmaker_include($Field->view_namespace.'::pieces.error')
+        @formmaker_include($Field->view_namespace.'::pieces.note')
+    @endslot
+
+@endcomponent

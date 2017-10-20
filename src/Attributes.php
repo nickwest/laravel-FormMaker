@@ -7,7 +7,7 @@ class Attributes{
      * @var string
      */
     protected $valid_attributes = [
-        'input' => [
+        'all' => [
             'autofocus', 'class', 'disabled', 'height', 'id', 'list', 'max', 'maxlength',
             'min', 'multiple', 'name', 'pattern', 'placeholder', 'readonly',
             'required', 'size', 'step', 'type', 'value', 'width',
@@ -40,10 +40,6 @@ class Attributes{
         'required', 'disabled', 'readonly', 'checked'
     ];
 
-    protected $type_classes = [
-        'text' => 'input',
-    ];
-
     /**
      * Keep track of classes separately so we can build it all pretty like
      *
@@ -66,13 +62,13 @@ class Attributes{
      */
     public function __get(string $attribute)
     {
+        if($attribute == 'class')
+        {
+            return implode(' ', $this->classes);
+        }
+
         if(isset($this->attributes[$attribute]))
         {
-            if($attribute == 'class')
-            {
-                return implode(' ', $this->classes);
-            }
-
             return $this->attributes[$attribute];
         }
 

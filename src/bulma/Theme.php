@@ -10,7 +10,6 @@ class Theme extends \Nickwest\FormMaker\Theme
     public function prepareFieldView(\Nickwest\FormMaker\Field &$Field)
     {
         $Field->label_class = 'label';
-
         switch($Field->type)
         {
             case 'text':
@@ -25,6 +24,9 @@ class Theme extends \Nickwest\FormMaker\Theme
             break;
             case 'select':
                 $Field->input_wrapper_class = 'select';
+            break;
+            case 'textarea':
+                $Field->addClass('textarea');
             break;
 
             // These are less than perfect, but Bulma doesn't have unique style for them yet.
