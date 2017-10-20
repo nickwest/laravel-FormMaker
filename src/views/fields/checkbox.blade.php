@@ -1,4 +1,4 @@
-@component('form-maker::components.field', ['Field' => $Field])
+@formmaker_component('form-maker::components.field', ['Field' => $Field])
 
     @slot('field_markup')
         <div class="{{ $Field->option_wrapper_class }}">
@@ -8,8 +8,9 @@
             </label>
         </div>
 
-        @include('form-maker::pieces.error')
-        @include('form-maker::pieces.note')
+        @formmaker_include($Field->view_namespace.'::pieces.example')
+        @formmaker_include($Field->view_namespace.'::pieces.error')
+        @formmaker_include($Field->view_namespace.'::pieces.note')
     @endslot
 
 @endcomponent

@@ -11,5 +11,5 @@
         @endif
     </div>
 
-    @include('form-maker::pieces.note')
+    @formmaker_include($Field->view_namespace.'::pieces.note')
 </div>

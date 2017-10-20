@@ -1,4 +1,4 @@
-@component('form-maker::components.field', ['Field' => $Field])
+@formmaker_component('form-maker::components.field', ['Field' => $Field])
 
     @slot('field_markup')
         <label class="{{ $Field->label_class }}" for={{ $Field->attributes->id }}>
@@ -6,8 +6,9 @@
             {{ $Field->label }}
         </label>
 
-        @include('form-maker::pieces.error')
-        @include('form-maker::pieces.note')
+        @formmaker_include($Field->view_namespace.'::pieces.example')
+        @formmaker_include($Field->view_namespace.'::pieces.error')
+        @formmaker_include($Field->view_namespace.'::pieces.note')
     @endslot
 
 @endcomponent

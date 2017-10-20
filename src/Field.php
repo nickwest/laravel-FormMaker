@@ -144,7 +144,7 @@ class Field{
      *
      * @var string
      */
-    protected $theme = '';
+    protected $Theme = '';
 
     /**
      * Constructor
@@ -182,6 +182,11 @@ class Field{
      */
     public function __get($property)
     {
+        if($property == 'view_namespace')
+        {
+            return $this->Theme->view_namespace();
+        }
+
         if(property_exists(__CLASS__, $property))
         {
             return $this->{$property};
@@ -241,9 +246,9 @@ class Field{
         // If this is a radio or checkbox switch between multiples or single
         if($this->attributes->type == 'checkbox' && is_array($this->options))
         {
-            if($this->theme != '' && View::exists($this->theme.'.fields.checkboxes'))
+            if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.checkboxes'))
             {
-                return $this->theme.'.fields.checkboxes';
+                return $this->view_namespace.'::fields.checkboxes';
             }
             return 'form-maker::fields.checkboxes';
         }
@@ -251,16 +256,16 @@ class Field{
         // If this is a radio or checkbox switch between multiples or single
         if($this->attributes->type == 'radio' && is_array($this->options))
         {
-            if($this->theme != '' && View::exists($this->theme.'.fields.radios'))
+            if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.radios'))
             {
-                return $this->theme.'.fields.radios';
+                return $this->view_namespace.'::fields.radios';
             }
             return 'form-maker::fields.radios';
         }
 
-        if($this->theme != '' && View::exists($this->theme.'.fields.'.$this->attributes->type))
+        if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.'.$this->attributes->type))
         {
-            return $this->theme.'.fields.'.$this->attributes->type;
+            return $this->view_namespace.'::fields.'.$this->attributes->type;
         }
         return 'form-maker::fields.'.$this->attributes->type;
     }
@@ -393,9 +398,9 @@ class Field{
             $this->addClass('is-danger');
         }
 
-        if($this->theme != '' && View::exists($this->theme.'.fields.'.$this->attributes->type))
+        if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.'.$this->attributes->type))
         {
-            return View::make($this->theme.'.fields.'.$this->attributes->type, array('Field' => $this));
+            return View::make($this->view_namespace.'::fields.'.$this->attributes->type, array('Field' => $this));
         }
         return View::make('form-maker::fields.'.$this->attributes->type, array('Field' => $this));
     }
@@ -407,9 +412,9 @@ class Field{
      */
     public function makeDisplayView()
     {
-        if($this->theme != '' && View::exists($this->theme.'.fields.display'))
+        if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.display'))
         {
-            return View::make($this->theme.'.fields.display', array('Field' => $this));
+            return View::make($this->view_namespace.'::fields.display', array('Field' => $this));
         }
         return View::make('form-maker::fields.display', array('Field' => $this));
     }
@@ -422,9 +427,9 @@ class Field{
     public function makeOptionView($key)
     {
         $this->attributes->id = $this->original_id.'-'.$key;
-        if($this->theme != '' && View::exists($this->theme.'.fields.'.$this->attributes->type.'_option'))
+        if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.'.$this->attributes->type.'_option'))
         {
-            return View::make($this->theme.'.fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
+            return View::make($this->view_namespace.'::fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
         }
         return View::make('form-maker::fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
     }

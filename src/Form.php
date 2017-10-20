@@ -86,7 +86,7 @@ class Form{
      *
      * @var string
      */
-    public $theme = 'core';
+    protected $Theme = 'core';
 
     /**
      * Constructor
@@ -95,7 +95,7 @@ class Form{
      */
     public function __construct()
     {
-
+        $this->Theme = new DefaultTheme();
     }
 
     /**
@@ -180,15 +180,15 @@ class Form{
     /**
      * Set the theme
      *
-     * @param string $theme
+     * @param \Nickwest\FormMaker\Theme $Theme
      * @return void
      */
-    public function setTheme(string $theme)
+    public function setTheme(\Nickwest\FormMaker\Theme $Theme)
     {
-        $this->theme = $theme;
+        $this->Theme = $Theme;
         foreach($this->Fields as $key => $Field)
         {
-            $this->Fields[$key]->theme = $theme;
+            $this->Fields[$key]->Theme = $Theme;
         }
     }
 
@@ -236,15 +236,15 @@ class Form{
 
         if($extends != '')
         {
-            if($this->theme != '' && View::exists($this->theme.'.form-extend'))
+            if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::form-extend'))
             {
-                return View::make($this->theme.'.form-extend', $blade_data);
+                return View::make($this->Theme->view_namespace.'::form-extend', $blade_data);
             }
             return View::make('form-maker::form-extend', $blade_data);
         }
-        if($this->theme != '' && View::exists($this->theme.'.form'))
+        if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::form'))
         {
-            return View::make($this->theme.'.form', $blade_data);
+            return View::make($this->Theme->view_namespace.'::form', $blade_data);
         }
         return View::make('form-maker::form', $blade_data);
     }
@@ -265,9 +265,9 @@ class Form{
         //     $this->Fields[$field]->setupAttributes();
         // }
 
-        if($this->theme != '' && View::exists($this->theme.'.subform'))
+        if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::subform'))
         {
-            return View::make($this->theme.'.subform', $blade_data);
+            return View::make($this->Theme->view_namespace.'::subform', $blade_data);
         }
         return View::make('form-maker::subform', $blade_data);
     }
@@ -299,7 +299,7 @@ class Form{
         foreach($field_names as $field_name)
         {
             $this->Fields[$field_name] = new Field($field_name);
-            $this->Fields[$field_name]->theme = $this->theme;
+            $this->Fields[$field_name]->Theme = $this->Theme;
         }
     }
 
@@ -396,7 +396,7 @@ class Form{
     public function addField(string $field_name)
     {
         $this->Fields[$field_name] = new Field($field_name);
-        $this->Fields[$field_name]->theme = $this->theme;
+        $this->Fields[$field_name]->Theme = $this->Theme;
     }
 
     /**

@@ -5,6 +5,7 @@
 
     {!! Form::textarea($field->name.($field->multi_key || $field->is_multi ? '['.$field->multi_key.']' : ''), $field->value, array('id' => $field->attributes['id'], 'class' => (isset($field->classes) && $field->classes != '' ? ' '.$field->classes : '' ))) !!}
 
-    @include('form-maker::pieces.note')
-    @include('form-maker::pieces.error')
+    @formmaker_include($Field->view_namespace.'::pieces.example')
+    @formmaker_include($Field->view_namespace.'::pieces.error')
+    @formmaker_include($Field->view_namespace.'::pieces.note')
 </div>
