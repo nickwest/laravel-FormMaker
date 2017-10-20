@@ -228,6 +228,12 @@ class Field{
             return;
         }
 
+        // Whenever setting value, also record the value to $this->multi_value
+        if($property == 'value')
+        {
+            $this->multi_value = is_array($value) ? $value : [$value];
+        }
+
         if($this->attributes->isValidAttribute($property))
         {
             $this->attributes->$property = $value;
@@ -438,7 +444,6 @@ class Field{
         $this->attributes->value = $key;
 
         $this->attributes->checked = in_array($key, $this->multi_value) ? true : false;
-
 
         $this->Theme->prepareFieldView($this);
 
