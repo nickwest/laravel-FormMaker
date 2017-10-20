@@ -1,4 +1,5 @@
 <form method="{{ $Form->method }}" action="{{ $Form->url }}" id="{{ $Form->form_id }}"{{ ($Form->multipart ? ' enctype="multipart/form-data"' : '') }}>
+    {{ csrf_field() }}
     <div class="fields">
         @foreach($Form->getDisplayFields() as $Field)
             {!! $Field->makeView() !!}

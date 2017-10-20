@@ -1,6 +1,7 @@
 <?php namespace Nickwest\FormMaker;
 
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Request;
 
 class Form{
 
@@ -96,6 +97,8 @@ class Form{
     public function __construct()
     {
         $this->Theme = new DefaultTheme();
+        $this->url = Request::url();
+
     }
 
     /**
