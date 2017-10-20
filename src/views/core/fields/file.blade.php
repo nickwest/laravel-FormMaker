@@ -1,7 +1,7 @@
-@component('form-maker::components.field', ['Field' => $Field])
+@component('form-maker::core.components.field', ['Field' => $Field])
 
     @slot('field_markup')
-        @include('form-maker::pieces.label', ['Field' => $Field])
+        @include('form-maker::core.pieces.label', ['Field' => $Field])
 
         @if($Field->value == '')
             <input {!! $Field->attributes !!} />
@@ -12,8 +12,8 @@
             </div>
         @endif
 
-        @include('form-maker::pieces.error')
-        @include('form-maker::pieces.note')
+        @include('form-maker::core.pieces.error')
+        @include('form-maker::core.pieces.note')
     @endslot
 
 @endcomponent

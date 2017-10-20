@@ -1,7 +1,7 @@
-@component('form-maker::components.field', ['Field' => $Field])
+@component('form-maker::core.components.field', ['Field' => $Field])
 
     @slot('field_markup')
-        @include('form-maker::pieces.label')
+        @include('form-maker::core.pieces.label')
 
         <select {!! $Field->attributes !!}>
             @foreach($Field->options as $key => $value)
@@ -9,8 +9,8 @@
             @endforeach
         </select>
 
-        @include('form-maker::pieces.error')
-        @include('form-maker::pieces.note')
+        @include('form-maker::core.pieces.error')
+        @include('form-maker::core.pieces.note')
     @endslot
 
 @endcomponent

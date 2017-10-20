@@ -82,6 +82,13 @@ class Form{
     protected $daysofweek = [ 'M' => 'Mon', 'T' => 'Tue', 'W' => 'Wed', 'R' => 'Thu', 'F' => 'Fri', 'S' => 'Sat', 'U' => 'Sun' ];
 
     /**
+     * Theme to use
+     *
+     * @var string
+     */
+    public $theme = 'core';
+
+    /**
      * Constructor
      *
      * @return void
@@ -213,10 +220,10 @@ class Form{
 
         if($extends != '')
         {
-            return View::make('form-maker::form-extend', $blade_data);
+            return View::make('form-maker::'.$this->theme.'.form-extend', $blade_data);
         }
 
-        return View::make('form-maker::form', $blade_data);
+        return View::make('form-maker::'.$this->theme.'.form', $blade_data);
     }
 
     /**
@@ -235,7 +242,7 @@ class Form{
         //     $this->Fields[$field]->setupAttributes();
         // }
 
-        return View::make('form-maker::subform', $blade_data);
+        return View::make('form-maker::'.$this->theme.'.subform', $blade_data);
     }
 
     /**

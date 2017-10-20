@@ -1,7 +1,7 @@
 <form method="{{ $Form->method }}" action="{{ $Form->url }}" id="{{ $Form->form_id }}"{{ ($Form->multipart ? ' enctype="multipart/form-data"' : '') }}>
     <div class="fields">
         @foreach($Form->getDisplayFields() as $field)
-            @include('form-maker::fields.'.$field->type, array('field' => $field))
+            @include('form-maker::core.fields.'.$field->type, array('field' => $field))
         @endforeach
     </div>
 

@@ -6,7 +6,7 @@
 
 @foreach($Form->getDisplayFields() as $field)
     @if($field->type != 'custom')
-        @include('form-maker::fields.'.$field->type, ['Field' => $field])
+        @include('form-maker::core.fields.'.$field->type, ['Field' => $field])
     @else
         @include($field->view, ['Field', $field])
     @endif

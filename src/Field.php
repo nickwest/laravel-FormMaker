@@ -140,6 +140,13 @@ class Field{
     protected $option_label_class = '';
 
     /**
+     * Class(es) for the field's containing div
+     *
+     * @var string
+     */
+    protected $theme = 'core';
+
+    /**
      * Constructor
      *
      * @param string $field_name
@@ -234,16 +241,16 @@ class Field{
         // If this is a radio or checkbox switch between multiples or single
         if($this->attributes->type == 'checkbox' && is_array($this->options))
         {
-            return 'form-maker::fields.checkboxes';
+            return 'form-maker::'.$this->theme.'.fields.checkboxes';
         }
 
         // If this is a radio or checkbox switch between multiples or single
         if($this->attributes->type == 'radio' && is_array($this->options))
         {
-            return 'form-maker::fields.radios';
+            return 'form-maker::'.$this->theme.'.fields.radios';
         }
 
-        return 'form-maker::fields.'.$this->attributes->type;
+        return 'form-maker::'.$this->theme.'.fields.'.$this->attributes->type;
     }
 
     /**
@@ -374,7 +381,7 @@ class Field{
             $this->addClass('is-danger');
         }
 
-        return View::make('form-maker::fields.'.$this->attributes->type, array('Field' => $this));
+        return View::make('form-maker::'.$this->theme.'.fields.'.$this->attributes->type, array('Field' => $this));
     }
 
     /**
@@ -384,7 +391,7 @@ class Field{
      */
     public function makeDisplayView()
     {
-        return View::make('form-maker::fields.display', array('Field' => $this));
+        return View::make('form-maker::'.$this->theme.'.fields.display', array('Field' => $this));
     }
 
     /**
@@ -395,7 +402,7 @@ class Field{
     public function makeOptionView($key)
     {
         $this->attributes->id = $this->original_id.'-'.$key;
-        return View::make('form-maker::fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
+        return View::make('form-maker::'.$this->theme.'.fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
     }
 
 
