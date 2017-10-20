@@ -12,7 +12,7 @@
     <div class="fields">
         @foreach($Form->getDisplayFields() as $Field)
             @if($Field->attributes->type != 'subform')
-                @include($Field->getTemplate(), ['Field' => $Field])
+                {!! $Field->makeView() !!}
             @else
                 {!! $Field->subform->makeSubformView($Field->subform_data)->render() !!}
             @endif

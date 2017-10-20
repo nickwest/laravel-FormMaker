@@ -395,14 +395,12 @@ class Field{
     {
         if($this->error_message)
         {
-            $this->addClass('is-danger');
+            $this->addClass('error');
         }
 
-        if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.'.$this->attributes->type))
-        {
-            return View::make($this->view_namespace.'::fields.'.$this->attributes->type, array('Field' => $this));
-        }
-        return View::make('form-maker::fields.'.$this->attributes->type, array('Field' => $this));
+        $this->Theme->prepareFieldView($this);
+
+        return View::make($this->getTemplate(), ['Field' => $this]);
     }
 
     /**
@@ -412,6 +410,8 @@ class Field{
      */
     public function makeDisplayView()
     {
+        $this->Theme->prepareFieldView($this);
+
         if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.display'))
         {
             return View::make($this->view_namespace.'::fields.display', array('Field' => $this));
@@ -427,6 +427,9 @@ class Field{
     public function makeOptionView($key)
     {
         $this->attributes->id = $this->original_id.'-'.$key;
+
+        $this->Theme->prepareFieldView($this);
+
         if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.'.$this->attributes->type.'_option'))
         {
             return View::make($this->view_namespace.'::fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
