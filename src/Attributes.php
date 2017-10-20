@@ -45,6 +45,13 @@ class Attributes{
 	];
 
 	/**
+	 * Keep track of classes separately so we can build it all pretty like
+	 *
+	 * @var array
+	 */
+	protected $classes = [];
+
+	/**
 	 * Field Attributes (defaults are set in constructor)
 	 *
 	 * @var array
@@ -57,9 +64,15 @@ class Attributes{
 	 * @param string $attribute
 	 * @return mixed
 	 */
-	public function __get(string $attribute){
+	public function __get(string $attribute)
+	{
 		if(isset($this->attributes[$attribute]))
 		{
+			if($attribute == 'class')
+			{
+				return implode(' ', $this->classes);
+			}
+
 			return $this->attributes[$attribute];
 		}
 
@@ -78,6 +91,12 @@ class Attributes{
 	{
 		if($this->isValidAttribute($attribute))
 		{
+			if($attribute == 'class')
+			{
+				$this->classes = explode(' ', $value);
+				return;
+			}
+
 			$this->attributes[$attribute] = $value;
 			return;
 		}
@@ -95,6 +114,32 @@ class Attributes{
 		return $this->getString();
 	}
 
+
+	/**
+	 * Add a css class
+	 *
+	 * @param string $class_name
+	 * @return void
+	 */
+	public function addClass(string $class_name)
+	{
+		$this->classes[$class_name] = $class_name;
+	}
+
+	/**
+	 * Remove a css class
+	 *
+	 * @param string $class_name
+	 * @return void
+	 */
+	public function removeClass(string $class_name)
+	{
+		if(isset($this->classes['class_name']))
+		{
+			unset($this->classes[$class_name]);
+		}
+	}
+
 	/**
 	 * Output all attributes as a string
 	 *
@@ -106,10 +151,16 @@ class Attributes{
 		{
 			if($key == 'class')
 			{
-				$classes = explode(' ', trim($value));
-				$classes[] = (isset($this->type_classes[$this->attributes['type']]) ? $this->type_classes[$this->attributes['type']] : $this->attributes['type']);
-				$value = implode(' ', $classes);
+				$value = implode(' ', $this->classes);
 			}
+
+			// Move this to something bulma specific
+			// if($key == 'class')
+			// {
+			// 	$classes = explode(' ', trim($value));
+			// 	$classes[] = (isset($this->type_classes[$this->attributes['type']]) ? $this->type_classes[$this->attributes['type']] : $this->attributes['type']);
+			// 	$value = implode(' ', $classes);
+			// }
 
 			if(in_array($key, $this->flat_attributes))
 			{

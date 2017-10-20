@@ -269,6 +269,24 @@ class Form{
     }
 
     /**
+     * Add a data list to the form
+     *
+     * @param array $name
+     * @param array $options
+     * @return void
+     */
+    public function addDatalist(string $name, array $options)
+    {
+        $this->addField($name);
+
+        $this->{$name}->attributes->type = 'datalist';
+        $this->{$name}->attributes->id = $name;
+        $this->{$name}->setOptions($options);
+
+        $this->addDisplayFields([$name]);
+    }
+
+    /**
      * Add a submit button to the form (If manually adding submit buttons, these will override the default options)
      *
      * @param string $name

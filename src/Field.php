@@ -28,13 +28,6 @@ class Field{
     protected $label_suffix = '';
 
     /**
-     * Class(es) for the field's containing div
-     *
-     * @var string
-     */
-    protected $container_class = '';
-
-    /**
      * An example to show by the field
      *
      * @var string
@@ -90,7 +83,6 @@ class Field{
      */
     protected $template = '';
 
-
     /**
      * Original name when field created
      *
@@ -112,6 +104,40 @@ class Field{
      */
     protected $options;
 
+    /**
+     * Class(es) for the field's containing div
+     *
+     * @var string
+     */
+    protected $container_class = '';
+
+    /**
+     * Class(es) for the field's label
+     *
+     * @var string
+     */
+    protected $label_class = '';
+
+    /**
+     * Class(es) for the field's containing div
+     *
+     * @var string
+     */
+    protected $options_container_class = '';
+
+    /**
+     * Class(es) for the field's containing div
+     *
+     * @var string
+     */
+    protected $option_wrapper_class = '';
+
+    /**
+     * Class(es) for the field's containing div
+     *
+     * @var string
+     */
+    protected $option_label_class = '';
 
     /**
      * Constructor
@@ -193,6 +219,34 @@ class Field{
     }
 
     /**
+     * Get the template that this field should use
+     *
+     * @return string
+     */
+    public function getTemplate()
+    {
+        // Use an override template if set
+        if($this->template)
+        {
+            return $this->template;
+        }
+
+        // If this is a radio or checkbox switch between multiples or single
+        if($this->attributes->type == 'checkbox' && is_array($this->options))
+        {
+            return 'form-maker::fields.checkboxes';
+        }
+
+        // If this is a radio or checkbox switch between multiples or single
+        if($this->attributes->type == 'radio' && is_array($this->options))
+        {
+            return 'form-maker::fields.radios';
+        }
+
+        return 'form-maker::fields.'.$this->attributes->type;
+    }
+
+    /**
      * Set a Field attribute
      *
      * @param string $property
@@ -218,44 +272,25 @@ class Field{
     }
 
     /**
-     * Add a class to the class attribute
+     * Add a css class to the attributes
      *
      * @param string $class
      * @return void
      */
     public function addClass(string $class)
     {
-        $classes = '';
-        if(isset($this->attributes->class))
-        {
-            $classes = $this->attributes->class;
-        }
-
-        $classes = explode(' ', $classes);
-        if(!in_array($class, $classes))
-        {
-            $classes[] = $class;
-        }
-
-        $this->attributes->class = implode(' ', $classes);
+        $this->attributes->addClass($class);
     }
 
     /**
-     * Remove a class to the class attribute
+     * Remove a cs  class to the attributes
      *
      * @param string $class
      * @return void
      */
     public function removeClass(string $class)
     {
-        if($this->attributes->class == null)
-        {
-            return;
-        }
-
-        // TODO: stop being lazy and replace this with regex
-        $this->attributes->class = str_replace($class, '', $this->attributes->class);
-        $this->attributes->class = str_replace('  ', ' ', $this->attributes->class);
+        $this->attributes->removeClass($class);
     }
 
     /**
