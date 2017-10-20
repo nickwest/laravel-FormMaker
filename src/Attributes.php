@@ -37,7 +37,7 @@ class Attributes{
 	];
 
 	protected $flat_attributes = [
-		'required', 'disabled', 'readonly'
+		'required', 'disabled', 'readonly', 'checked'
 	];
 
 	protected $type_classes = [

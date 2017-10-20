@@ -18,6 +18,8 @@ trait FormTrait{
     protected $blank_select_text = '-- Select One --';
     protected $label_postfix = '';
 
+    protected $multi_delimiter = '|';
+
     /**
      * Boot the trait. Adds an observer class for form
      *
@@ -74,7 +76,7 @@ trait FormTrait{
             {
                 if(is_array($value))
                 {
-                    $value = implode('|', $value);
+                    $value = implode($this->multi_delimiter, $value);
                 }
                 if($this->{$field_name} != $value)
                 {
@@ -136,7 +138,7 @@ trait FormTrait{
         {
             if($Field->type == 'daysofweek')
             {
-                $data = (isset($this->{$Field->original_name}) ? explode('|', $this->{$Field->original_name}) : ($this->Form()->{$Field->original_name}->default_value != '' ? $this->Form()->{$Field->original_name}->default_value : array()));
+                $data = (isset($this->{$Field->original_name}) ? explode($this->multi_delimiter, $this->{$Field->original_name}) : ($this->Form()->{$Field->original_name}->default_value != '' ? $this->Form()->{$Field->original_name}->default_value : array()));
                 foreach($this->Form()->getDaysOfWeekValues() as $key => $day){
                     if(in_array($key, $data))
                     {
@@ -158,16 +160,26 @@ trait FormTrait{
                 else
                 {
                     $values = array();
-                    foreach(explode('|', $this->{$Field->original_name}) as $value)
+                    foreach(explode($this->multi_delimiter, $this->{$Field->original_name}) as $value)
                     {
                         $values[$value] = $value;
                     }
-                    $this->Form()->{$Field->original_name}->value = $values;
+
+                    $this->Form()->SetValue($Field->original_name, $values);
                 }
             }
             else
             {
-                $this->Form()->{$Field->original_name}->value = (isset($this->{$Field->original_name}) ? $this->{$Field->original_name} : ($this->Form()->{$Field->original_name}->default_value != '' ? $this->Form()->{$Field->original_name}->default_value : ''));
+                $this->Form()->SetValue($Field->original_name,
+                (
+                    isset($this->{$Field->original_name})
+                    ? $this->{$Field->original_name}
+                    : (
+                        $this->Form()->{$Field->original_name}->default_value != ''
+                        ? $this->Form()->{$Field->original_name}->default_value
+                        : ''
+                    )
+                ));
             }
         }
     }

@@ -42,6 +42,13 @@ class Field{
     protected $default_value = '';
 
     /**
+     * The values when the field allows multiples
+     *
+     * @var array
+     */
+    protected $multi_value = [];
+
+    /**
      * Error message to show on the field
      *
      * @var string
@@ -422,11 +429,16 @@ class Field{
     /**
      * Make an option view for this field
      *
+     * @param string $key
      * @return View
      */
     public function makeOptionView($key)
     {
         $this->attributes->id = $this->original_id.'-'.$key;
+        $this->attributes->value = $key;
+
+        $this->attributes->checked = in_array($key, $this->multi_value) ? true : false;
+
 
         $this->Theme->prepareFieldView($this);
 
