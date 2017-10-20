@@ -29,6 +29,6 @@
         <input type="checkbox" name="{{{ $field->name }}}[]" value="U" id="{{{ $field->attributes['id'] }}}_7" {!! ($field->value['U'] ? 'checked="checked" ' : '' ) !!}/>
     </div>
 
-    @include('form-maker::core.pieces.note')
-    @include('form-maker::core.pieces.error')
+    @include('form-maker::pieces.note')
+    @include('form-maker::pieces.error')
 </div>

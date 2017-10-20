@@ -245,7 +245,7 @@ class Field{
             {
                 return $this->theme.'.fields.checkboxes';
             }
-            return 'form-maker::core.fields.checkboxes';
+            return 'form-maker::fields.checkboxes';
         }
 
         // If this is a radio or checkbox switch between multiples or single
@@ -255,14 +255,14 @@ class Field{
             {
                 return $this->theme.'.fields.radios';
             }
-            return 'form-maker::core.fields.radios';
+            return 'form-maker::fields.radios';
         }
 
         if($this->theme != '' && View::exists($this->theme.'.fields.'.$this->attributes->type))
         {
             return $this->theme.'.fields.'.$this->attributes->type;
         }
-        return 'form-maker::core.fields.'.$this->attributes->type;
+        return 'form-maker::fields.'.$this->attributes->type;
     }
 
     /**
@@ -397,7 +397,7 @@ class Field{
         {
             return View::make($this->theme.'.fields.'.$this->attributes->type, array('Field' => $this));
         }
-        return View::make('form-maker::core.fields.'.$this->attributes->type, array('Field' => $this));
+        return View::make('form-maker::fields.'.$this->attributes->type, array('Field' => $this));
     }
 
     /**
@@ -411,7 +411,7 @@ class Field{
         {
             return View::make($this->theme.'.fields.display', array('Field' => $this));
         }
-        return View::make('form-maker::core.fields.display', array('Field' => $this));
+        return View::make('form-maker::fields.display', array('Field' => $this));
     }
 
     /**
@@ -426,7 +426,7 @@ class Field{
         {
             return View::make($this->theme.'.fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
         }
-        return View::make('form-maker::core.fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
+        return View::make('form-maker::fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
     }
 
 

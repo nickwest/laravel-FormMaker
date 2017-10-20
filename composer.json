@@ -31,7 +31,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Nickwest\\FormMaker\\FormMakerServiceProvider"
+                "Nickwest\\FormMaker\\FormMakerServiceProvider",
+                "Nickwest\\FormMaker\\bulma\\FormMakerBulmaThemeServiceProvider"
             ]
         }
     }

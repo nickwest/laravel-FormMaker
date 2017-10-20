@@ -240,13 +240,13 @@ class Form{
             {
                 return View::make($this->theme.'.form-extend', $blade_data);
             }
-            return View::make('form-maker::core.form-extend', $blade_data);
+            return View::make('form-maker::form-extend', $blade_data);
         }
         if($this->theme != '' && View::exists($this->theme.'.form'))
         {
             return View::make($this->theme.'.form', $blade_data);
         }
-        return View::make('form-maker::core.form', $blade_data);
+        return View::make('form-maker::form', $blade_data);
     }
 
     /**
@@ -269,7 +269,7 @@ class Form{
         {
             return View::make($this->theme.'.subform', $blade_data);
         }
-        return View::make('form-maker::core.subform', $blade_data);
+        return View::make('form-maker::subform', $blade_data);
     }
 
     /**

@@ -11,5 +11,5 @@
         @endif
     </div>
 
-    @include('form-maker::core.pieces.note')
+    @include('form-maker::pieces.note')
 </div>

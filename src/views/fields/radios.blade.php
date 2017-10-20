@@ -1,4 +1,4 @@
-@component('form-maker::core.components.field', ['Field' => $Field])
+@component('form-maker::components.field', ['Field' => $Field])
 
     @slot('field_markup')
         <div class="options">
@@ -10,8 +10,8 @@
             @endforeach
         </div>
 
-        @include('form-maker::core.pieces.error')
-        @include('form-maker::core.pieces.note')
+        @include('form-maker::pieces.error')
+        @include('form-maker::pieces.note')
     @endslot
 
 @endcomponent
