@@ -126,6 +126,13 @@ class Field{
     protected $label_class = '';
 
     /**
+     * Class(es) for the input wrapper
+     *
+     * @var string
+     */
+    protected $input_wrapper_class = '';
+
+    /**
      * Class(es) for the field's containing div
      *
      * @var string
@@ -316,7 +323,10 @@ class Field{
      */
     public function addClass(string $class)
     {
-        $this->attributes->addClass($class);
+        if(trim($class) != '')
+        {
+            $this->attributes->addClass($class);
+        }
     }
 
     /**
