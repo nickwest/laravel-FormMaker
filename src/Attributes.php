@@ -7,37 +7,95 @@ class Attributes{
      * @var string
      */
     protected $valid_attributes = [
-        'all' => [
-            'autofocus', 'class', 'disabled', 'height', 'id', 'list', 'max', 'maxlength',
-            'min', 'multiple', 'name', 'pattern', 'placeholder', 'readonly',
-            'required', 'size', 'step', 'type', 'value', 'width',
-        ],
-        'text' => [
-            'autocomplete', 'dirname',
-        ],
-        'image' => [
-            'alt', 'src',
-        ],
-        'file' => [
-            'accept',
-        ],
-        'checkbox' => [
-            'checked',
-        ],
-        'radio' => [
-            'checked',
+        'global' => [
+            'accesskey', 'class', 'contenteditable', 'contextmenu', 'data-*', 'dir',
+            'draggable', 'dropzone', 'hidden', 'id', 'lang', 'spellcheck', 'style',
+            'tabindex', 'title', 'translate',
         ],
         'textarea' => [
-            'autofocus', 'cols', 'dirname', 'disabled', 'maxlength', 'name',
-            'placeholder', 'readonly', 'required', 'rows', 'wrap',
+            'autofocus', 'cols', 'dirname', 'disabled', 'form', 'maxlength', 'name',
+            'readonly', 'required', 'rows', 'wrap',
         ],
         'select' => [
-            'autofocus', 'disabled', 'multiple', 'name', 'required', 'size',
+            'autofocus', 'disabled', 'form', 'multiple', 'name', 'required',
+        ],
+        'input' => [
+            'autofocus', 'disabled', 'list', 'maxlength', 'name', 'readonly',
+            'type', 'value',
+        ],
+        'button' => [
+
+        ],
+        'checkbox' => [
+            'checked', 'required',
+        ],
+        'color' => [
+            'autocomplete', 'required',
+        ],
+        'date' => [
+            'autocomplete', 'max', 'min', 'pattern', 'required', 'step',
+        ],
+        'datetime' => [
+            'autocomplete', 'max', 'min', 'pattern', 'required', 'step',
+        ],
+        'datetime-local' => [
+            'autocomplete', 'max', 'min', 'pattern', 'required', 'step',
+        ],
+        'email' => [
+            'autocomplete', 'multiple', 'pattern', 'placeholder', 'required', 'size',
+        ],
+        'file' => [
+            'accept', 'multiple', 'required',
+        ],
+        'hidden' => [
+
+        ],
+        'image' => [
+            'align', 'alt', 'height', 'src', 'width',
+        ],
+        'month' => [
+            'autocomplete', 'max', 'min', 'pattern', 'required', 'step',
+        ],
+        'number' => [
+             'max', 'min', 'required', 'step',
+        ],
+        'password' => [
+            'autocomplete', 'pattern', 'placeholder', 'required', 'size',
+        ],
+        'radio' => [
+            'checked', 'required',
+        ],
+        'range' => [
+            'autocomplete', 'max', 'min', 'step',
+        ],
+        'reset' => [
+
+        ],
+        'search' => [
+            'autocomplete', 'pattern', 'placeholder', 'required', 'size',
+        ],
+        'submit' => [
+
+        ],
+        'tel' => [
+            'autocomplete', 'pattern', 'placeholder', 'required', 'size',
+        ],
+        'text' => [
+            'autocomplete', 'dirname', 'pattern', 'placeholder', 'required', 'size',
+        ],
+        'time' => [
+            'autocomplete', 'max', 'min', 'pattern', 'required', 'step',
+        ],
+        'url' => [
+            'autocomplete', 'pattern', 'placeholder', 'required', 'size',
+        ],
+        'week' => [
+            'autocomplete', 'max', 'min', 'pattern', 'required', 'step',
         ],
     ];
 
     protected $flat_attributes = [
-        'required', 'disabled', 'readonly', 'checked'
+        'checked', 'disabled', 'multiple', 'readonly', 'required'
     ];
 
     /**
@@ -157,6 +215,11 @@ class Attributes{
             if($key == 'class')
             {
                 $value = implode(' ', $this->classes);
+            }
+
+            if($key == 'name' && ($this->attributes['type'] == 'checkbox' || (isset($this->attributes['multiple']) && $this->attributes['multiple'])))
+            {
+                $value .= '[]';
             }
 
             if(in_array($key, $this->flat_attributes))
