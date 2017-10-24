@@ -201,14 +201,14 @@ class Field{
             return $this->Theme->view_namespace();
         }
 
+        if($this->attributes->attributeExists($property))
+        {
+            return $this->attributes->$property;
+        }
+
         if(property_exists(__CLASS__, $property))
         {
             return $this->{$property};
-        }
-
-        if($this->attributes->isValidAttribute($property))
-        {
-            return $this->attributes->$property;
         }
 
         return null;
@@ -238,12 +238,16 @@ class Field{
         // Whenever setting value, also record the value to $this->multi_value
         if($property == 'value')
         {
-            $this->multi_value = is_array($value) ? $value : [$value];
+            if($value == ''){
+                $this->multi_value = [];
+            }else{
+                $this->multi_value = is_array($value) ? $value : [$value];
+            }
         }
 
-        if($this->attributes->isValidAttribute($property))
+        if($this->attributes->attributeExists($property))
         {
-            $this->attributes->$property = $value;
+            $this->setAttribute($property, $value);
             return;
         }
 
@@ -294,13 +298,18 @@ class Field{
      * Set a Field attribute
      *
      * @param string $property
-     * @param string $value
+     * @param mixed $value
      * @return void
      */
-    public function setAttribute(string $attribute, string $value)
+    public function setAttribute(string $attribute, $value)
     {
-        // TODO add validation
-        $this->attributes->attribute = $value;
+        if($this->attributes->attributeExists($attribute))
+        {
+            $this->attributes->$attribute = $value;
+            return;
+        }
+
+        throw new \Exception('"'.$attribute.'" is not a valid attribute.');
     }
 
     /**
@@ -312,7 +321,7 @@ class Field{
      */
     public function getAttribute(string $attribute)
     {
-        return $this->attributes->attribute;
+        return $this->attributes->$attribute;
     }
 
     /**

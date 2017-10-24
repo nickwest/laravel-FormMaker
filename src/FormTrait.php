@@ -69,7 +69,6 @@ trait FormTrait{
      * @return void
      */
     public function setPostValues($post_data){
-        $different = false;
         foreach($post_data as $field_name => $value)
         {
             if($this->isColumn($field_name) && $this->isFillable($field_name))

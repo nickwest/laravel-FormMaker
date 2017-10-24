@@ -166,15 +166,15 @@ class Form{
     //     }
     // }
 
-    /**
-     * Get the days of the week array
-     *
-     * @return array
-     */
-    public function getDaysOfWeekValues()
-    {
-        return $this->daysofweek;
-    }
+    // /**
+    //  * Get the days of the week array
+    //  *
+    //  * @return array
+    //  */
+    // public function getDaysOfWeekValues()
+    // {
+    //     return $this->daysofweek;
+    // }
 
     /**
      * Get the Fields array
@@ -313,6 +313,49 @@ class Form{
     }
 
     /**
+     * Add a single field to the form
+     *
+     * @param string $field_name
+     * @return void
+     */
+    public function addField(string $field_name)
+    {
+        $this->Fields[$field_name] = new Field($field_name);
+        $this->Fields[$field_name]->Theme = $this->Theme;
+    }
+
+    /**
+     * Remove a bunch of fields to the form if they exist
+     *
+     * @param array $field_names
+     * @return void
+     */
+    public function removeFields(array $field_names)
+    {
+        foreach($field_names as $field_name)
+        {
+            if(isset($this->Fields[$field_name]))
+            {
+                unset($this->Fields[$field_name]);
+            }
+        }
+    }
+
+    /**
+     * Remove a single field from the form if it exists
+     *
+     * @param string $field_name
+     * @return void
+     */
+    public function removeField(string $field_name)
+    {
+        if(isset($this->Fields[$field_name]))
+        {
+            unset($this->Fields[$field_name]);
+        }
+    }
+
+    /**
      * Add a data list to the form
      *
      * @param array $name
@@ -345,6 +388,23 @@ class Form{
             'label' => $label,
             'class' => $class,
         ];
+    }
+
+    /**
+     * Remove a custom submit button by label if it exists
+     *
+     * @param string $label
+     * @return void
+     */
+    public function removeSubmitButton(string $label)
+    {
+        foreach($this->submit_buttons as $key => $submit_button)
+        {
+            if($submit_button['label'] === $label)
+            {
+                unset($this->submit_buttons[$key]);
+            }
+        }
     }
 
     /**
@@ -394,66 +454,6 @@ class Form{
         }
 
         throw new \Exception('Field does not exist');
-    }
-
-    /**
-     * Add a single field to the form
-     *
-     * @param string $field_name
-     * @return void
-     */
-    public function addField(string $field_name)
-    {
-        $this->Fields[$field_name] = new Field($field_name);
-        $this->Fields[$field_name]->Theme = $this->Theme;
-    }
-
-    /**
-     * Remove a bunch of fields to the form if they exist
-     *
-     * @param array $field_names
-     * @return void
-     */
-    public function removeFields(array $field_names)
-    {
-        foreach($field_names as $field_name)
-        {
-            if(isset($this->Fields[$field_name]))
-            {
-                unset($this->Fields[$field_name]);
-            }
-        }
-    }
-
-    /**
-     * Remove a single field from the form if it exists
-     *
-     * @param string $field_name
-     * @return void
-     */
-    public function removeField(string $field_name)
-    {
-        if(isset($this->Fields[$field_name]))
-        {
-            unset($this->Fields[$field_name]);
-        }
-    }
-
-    /**
-     * Remove a custom submit button by label if it exists
-     *
-     * @param string $label
-     * @return void
-     */
-    public function removeSubmitButton(string $label)
-    {
-        foreach($this->submit_buttons as $key => $submit_button)
-        {
-            if($submit_button['label'] === $label)
-            {
-                unset($this->submit_buttons[$key]);
-            }
-        }
     }
 
     /**

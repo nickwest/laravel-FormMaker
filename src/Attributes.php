@@ -95,7 +95,7 @@ class Attributes{
     ];
 
     protected $flat_attributes = [
-        'checked', 'disabled', 'multiple', 'readonly', 'required'
+        'checked', 'disabled', 'multiple', 'readonly', 'required', 'selected'
     ];
 
     /**
@@ -143,17 +143,15 @@ class Attributes{
      */
     public function __set(string $attribute, $value)
     {
-        if($this->isValidAttribute($attribute))
+        // We don't validate attributes when setting them, we only do that when generating a string for the given field type
+        if($attribute == 'class')
         {
-            if($attribute == 'class')
-            {
-                $this->classes = explode(' ', $value);
-                return;
-            }
-
-            $this->attributes[$attribute] = $value;
+            $this->classes = explode(' ', $value);
             return;
         }
+
+        $this->attributes[$attribute] = $value;
+        return;
 
         throw new \Exception('"'.$attribute.'" is not a valid attribute');
     }
@@ -212,6 +210,12 @@ class Attributes{
 
         foreach($this->attributes as $key => $value)
         {
+            // Skip invalid attributes (they're not HTML valid, so don't ouput them)
+            if(!$this->isValidAttribute($key))
+            {
+                continue;
+            }
+
             if($key == 'class')
             {
                 $value = implode(' ', $this->classes);
@@ -239,22 +243,56 @@ class Attributes{
     }
 
     /**
-     * Make a label for the given field, uses $this->label if available, otherwises generates based on field name
+     * Check if the property exists
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function attributeExists($key)
+    {
+        foreach($this->valid_attributes as $valid_attributes)
+        {
+            foreach($valid_attributes as $attribute)
+            {
+                if($attribute == $key)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if the attribute is valid for the given field type
      *
      * @param string $key
      * @return bool
      */
     public function isValidAttribute($key)
     {
-        foreach($this->valid_attributes as $type => $attributes)
+        if(isset($this->attributes['type']) && $this->attributes['type'] == 'textarea')
         {
-            // NOTE: Could make it so this is strict based on "type"
-            foreach($attributes as $attribute)
+            $valid_attributes = array_merge($this->valid_attributes['global'], $this->valid_attributes['textarea']);
+        }
+        elseif(isset($this->attributes['type']) && $this->attributes['type'] == 'select')
+        {
+            $valid_attributes = array_merge($this->valid_attributes['global'], $this->valid_attributes['select']);
+        }
+        else
+        {
+            $valid_attributes = array_merge($this->valid_attributes['global'], $this->valid_attributes['input']);
+            if(isset($this->attributes['type']) && isset($this->valid_attributes[$this->attributes['type']]))
             {
-                if($attribute == $key)
-                {
-                    return true;
-                }
+                $valid_attributes = array_merge($valid_attributes, $this->valid_attributes[$this->attributes['type']]);
+            }
+        }
+
+        foreach($valid_attributes as $attribute)
+        {
+            if($attribute == $key)
+            {
+                return true;
             }
         }
         return false;

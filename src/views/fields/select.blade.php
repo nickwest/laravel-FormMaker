@@ -3,10 +3,10 @@
     @slot('field_markup')
         @include('form-maker::pieces.label')
 
-        <div class="{{ $Field->input_wrapper_class }}">
+        <div class="{{ $Field->input_wrapper_class }}{{ $Field->multiple ? ' is-multiple' : '' }}">
             <select {!! $Field->attributes !!}>
                 @foreach($Field->options as $key => $value)
-                    <option value="{{ $key }}">{{ $value }}</option>
+                    @formmaker_include($Field->view_namespace.'::fields.select_option')
                 @endforeach
             </select>
         </div>
