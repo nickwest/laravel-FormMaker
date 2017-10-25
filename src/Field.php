@@ -84,6 +84,13 @@ class Field{
     protected $note;
 
     /**
+     * Should this field be displayed inline?
+     *
+     * @var bool
+     */
+    protected $is_inline;
+
+    /**
      * The template that this field should use
      *
      * @var string

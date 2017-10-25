@@ -150,6 +150,13 @@ class Attributes{
             return;
         }
 
+        // replace spaces in ids
+        if($attribute == 'id')
+        {
+            $value = str_replace(' ', '-', $value);
+        }
+
+
         $this->attributes[$attribute] = $value;
         return;
 
