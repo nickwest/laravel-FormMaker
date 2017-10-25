@@ -82,7 +82,9 @@ trait FormTrait{
         foreach($this->Form()->getDisplayFields() as $Field)
         {
             if(isset($post_data[$Field->name]) || !$this->isFillable($Field->original_name))
+            {
                 continue;
+            }
 
             // Else set it to an empty string
             if($this->Form()->{$Field->original_name} != '')
@@ -97,12 +99,15 @@ trait FormTrait{
      *
      * @var bool
      */
-    public function isValid(){
+    public function isValid()
+    {
         $Fields = $this->Form()->getFields();
 
         $field_rules = array();
-        foreach($Fields as $Field){
-            if($Field->attributes->required){
+        foreach($Fields as $Field)
+        {
+            if($Field->attributes->required)
+            {
                 $field_rules[$Field->original_name] = array('required');
             }
         }
@@ -128,7 +133,8 @@ trait FormTrait{
             if($Field->type == 'daysofweek')
             {
                 $data = (isset($this->{$Field->original_name}) ? explode($this->multi_delimiter, $this->{$Field->original_name}) : ($this->Form()->{$Field->original_name}->default_value != '' ? $this->Form()->{$Field->original_name}->default_value : array()));
-                foreach($this->Form()->getDaysOfWeekValues() as $key => $day){
+                foreach($this->Form()->getDaysOfWeekValues() as $key => $day)
+                {
                     if(in_array($key, $data))
                     {
                         $return[$key] = 1;
@@ -303,7 +309,9 @@ trait FormTrait{
     private function getLength($type)
     {
         if(strpos($type, 'enum') === 0)
+        {
             return;
+        }
 
         if(strpos($type, '(') !== false)
         {
