@@ -21,6 +21,8 @@ trait FormTrait{
 
     protected $multi_delimiter = '|';
 
+    protected $validation_rules = [];
+
     /**
      * Boot the trait. Adds an observer class for form
      *
@@ -75,6 +77,7 @@ trait FormTrait{
             if($this->isColumn($field_name) && $this->isFillable($field_name))
             {
                 $this->Form()->{$field_name} = $value;
+                $this->{$field_name} = $value;
             }
         }
 
@@ -86,10 +89,11 @@ trait FormTrait{
                 continue;
             }
 
-            // Else set it to an empty string
+            // If they were omitted set it to null
             if($this->Form()->{$Field->original_name} != '')
             {
-                $this->Form()->{$Field->original_name} = '';
+                $this->Form()->{$Field->original_name} = null;
+                $this->{$Field->original_name} = null;
             }
         }
     }

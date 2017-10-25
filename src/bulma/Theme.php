@@ -40,6 +40,12 @@ class Theme extends \Nickwest\FormMaker\Theme
             break;
         }
 
+        if($this->error_message)
+        {
+            $this->addClass('is-danger');
+        }
+
+
         return;
     }
 
