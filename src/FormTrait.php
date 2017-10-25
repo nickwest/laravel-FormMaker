@@ -1,7 +1,8 @@
 <?php namespace Nickwest\FormMaker;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
+//use Illuminate\Validation\Validator;
 
 trait FormTrait{
     /**
