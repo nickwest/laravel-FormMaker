@@ -1,3 +1,4 @@
+{{-- This field needs to be updated for 5.5 --}}
 <div class="days_of_week">
     <label>{!! $field->label.($field->label_postfix != '' ? $field->label_postfix : '') !!}</label>
     <div class="day">

@@ -40,6 +40,7 @@ class Theme extends \Nickwest\FormMaker\Theme
             break;
         }
 
+        // Add danger style to fields with errors
         if($Field->error_message)
         {
             $Field->addClass('is-danger');
