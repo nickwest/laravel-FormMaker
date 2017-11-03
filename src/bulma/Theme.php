@@ -50,4 +50,11 @@ class Theme extends \Nickwest\FormMaker\Theme
         return;
     }
 
+    public function prepareTableView(\Nickwest\FormMaker\Table &$Table)
+    {
+        $Table->addClass('table');
+
+        return;
+    }
+
 }

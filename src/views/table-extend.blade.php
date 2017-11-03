@@ -1,3 +1,13 @@
+@if(isset($extends) && $extends != '')
+    @extends($extends)
+@endif
+
+@if(isset($section) && $section != '')
+    @section($section)
+@endif
+
+@yield('above_table')
+
 <table class="{{ $Table->getClassesString() }}">
     <thead>
         <tr>
@@ -16,3 +26,9 @@
         @endforeach
     </tbody>
 </table>
+
+@yield('below_table')
+
+@if(isset($section) && $section != '')
+    @stop
+@endif

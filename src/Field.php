@@ -513,6 +513,7 @@ class Field{
         // If no label use the field's name, but replace _ with spaces
         if (trim($this->label) == '')
         {
+            // If this is changed Table::getLabel() should be updated to match
             $this->label = ucfirst(str_replace('_', ' ', $this->attributes->name));
         }
 

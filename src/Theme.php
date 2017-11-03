@@ -42,4 +42,14 @@ abstract class Theme
         return;
     }
 
+    /**
+     * Modify a table as necessary
+     *
+     * @return void
+     */
+    public function prepareTableView(\Nickwest\FormMaker\Table &$Table)
+    {
+        return;
+    }
+
 }

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-//use Illuminate\Validation\Validator;
+use Illuminate\Database\Eloquent\Collection;
 
 trait FormTrait{
     /**
@@ -10,7 +10,6 @@ trait FormTrait{
      *
      * @var Form
      */
-
     protected $Form = null;
 
     protected $valid_columns = array();
@@ -51,15 +50,37 @@ trait FormTrait{
     }
 
     /**
-     * Make a View for the field and return the output
+     * Make a View for the form and return the rendered output
      *
+     * @param array $blade_data
+     * @param string $extends
+     * @param string $section
      * @return View
      */
-    public function getFieldView($field_name, $options=array())
+    public function getFormView(array $blade_data, string $extends = '', string $section = '')
+    {
+        return $this->Form()->makeView($blade_data, $extends, $section);
+    }
+
+    /**
+     * Make a View for the field and return the rendered output
+     *
+     * @param string $field_name
+     * @param array $options
+     * @return View
+     */
+    public function getFieldView(string $field_name, $options=array())
     {
         return $this->Form()->$field_name->makeView($options);
     }
 
+    /**
+     * Make a View for the field and return the rendered output
+     *
+     * @param string $field_name
+     * @param array $options
+     * @return View
+     */
     public function getFieldDisplayView($field_name, $options=array())
     {
         return $this->Form()->$field_name->makeDisplayView($options);

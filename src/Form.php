@@ -87,7 +87,7 @@ class Form{
      *
      * @var string
      */
-    protected $Theme = 'core';
+    protected $Theme = null;
 
     /**
      * Constructor
