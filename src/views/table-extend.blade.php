@@ -20,7 +20,7 @@
         @foreach($Table->data as $row)
         <tr>
             @foreach($Table->display_fields as $field_name)
-                <td>{{ $row[$field_name] }}</td>
+                @formmaker_include($Table->view_namespace.'::pieces.table-cell', ['row' => $row, 'field_name' => $field_name, 'Table' => $Table])
             @endforeach
         </tr>
         @endforeach

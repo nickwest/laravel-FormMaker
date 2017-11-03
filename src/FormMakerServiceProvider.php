@@ -23,7 +23,26 @@ class FormMakerServiceProvider extends ServiceProvider {
         $this->loadViewsFrom(__DIR__.'/views', 'form-maker');
 
         Blade::directive('formmaker_include', function($expression) {
-            $expression = self::fixExpression($expression);
+            // $expression = self::fixExpression($expression);
+
+            if(strpos($expression, ',') !== false)
+            {
+                $view = substr($expression, 0, strpos($expression, ','));
+                $remainder = substr($expression, strpos($expression, ','));
+            }
+            else
+            {
+                $view = $expression;
+                $remainder = '';
+            }
+            $template = substr($view, strpos($view, '::')+2);
+
+            return '<?php if(View::exists('.$view.')){
+                echo $__env->make('.$expression.', array_except(get_defined_vars(), array(\'__data\', \'__path\')))->render();
+            }else{
+                echo $__env->make(\'form-maker::'.$template.$remainder.', array_except(get_defined_vars(), array(\'__data\', \'__path\')))->render();
+            } ?>';
+
 
             return "<?php echo \$__env->make({$expression}, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>";
         });

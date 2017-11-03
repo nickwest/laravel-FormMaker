@@ -32,11 +32,18 @@ class Table{
     protected $data = [];
 
     /**
-     * Array of css class_exists
+     * Array of css classes
      *
      * @var array
      */
     protected $classes = [];
+
+    /**
+     * Array of column linking patterns keyed by field_name
+     *
+     * @var array
+     */
+    protected $linking_patterns = [];
 
 
     /**
@@ -57,6 +64,11 @@ class Table{
      */
     public function __get($property)
     {
+        if($property == 'view_namespace')
+        {
+            return $this->Theme->view_namespace();
+        }
+
         return $this->$property;
     }
 
@@ -129,6 +141,31 @@ class Table{
     {
         return implode(' ', $this->classes);
     }
+
+    /**
+     * Set a linking pattern
+     *
+     * @return void
+     */
+    public function setLinkingPattern(string $field_name, string $pattern = '')
+    {
+        if($pattern == '')
+        {
+            if(isset($this->linking_patterns[$field_name]))
+            {
+                unset($this->linking_patterns[$field_name]);
+            }
+            return;
+        }
+
+        $this->linking_patterns[$field_name] = $pattern;
+    }
+
+    public function getLinkView(array $data_row, string $field_name)
+    {
+
+    }
+
 
     /**
      * Display Fields Accessor
