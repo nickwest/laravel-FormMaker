@@ -40,9 +40,9 @@ class Theme extends \Nickwest\FormMaker\Theme
             break;
         }
 
-        if($this->error_message)
+        if($Field->error_message)
         {
-            $this->addClass('is-danger');
+            $Field->addClass('is-danger');
         }
 
 

@@ -23,6 +23,7 @@ trait FormTrait{
 
     protected $validation_rules = [];
 
+
     /**
      * Boot the trait. Adds an observer class for form
      *
@@ -30,6 +31,7 @@ trait FormTrait{
      */
     public static function bootFormTrait()
     {
+        // function save() method is hooked by FormObserver and runs validation
         static::observe(new FormObserver);
     }
 
@@ -105,10 +107,9 @@ trait FormTrait{
      */
     public function isValid()
     {
-        $Fields = $this->Form()->getFields();
-
+        // Add required fields to field_rules
         $field_rules = array();
-        foreach($Fields as $Field)
+        foreach($this->Form()->getFields() as $Field)
         {
             if($Field->attributes->required)
             {
@@ -116,13 +117,22 @@ trait FormTrait{
             }
         }
 
+        // Set up the Validator
         $Validator = Validator::make(
             $this->getAttributes(),
             $field_rules
         );
 
-        return !$Validator->fails();
+        // Set error messages to fields
+        if(!($success = !$Validator->fails()))
+        {
+            foreach($Validator->errors()->toArray() as $field => $error)
+            {
+                $this->Form()->$field->error_message = current($error);
+            }
+        }
 
+        return $success;
     }
 
     /**
