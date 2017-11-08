@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tobdy>
-        @foreach($Table->data as $row)
+        @foreach($Table->Collection as $row)
         <tr>
             @foreach($Table->display_fields as $field_name)
                 @formmaker_include($Table->view_namespace.'::pieces.table-cell', ['row' => $row, 'field_name' => $field_name, 'Table' => $Table])

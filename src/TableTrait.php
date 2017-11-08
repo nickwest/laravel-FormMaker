@@ -37,17 +37,7 @@ trait TableTrait{
      */
     public function getTableView(Collection &$Collection, array $blade_data, string $extends = '', string $section = '')
     {
-        $data = [];
-        foreach($Collection as $Item)
-        {
-            $row = [];
-            foreach($this->TableObject->getDisplayFields() as $field_name)
-            {
-                $row[$field_name] = $Item->$field_name;
-            }
-            $data[] = $row;
-        }
-        $this->TableObject->setData($data);
+        $this->TableObject->setData($Collection);
 
         return $this->TableObject->makeview($blade_data, $extends, $section);
     }

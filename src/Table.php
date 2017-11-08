@@ -1,6 +1,7 @@
 <?php namespace Nickwest\FormMaker;
 
 use Illuminate\Support\Facades\View;
+use Illuminate\Database\Eloquent\Collection;
 
 class Table{
     /**
@@ -25,13 +26,6 @@ class Table{
     protected $labels = [];
 
     /**
-     * Array of data keyed by field_name
-     *
-     * @var array
-     */
-    protected $data = [];
-
-    /**
      * Array of css classes
      *
      * @var array
@@ -44,6 +38,13 @@ class Table{
      * @var array
      */
     protected $linking_patterns = [];
+
+    /**
+     * Collection that the table will display
+     *
+     * @var Illuminate\Database\Eloquent\Collection
+     */
+    protected $Collection = [];
 
 
     /**
@@ -161,9 +162,58 @@ class Table{
         $this->linking_patterns[$field_name] = $pattern;
     }
 
-    public function getLinkView(array $data_row, string $field_name)
+    /**
+     * Check if the field has a linking pattern
+     *
+     * @param string $field_name
+     * @return void
+     */
+    public function hasLinkingPattern(string $field_name)
     {
+        return isset($this->linking_patterns[$field_name]);
+    }
 
+    /**
+     * Get a link from a linking pattern
+     *
+     * @param string $field_name
+     * @param mixed $Object
+     * @return void
+     */
+    public function getLink(string $field_name, &$Object)
+    {
+        $link = false;
+
+        if(isset($this->linking_patterns[$field_name]))
+        {
+            $link = $this->linking_patterns[$field_name];
+            $replacement = [];
+
+            $pattern = '/\{([a-zA-Z0-9_]+)\}/';
+            $results = [];
+            preg_match_all($pattern, $this->linking_patterns[$field_name], $results, PREG_PATTERN_ORDER);
+
+            if(is_array($results[0]) && is_array($results[1]))
+            {
+                foreach($results[0] as $key => $match)
+                {
+                    if(is_object($Object) && isset($Object->{$results[1][$key]}))
+                    {
+                        $link = str_replace($results[0][$key], (string)$Object->{$results[1][$key]}, $link);
+                    }
+                    elseif(is_array($Object) && isset($Object[$results[1][$key]]))
+                    {
+                        $link = str_replace($results[0][$key], $Object[$results[1][$key]], $link);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return $link;
     }
 
 
@@ -222,14 +272,14 @@ class Table{
     }
 
     /**
-     * Set the data to be displayed
+     * Set the Collection data to the Table Object
      *
-     * @param array $labels
+     * @param Illuminate\Database\Eloquent\Collection $Collection
      * @return void
      */
-    public function setData(array $data)
+    public function setData(\Illuminate\Database\Eloquent\Collection $Collection)
     {
-        $this->data = $data;
+        $this->Collection = $Collection;
     }
 
     /**
