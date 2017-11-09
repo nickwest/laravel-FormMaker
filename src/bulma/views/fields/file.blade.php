@@ -18,6 +18,9 @@
                 <span class="file-name">
                        {{ $Field->value }}
                 </span>
+                @if($Field->value != '')
+                    <input class="button is-danger" type="submit" value="{{ $Field->delete_button_value }}" name="{{ $Field->attributes->name }}" />
+                @endif
             </label>
         </div>
     @endslot

@@ -8,7 +8,7 @@
         @else
             <div class="file-link">
                 {{ $Field->value }}
-                <input type="submit" value="remove" name="{{ $Field->attributes->name }}" />
+                <input type="submit" value="{{ $Field->delete_button_value }}" name="{{ $Field->attributes->name }}" />
             </div>
         @endif
 

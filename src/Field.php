@@ -161,6 +161,13 @@ class Field{
     protected $option_label_class = '';
 
     /**
+     * Value of Delete button for file fields
+     *
+     * @var string
+     */
+    protected $delete_button_value = 'Delete';
+
+    /**
      * Class(es) for the field's containing div
      *
      * @var string
