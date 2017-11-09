@@ -237,7 +237,7 @@ class Attributes{
             {
                 if($value)
                 {
-                    $output[] = ' '.$key;
+                    $output[] = $key;
                 }
             }
             else

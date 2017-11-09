@@ -100,7 +100,14 @@ trait FormTrait{
             if($this->isColumn($field_name) && $this->isFillable($field_name))
             {
                 $this->Form()->{$field_name} = $value;
-                $this->{$field_name} = $value;
+                if($this->Form()->{$field_name}->multiple || $this->Form()->{$field_name}->type == 'checkbox')
+                {
+                    $this->{$field_name} = implode($this->multi_delimiter, $value);
+                }
+                else
+                {
+                    $this->{$field_name} = $value;
+                }
             }
         }
 
@@ -181,7 +188,7 @@ trait FormTrait{
                 }
                 $this->Form()->{$Field->original_name}->value = $return;
             }
-            elseif($Field->type == 'checkbox')
+            elseif($Field->type == 'checkbox' || $Field->multiple)
             {
                 if((!isset($this->{$Field->original_name}) || ($this->{$Field->original_name} == '' && $this->{$Field->original_name} !== 0)) && $this->Form()->{$Field->original_name}->default_value != '')
                 {
