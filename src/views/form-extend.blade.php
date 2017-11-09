@@ -9,7 +9,9 @@
 @yield('above_form')
 
 <form method="{{ $Form->method }}" action="{{ $Form->url }}" id="{{ $Form->form_id }}"{{ ($Form->multipart ? ' enctype="multipart/form-data"' : '') }}>
-    {{ csrf_field() }}
+    @if($Form->laravel_csrf && function_exists('csrf_field'))
+        {{ csrf_field() }}
+    @endif
     <div class="fields">
         @foreach($Form->getDisplayFields() as $Field)
             @if($Field->attributes->type != 'subform')

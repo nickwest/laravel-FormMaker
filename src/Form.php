@@ -69,6 +69,14 @@ class Form{
     public $method = 'post';
 
     /**
+     * Use Laravel csrf_field() method for creating a CSRF field in the form?
+     * Note: This will elegantly fail if the csrf_field() method is not available.
+     *
+     * @var bool
+     */
+    public $laravel_csrf = true;
+
+    /**
      * Should the form accept uploads?
      *
      * @var string
