@@ -283,7 +283,7 @@ trait FormTrait{
                 $this->getType($column->Type),
                 $column->Default,
                 $this->getLength($column->Type),
-                $this->getEnumOptions($column->Type)
+                $this->getEnumOptions($column->Type, $column->Null == 'YES')
             );
             $this->valid_columns[$column->Field] = $column->Field;
         }
@@ -382,9 +382,10 @@ trait FormTrait{
      * Isolate and return the values for enums
      *
      * @param string $type
+     * @param bool $nullable
      * @return array
      */
-    private function getEnumOptions($type)
+    private function getEnumOptions($type, $nullable=false)
     {
         if(strpos($type, 'enum') !== 0)
             return;
@@ -401,6 +402,12 @@ trait FormTrait{
                 $return_array[$value] = $value;
             }
         }
+
+        if(!isset($return_array['']) && $nullable)
+        {
+            $return_array = array_merge(['' => $this->blank_select_text], $return_array);
+        }
+
         return $return_array;
     }
 
@@ -414,6 +421,7 @@ trait FormTrait{
     {
         switch($type)
         {
+            // TODO: Expand on this with more HTML5 field types
             case 'enum':
                 return 'select';
 

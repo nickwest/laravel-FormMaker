@@ -6,7 +6,9 @@
                 <label class="{{ $Field->label_class }}">{!! $Field->label.($Field->label_postfix != '' ? $Field->label_postfix : '').($Field->is_required ? ' <em>*</em>' : '') !!}</label>
             @endif
             @foreach($Field->options as $key => $option)
-                {!! $Field->makeOptionView($key) !!}
+                @if($key != '') {{-- Make this optional somehow --}}
+                    {!! $Field->makeOptionView($key) !!}
+                @endif
             @endforeach
         </div>
 
