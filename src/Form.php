@@ -84,13 +84,6 @@ class Form{
     public $multipart = false;
 
     /**
-     * The Days of the week that we use for storing daysofweek fields
-     *
-     * @var array
-     */
-    protected $daysofweek = [ 'M' => 'Mon', 'T' => 'Tue', 'W' => 'Wed', 'R' => 'Thu', 'F' => 'Fri', 'S' => 'Sat', 'U' => 'Sun' ];
-
-    /**
      * Theme to use
      *
      * @var string
@@ -174,16 +167,6 @@ class Form{
     //     }
     // }
 
-    // /**
-    //  * Get the days of the week array
-    //  *
-    //  * @return array
-    //  */
-    // public function getDaysOfWeekValues()
-    // {
-    //     return $this->daysofweek;
-    // }
-
     /**
      * Get the Fields array
      *
@@ -242,11 +225,6 @@ class Form{
     {
         $this->validateFormStructure();
 
-        // foreach($this->display_fields as $field)
-        // {
-        //     $this->Fields[$field]->setupAttributes();
-        // }
-
         $blade_data['Form'] = $this;
         $blade_data['extends'] = $extends;
         $blade_data['section'] = $section;
@@ -275,7 +253,6 @@ class Form{
     public function makeSubformView(array $blade_data)
     {
         $blade_data['Form'] = $this;
-        $blade_data['daysofweek'] = $this->daysofweek;
 
         // foreach($this->display_fields as $field)
         // {
@@ -693,7 +670,19 @@ class Form{
         {
             if(isset($this->Fields[$field_name]))
             {
-                $this->Fields[$field_name]->type = $type;
+                // TODO: add more validation here, to make sure the field type exists
+                if(is_object($type) && is_a($type, '\nickwest\FormMaker\CustomField'))
+                {
+                    $this->Fields[$field_name]->CustomField = $type;
+                }
+                elseif(is_object($type))
+                {
+                    throw new \Exception('Invalid type passed for "'.$field_name.'"');
+                }
+                else
+                {
+                    $this->Fields[$field_name]->type = $type;
+                }
             }
             else
             {

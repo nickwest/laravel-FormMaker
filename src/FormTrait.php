@@ -99,6 +99,15 @@ trait FormTrait{
         {
             if($this->isColumn($field_name) && $this->isFillable($field_name))
             {
+                if(is_object($this->Form()->{$field_name}->CustomField))
+                {
+                    try
+                    {
+                        $value = $this->Form()->{$field_name}->CustomField->hook_setPostValues($value);
+                    }
+                    catch(NotImplementedException $e){}
+                }
+
                 $this->Form()->{$field_name} = $value;
                 if($this->Form()->{$field_name}->multiple || $this->Form()->{$field_name}->type == 'checkbox')
                 {
@@ -172,23 +181,28 @@ trait FormTrait{
     {
         foreach($this->Form()->getFields() as $Field)
         {
-            if($Field->type == 'daysofweek')
+            if(is_object($Field->CustomField))
             {
-                $data = (isset($this->{$Field->original_name}) ? explode($this->multi_delimiter, $this->{$Field->original_name}) : ($this->Form()->{$Field->original_name}->default_value != '' ? $this->Form()->{$Field->original_name}->default_value : array()));
-                foreach($this->Form()->getDaysOfWeekValues() as $key => $day)
+                try
                 {
-                    if(in_array($key, $data))
-                    {
-                        $return[$key] = 1;
-                    }
-                    else
-                    {
-                        $return[$key] = 0;
-                    }
+                    // This is so bad... I'm sorry.
+                    $this->Form()->{$Field->original_name}->value =
+                        $Field->CustomField->hook_setAllFormValues($Field, (
+                            isset($this->{$Field->original_name})
+                            ? $this->{$Field->original_name}
+                            : (
+                                $this->Form()->{$Field->original_name}->default_value != ''
+                                ? $this->Form()->{$Field->original_name}->default_value
+                                : ''
+                            )
+                        )
+                    );
+                    continue;
                 }
-                $this->Form()->{$Field->original_name}->value = $return;
+                catch(NotImplementedException $e){}
             }
-            elseif($Field->type == 'checkbox' || $Field->multiple)
+
+            if($Field->type == 'checkbox' || $Field->multiple)
             {
                 if((!isset($this->{$Field->original_name}) || ($this->{$Field->original_name} == '' && $this->{$Field->original_name} !== 0)) && $this->Form()->{$Field->original_name}->default_value != '')
                 {

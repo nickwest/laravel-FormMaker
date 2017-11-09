@@ -170,9 +170,16 @@ class Field{
     /**
      * Class(es) for the field's containing div
      *
-     * @var string
+     * @var \Nickwest\FormMaker\Theme
      */
-    protected $Theme = '';
+    protected $Theme = null;
+
+    /**
+     * Name of the custom field (if this is one)
+     *
+     * @var \Nickwest\FormMaker\CustomField
+     */
+    protected $CustomField = null;
 
     /**
      * Constructor
@@ -445,6 +452,11 @@ class Field{
         }
 
         $this->Theme->prepareFieldView($this);
+
+        if(is_object($this->CustomField))
+        {
+            return $this->CustomField->makeView($this);
+        }
 
         return View::make($this->getTemplate(), ['Field' => $this]);
     }
