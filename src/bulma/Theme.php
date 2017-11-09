@@ -32,6 +32,7 @@ class Theme extends \Nickwest\FormMaker\Theme
             // These are less than perfect, but Bulma doesn't have unique style for them yet.
             case 'number':
             case 'date':
+            case 'datetime-local':
             case 'month':
             case 'time':
             case 'week':
