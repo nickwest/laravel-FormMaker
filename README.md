@@ -17,7 +17,8 @@ Composer require nickwest/form-maker
 ```
 FormMaker supports [Laravel Auto-Discovery](https://medium.com/@taylorotwell/package-auto-discovery-in-laravel-5-5-ea9e3ab20518). It shouldn't be necessary with Laravel 5.5+, but to manually add the package the following providers should be added in your config/app.php:
 ```
-Nickwest\FormMaker\FormMakerServiceProvider::class,Nickwest\FormMaker\bulma\FormMakerBulmaThemeServiceProvider::class
+Nickwest\FormMaker\FormMakerServiceProvider::class,
+Nickwest\FormMaker\bulma\FormMakerBulmaThemeServiceProvider::class
 ```
 ## Usage
 
