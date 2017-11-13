@@ -63,6 +63,20 @@ class Field{
     protected $subform_data = [];
 
     /**
+     * Blade data to pass through to the subform
+     *
+     * @var Nickwest\FormMaker\Form
+     */
+    protected $subform = null;
+
+    /**
+     * Blade data to pass through to the subform
+     *
+     * @var bool
+     */
+    protected $is_subform = false;
+
+    /**
      * Options to that are disabled inside of a radio, checkbox or other multi-option field
      *
      * @var array

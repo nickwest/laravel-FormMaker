@@ -403,19 +403,21 @@ class Form{
     public function addSubform(string $name, \Nickwest\FormMaker\Form $Form, string $before_field = '')
     {
         $this->addField($name);
-        $this->Fields[$name]->type = 'subform';
+        $this->Fields[$name]->is_subform = true;
         $this->Fields[$name]->subform = $Form;
 
         // Insert it at a specific place in this form
         if($before_field != null)
         {
+            $i = 0;
             foreach($this->display_fields as $key => $value)
             {
                 if($value == $before_field)
                 {
-                    $this->display_fields = array_merge(array_slice($this->display_fields, 0, $key), array($name), array_slice($this->display_fields, $key));
+                    $this->display_fields = array_merge(array_slice($this->display_fields, 0, $i), array($name), array_slice($this->display_fields, $i));
                     return;
                 }
+                $i++;
             }
         }
 
