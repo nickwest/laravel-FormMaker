@@ -242,6 +242,10 @@ class Attributes{
             }
             else
             {
+                if($key == 'value' && $this->attributes['type'] == 'datetime-local')
+                {
+                    $value = date('Y-m-d\TH:i', strtotime($value));
+                }
                 $output[] = $key.'="'.$value.'"';
             }
         }
