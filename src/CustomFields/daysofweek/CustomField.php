@@ -21,14 +21,10 @@ class CustomField extends BaseCustomField
     public function hook_setAllFormValues(\Nickwest\FormMaker\Field $Field, $value)
     {
         $data = explode('|', $value);
-        foreach($this->daysofweek as $key => $day)
-        {
-            if(in_array($key, $data))
-            {
+        foreach($this->daysofweek as $key => $day) {
+            if(in_array($key, $data)) {
                 $return[$key] = 1;
-            }
-            else
-            {
+            } else {
                 $return[$key] = 0;
             }
         }

@@ -23,13 +23,10 @@ class FormMakerServiceProvider extends ServiceProvider {
         $this->loadViewsFrom(__DIR__.'/views', 'form-maker');
 
         Blade::directive('formmaker_include', function($expression) {
-            if(strpos($expression, ',') !== false)
-            {
+            if(strpos($expression, ',') !== false) {
                 $view = substr($expression, 0, strpos($expression, ','));
                 $remainder = substr($expression, strpos($expression, ','));
-            }
-            else
-            {
+            } else {
                 $view = $expression;
                 $remainder = '';
             }
@@ -43,13 +40,10 @@ class FormMakerServiceProvider extends ServiceProvider {
         });
 
         Blade::directive('formmaker_component', function($expression) {
-            if(strpos($expression, ',') !== false)
-            {
+            if(strpos($expression, ',') !== false) {
                 $view = substr($expression, 0, strpos($expression, ','));
                 $remainder = substr($expression, strpos($expression, ','));
-            }
-            else
-            {
+            } else {
                 $view = $expression;
                 $remainder = '';
             }

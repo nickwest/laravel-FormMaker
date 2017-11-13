@@ -110,8 +110,7 @@ class Form{
      */
     public function __get(string $field_name)
     {
-        if(isset($this->Fields[$field_name]))
-        {
+        if(isset($this->Fields[$field_name])) {
             return $this->Fields[$field_name];
         }
 
@@ -127,8 +126,7 @@ class Form{
      */
     public function __set(string $key, $value)
     {
-        if(isset($this->Fields[$key]))
-        {
+        if(isset($this->Fields[$key])) {
             $this->Fields[$key]->value = $value;
             return;
         }
@@ -146,12 +144,9 @@ class Form{
      */
     public function setProperty(string $key, $value)
     {
-        if(isset($this->{$key}))
-        {
+        if(isset($this->{$key})) {
             $this->{$key} = $value;
-        }
-        else
-        {
+        } else {
             throw new \Exception('Invalid property');
         }
     }
@@ -186,8 +181,7 @@ class Form{
     public function setTheme(\Nickwest\FormMaker\Theme $Theme)
     {
         $this->Theme = $Theme;
-        foreach($this->Fields as $key => $Field)
-        {
+        foreach($this->Fields as $key => $Field) {
             $this->Fields[$key]->Theme = $Theme;
         }
     }
@@ -229,16 +223,13 @@ class Form{
         $blade_data['extends'] = $extends;
         $blade_data['section'] = $section;
 
-        if($extends != '')
-        {
-            if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::form-extend'))
-            {
+        if($extends != '') {
+            if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::form-extend')) {
                 return View::make($this->Theme->view_namespace.'::form-extend', $blade_data);
             }
             return View::make('form-maker::form-extend', $blade_data);
         }
-        if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::form'))
-        {
+        if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::form')) {
             return View::make($this->Theme->view_namespace.'::form', $blade_data);
         }
         return View::make('form-maker::form', $blade_data);
@@ -259,8 +250,7 @@ class Form{
         //     $this->Fields[$field]->setupAttributes();
         // }
 
-        if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::subform'))
-        {
+        if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::subform')) {
             return View::make($this->Theme->view_namespace.'::subform', $blade_data);
         }
         return View::make('form-maker::subform', $blade_data);
@@ -290,8 +280,7 @@ class Form{
      */
     public function addFields(array $field_names)
     {
-        foreach($field_names as $field_name)
-        {
+        foreach($field_names as $field_name) {
             $this->Fields[$field_name] = new Field($field_name);
             $this->Fields[$field_name]->Theme = $this->Theme;
         }
@@ -317,10 +306,8 @@ class Form{
      */
     public function removeFields(array $field_names)
     {
-        foreach($field_names as $field_name)
-        {
-            if(isset($this->Fields[$field_name]))
-            {
+        foreach($field_names as $field_name) {
+            if(isset($this->Fields[$field_name])) {
                 unset($this->Fields[$field_name]);
             }
         }
@@ -334,8 +321,7 @@ class Form{
      */
     public function removeField(string $field_name)
     {
-        if(isset($this->Fields[$field_name]))
-        {
+        if(isset($this->Fields[$field_name])) {
             unset($this->Fields[$field_name]);
         }
     }
@@ -383,10 +369,8 @@ class Form{
      */
     public function removeSubmitButton(string $label)
     {
-        foreach($this->submit_buttons as $key => $submit_button)
-        {
-            if($submit_button['label'] === $label)
-            {
+        foreach($this->submit_buttons as $key => $submit_button) {
+            if($submit_button['label'] === $label) {
                 unset($this->submit_buttons[$key]);
             }
         }
@@ -407,13 +391,10 @@ class Form{
         $this->Fields[$name]->subform = $Form;
 
         // Insert it at a specific place in this form
-        if($before_field != null)
-        {
+        if($before_field != null) {
             $i = 0;
-            foreach($this->display_fields as $key => $value)
-            {
-                if($value == $before_field)
-                {
+            foreach($this->display_fields as $key => $value) {
+                if($value == $before_field) {
                     $this->display_fields = array_merge(array_slice($this->display_fields, 0, $i), array($name), array_slice($this->display_fields, $i));
                     return;
                 }
@@ -435,8 +416,7 @@ class Form{
      */
     public function formatValue(string $field_name, $value)
     {
-        if(isset($this->Fields[$field_name]))
-        {
+        if(isset($this->Fields[$field_name])) {
             return $this->Fields[$field_name]->formatValue($value);
         }
 
@@ -462,8 +442,7 @@ class Form{
      */
     public function addDisplayFields(array $field_names)
     {
-        foreach($field_names as $field)
-        {
+        foreach($field_names as $field) {
             $this->display_fields[$field] = $field;
         }
     }
@@ -476,10 +455,8 @@ class Form{
      */
     public function removeDisplayFields(array $field_names)
     {
-        foreach($field_names as $field)
-        {
-            if(isset($this->display_fields[$field]))
-            {
+        foreach($field_names as $field) {
+            if(isset($this->display_fields[$field])) {
                 unset($this->display_fields[$field]);
             }
         }
@@ -495,10 +472,8 @@ class Form{
     public function setDisplayFields(array $field_names)
     {
         // TODO: add validation on field_names?
-        foreach($field_names as $field)
-        {
-            if(!isset($this->Fields[$field]))
-            {
+        foreach($field_names as $field) {
+            if(!isset($this->Fields[$field])) {
                 throw new \Exception('"'.$field.'" is not a valid field name');
             }
         }
@@ -516,10 +491,8 @@ class Form{
      */
     public function setDisplayAfter(string $display_field, string $after_field)
     {
-        foreach($this->display_fields as $key => $value)
-        {
-            if($value == $after_field)
-            {
+        foreach($this->display_fields as $key => $value) {
+            if($value == $after_field) {
                 $this->display_fields = array_merge(array_slice($this->display_fields, 0, $key+1), array($display_field), array_slice($this->display_fields, $key+1));
                 return;
             }
@@ -536,11 +509,9 @@ class Form{
      */
     public function getDisplayFields()
     {
-        if(is_array($this->display_fields) && sizeof($this->display_fields) > 0)
-        {
+        if(is_array($this->display_fields) && sizeof($this->display_fields) > 0) {
             $Fields = [];
-            foreach($this->display_fields as $field_name)
-            {
+            foreach($this->display_fields as $field_name) {
                 $Fields[$field_name] = $this->{$field_name};
             }
 
@@ -559,14 +530,10 @@ class Form{
      */
     public function setLabels(array $labels)
     {
-        foreach($labels as $field_name => $label)
-        {
-            if(isset($this->Fields[$field_name]))
-            {
+        foreach($labels as $field_name => $label) {
+            if(isset($this->Fields[$field_name])) {
                 $this->Fields[$field_name]->label = $label;
-            }
-            else
-            {
+            } else {
                 throw new \Exception('"'.$field_name.'" does not exist');
             }
         }
@@ -581,20 +548,15 @@ class Form{
      */
     public function getLabels(array $field_names = [])
     {
-        if(!is_array($field_names))
-        {
+        if(!is_array($field_names)) {
             $field_names = $this->getFields();
         }
 
         $labels = [];
-        foreach($field_names as $field_name)
-        {
-            if(isset($this->Fields[$field_name]))
-            {
+        foreach($field_names as $field_name) {
+            if(isset($this->Fields[$field_name])) {
                 $labels[$field_name] = $this->Fields[$field_name]->label;
-            }
-            else
-            {
+            } else {
                 throw new \Exception('"'.$field_name.'" does not exist');
             }
         }
@@ -638,10 +600,8 @@ class Form{
      */
     public function setValues(array $values)
     {
-        foreach($values as $field_name => $value)
-        {
-            if(isset($this->Fields[$field_name]))
-            {
+        foreach($values as $field_name => $value) {
+            if(isset($this->Fields[$field_name])) {
                 // if(is_array($value))
                 // {
                 //     $this->Fields[$field_name]->multi_value = $value;
@@ -651,9 +611,7 @@ class Form{
                 //     $this->Fields[$field_name]->value = $value;
                 // }
                 $this->Fields[$field_name]->value = $value;
-            }
-            else
-            {
+            } else {
                 throw new \Exception('"'.$field_name.'" does not exist');
             }
         }
@@ -668,26 +626,17 @@ class Form{
      */
     public function setTypes($types)
     {
-        foreach($types as $field_name => $type)
-        {
-            if(isset($this->Fields[$field_name]))
-            {
+        foreach($types as $field_name => $type) {
+            if(isset($this->Fields[$field_name])) {
                 // TODO: add more validation here, to make sure the field type exists
-                if(is_object($type) && is_a($type, '\nickwest\FormMaker\CustomField'))
-                {
+                if(is_object($type) && is_a($type, '\nickwest\FormMaker\CustomField')) {
                     $this->Fields[$field_name]->CustomField = $type;
-                }
-                elseif(is_object($type))
-                {
+                } elseif(is_object($type)) {
                     throw new \Exception('Invalid type passed for "'.$field_name.'"');
-                }
-                else
-                {
+                } else {
                     $this->Fields[$field_name]->type = $type;
                 }
-            }
-            else
-            {
+            } else {
                 throw new \Exception('"'.$field_name.'" does not exist');
             }
         }
@@ -702,14 +651,10 @@ class Form{
      */
     public function setExamples($examples)
     {
-        foreach($examples as $field_name => $example)
-        {
-            if(isset($this->Fields[$field_name]))
-            {
+        foreach($examples as $field_name => $example) {
+            if(isset($this->Fields[$field_name])) {
                 $this->Fields[$field_name]->example = $example;
-            }
-            else
-            {
+            } else {
                 throw new \Exception('"'.$field_name.'" does not exist');
             }
         }
@@ -724,14 +669,10 @@ class Form{
      */
     public function setDefaultValues(array $default_values)
     {
-        foreach($default_values as $field_name => $default_value)
-        {
-            if(isset($this->Fields[$field_name]))
-            {
+        foreach($default_values as $field_name => $default_value) {
+            if(isset($this->Fields[$field_name])) {
                 $this->Fields[$field_name]->default_value = $default_value;
-            }
-            else
-            {
+            } else {
                 throw new \Exception('"'.$field_name.'" does not exist');
             }
         }
@@ -746,14 +687,10 @@ class Form{
      */
     public function setRequiredFields(array $required_fields)
     {
-        foreach($required_fields as $field_name)
-        {
-            if(isset($this->Fields[$field_name]))
-            {
+        foreach($required_fields as $field_name) {
+            if(isset($this->Fields[$field_name])) {
                 $this->Fields[$field_name]->attributes->required = true;
-            }
-            else
-            {
+            } else {
                 throw new \Exception('"'.$field_name.'" does not exist');
             }
         }

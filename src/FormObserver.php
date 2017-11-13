@@ -26,18 +26,14 @@ class FormObserver {
     public function saving(Model $model)
     {
         // Fire the namespaced version event if hooked in client code
-        if ($this->fireFormEvent('saving', $model) !== null)
-        {
+        if ($this->fireFormEvent('saving', $model) !== null) {
             return;
         }
 
-        if($model->isValid())
-        {
+        if($model->isValid()) {
             // Fire the versioning.passed event.
             $this->fireFormEvent('passed', $model);
-        }
-        else
-        {
+        } else {
             $this->fireFormEvent('skipped', $model);
 
             return false;

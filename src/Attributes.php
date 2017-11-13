@@ -120,13 +120,11 @@ class Attributes{
      */
     public function __get(string $attribute)
     {
-        if($attribute == 'class')
-        {
+        if($attribute == 'class') {
             return implode(' ', $this->classes);
         }
 
-        if(isset($this->attributes[$attribute]))
-        {
+        if(isset($this->attributes[$attribute])) {
             return $this->attributes[$attribute];
         }
 
@@ -144,22 +142,19 @@ class Attributes{
     public function __set(string $attribute, $value)
     {
         // We don't validate attributes when setting them, we only do that when generating a string for the given field type
-        if($attribute == 'class')
-        {
+        if($attribute == 'class') {
             $this->classes = explode(' ', $value);
             return;
         }
 
         // replace spaces in ids
-        if($attribute == 'id')
-        {
+        if($attribute == 'id') {
             $value = str_replace(' ', '-', $value);
         }
 
-
         $this->attributes[$attribute] = $value;
         return;
-
+// TODO: WTF?
         throw new \Exception('"'.$attribute.'" is not a valid attribute');
     }
 
@@ -182,8 +177,7 @@ class Attributes{
      */
     public function addClass(string $class_name)
     {
-        if(trim($class_name) != '')
-        {
+        if(trim($class_name) != '') {
             $this->classes[$class_name] = $class_name;
         }
     }
@@ -196,8 +190,7 @@ class Attributes{
      */
     public function removeClass(string $class_name)
     {
-        if(isset($this->classes['class_name']))
-        {
+        if(isset($this->classes['class_name'])) {
             unset($this->classes[$class_name]);
         }
     }
@@ -210,40 +203,30 @@ class Attributes{
     public function getString(){
         $output = [];
 
-        if(count($this->classes) > 0)
-        {
+        if(count($this->classes) > 0) {
             $this->attributes['class'] = '';
         }
 
-        foreach($this->attributes as $key => $value)
-        {
+        foreach($this->attributes as $key => $value) {
             // Skip invalid attributes (they're not HTML valid, so don't ouput them)
-            if(!$this->isValidAttribute($key))
-            {
+            if(!$this->isValidAttribute($key)) {
                 continue;
             }
 
-            if($key == 'class')
-            {
+            if($key == 'class') {
                 $value = implode(' ', $this->classes);
             }
 
-            if($key == 'name' && ($this->attributes['type'] == 'checkbox' || (isset($this->attributes['multiple']) && $this->attributes['multiple'])))
-            {
+            if($key == 'name' && ($this->attributes['type'] == 'checkbox' || (isset($this->attributes['multiple']) && $this->attributes['multiple']))) {
                 $value .= '[]';
             }
 
-            if(in_array($key, $this->flat_attributes))
-            {
-                if($value)
-                {
+            if(in_array($key, $this->flat_attributes)) {
+                if($value) {
                     $output[] = $key;
                 }
-            }
-            else
-            {
-                if($key == 'value' && $this->attributes['type'] == 'datetime-local' && $value != null)
-                {
+            } else {
+                if($key == 'value' && $this->attributes['type'] == 'datetime-local' && $value != null) {
                     $value = date('Y-m-d\TH:i', strtotime($value));
                 }
                 $output[] = $key.'="'.$value.'"';
@@ -261,12 +244,9 @@ class Attributes{
      */
     public function attributeExists($key)
     {
-        foreach($this->valid_attributes as $valid_attributes)
-        {
-            foreach($valid_attributes as $attribute)
-            {
-                if($attribute == $key)
-                {
+        foreach($this->valid_attributes as $valid_attributes) {
+            foreach($valid_attributes as $attribute) {
+                if($attribute == $key) {
                     return true;
                 }
             }
@@ -282,27 +262,19 @@ class Attributes{
      */
     public function isValidAttribute($key)
     {
-        if(isset($this->attributes['type']) && $this->attributes['type'] == 'textarea')
-        {
+        if(isset($this->attributes['type']) && $this->attributes['type'] == 'textarea') {
             $valid_attributes = array_merge($this->valid_attributes['global'], $this->valid_attributes['textarea']);
-        }
-        elseif(isset($this->attributes['type']) && $this->attributes['type'] == 'select')
-        {
+        } elseif(isset($this->attributes['type']) && $this->attributes['type'] == 'select') {
             $valid_attributes = array_merge($this->valid_attributes['global'], $this->valid_attributes['select']);
-        }
-        else
-        {
+        } else {
             $valid_attributes = array_merge($this->valid_attributes['global'], $this->valid_attributes['input']);
-            if(isset($this->attributes['type']) && isset($this->valid_attributes[$this->attributes['type']]))
-            {
+            if(isset($this->attributes['type']) && isset($this->valid_attributes[$this->attributes['type']])) {
                 $valid_attributes = array_merge($valid_attributes, $this->valid_attributes[$this->attributes['type']]);
             }
         }
 
-        foreach($valid_attributes as $attribute)
-        {
-            if($attribute == $key)
-            {
+        foreach($valid_attributes as $attribute) {
+            if($attribute == $key) {
                 return true;
             }
         }

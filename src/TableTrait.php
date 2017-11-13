@@ -19,8 +19,7 @@ trait TableTrait{
      */
     public function Table()
     {
-        if(!is_object($this->TableObject))
-        {
+        if(!is_object($this->TableObject)) {
             $this->TableObject = new Table();
         }
 

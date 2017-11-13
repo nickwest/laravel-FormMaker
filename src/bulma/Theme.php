@@ -10,8 +10,7 @@ class Theme extends \Nickwest\FormMaker\Theme
     public function prepareFieldView(\Nickwest\FormMaker\Field &$Field)
     {
         $Field->label_class = 'label';
-        switch($Field->type)
-        {
+        switch($Field->type) {
             case 'text':
             case 'email':
             case 'tel':
@@ -42,8 +41,7 @@ class Theme extends \Nickwest\FormMaker\Theme
         }
 
         // Add danger style to fields with errors
-        if($Field->error_message)
-        {
+        if($Field->error_message) {
             $Field->addClass('is-danger');
         }
 

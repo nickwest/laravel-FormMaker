@@ -65,8 +65,7 @@ class Table{
      */
     public function __get($property)
     {
-        if($property == 'view_namespace')
-        {
+        if($property == 'view_namespace') {
             return $this->Theme->view_namespace();
         }
 
@@ -81,8 +80,7 @@ class Table{
      */
     public function setDisplayFields(array $field_names)
     {
-        foreach($field_names as $field_name)
-        {
+        foreach($field_names as $field_name) {
             $this->display_fields[$field_name] = $field_name;
         }
     }
@@ -95,8 +93,7 @@ class Table{
      */
     public function addClass(string $class)
     {
-        if(!in_array($class, $this->classes))
-        {
+        if(!in_array($class, $this->classes)) {
             $this->classes[] = $class;
         }
     }
@@ -109,10 +106,8 @@ class Table{
      */
     public function addClasses(array $classes)
     {
-        foreach($classes as $class)
-        {
-            if(!in_array($class, $this->classes))
-            {
+        foreach($classes as $class) {
+            if(!in_array($class, $this->classes)) {
                 $this->classes[] = $class;
             }
         }
@@ -126,8 +121,7 @@ class Table{
      */
     public function removeClass(string $class)
     {
-        if(in_array($class, $this->classes))
-        {
+        if(in_array($class, $this->classes)) {
             $remove = [$class];
             $this->classes = array_diff($this->classes, $remove);
         }
@@ -150,10 +144,8 @@ class Table{
      */
     public function setLinkingPattern(string $field_name, string $pattern = '')
     {
-        if($pattern == '')
-        {
-            if(isset($this->linking_patterns[$field_name]))
-            {
+        if($pattern == '') {
+            if(isset($this->linking_patterns[$field_name])) {
                 unset($this->linking_patterns[$field_name]);
             }
             return;
@@ -184,8 +176,7 @@ class Table{
     {
         $link = false;
 
-        if(isset($this->linking_patterns[$field_name]))
-        {
+        if(isset($this->linking_patterns[$field_name])) {
             $link = $this->linking_patterns[$field_name];
             $replacement = [];
 
@@ -193,20 +184,13 @@ class Table{
             $results = [];
             preg_match_all($pattern, $this->linking_patterns[$field_name], $results, PREG_PATTERN_ORDER);
 
-            if(is_array($results[0]) && is_array($results[1]))
-            {
-                foreach($results[0] as $key => $match)
-                {
-                    if(is_object($Object) && isset($Object->{$results[1][$key]}))
-                    {
+            if(is_array($results[0]) && is_array($results[1])) {
+                foreach($results[0] as $key => $match) {
+                    if(is_object($Object) && isset($Object->{$results[1][$key]})) {
                         $link = str_replace($results[0][$key], (string)$Object->{$results[1][$key]}, $link);
-                    }
-                    elseif(is_array($Object) && isset($Object[$results[1][$key]]))
-                    {
+                    } elseif(is_array($Object) && isset($Object[$results[1][$key]])) {
                         $link = str_replace($results[0][$key], $Object[$results[1][$key]], $link);
-                    }
-                    else
-                    {
+                    } else {
                         return false;
                     }
                 }
@@ -247,14 +231,10 @@ class Table{
      */
     public function setLabels(array $labels)
     {
-        foreach($labels as $field_name => $label)
-        {
-            if(isset($this->display_fields[$field_name]))
-            {
+        foreach($labels as $field_name => $label) {
+            if(isset($this->display_fields[$field_name])) {
                 $this->labels[$field_name] = $label;
-            }
-            else
-            {
+            } else {
                 throw new \Exception('"'.$field_name.'" not set as a display field');
             }
         }
@@ -262,8 +242,7 @@ class Table{
 
     public function getLabel($field_name)
     {
-        if(isset($this->labels[$field_name]))
-        {
+        if(isset($this->labels[$field_name])) {
             return $this->labels[$field_name];
         }
 
@@ -298,16 +277,16 @@ class Table{
 
         $this->Theme->prepareTableView($this);
 
-        if($extends != '')
-        {
-            if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::table-extend'))
-            {
+        if($extends != '') {
+
+            if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::table-extend')) {
                 return View::make($this->Theme->view_namespace.'::table-extend', $blade_data);
             }
+
             return View::make('form-maker::table-extend', $blade_data);
         }
-        if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::table'))
-        {
+
+        if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::table')) {
             return View::make($this->Theme->view_namespace.'::table', $blade_data);
         }
         return View::make('form-maker::table', $blade_data);

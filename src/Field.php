@@ -231,18 +231,15 @@ class Field{
      */
     public function __get($property)
     {
-        if($property == 'view_namespace')
-        {
+        if($property == 'view_namespace') {
             return $this->Theme->view_namespace();
         }
 
-        if($this->attributes->attributeExists($property))
-        {
+        if($this->attributes->attributeExists($property)) {
             return $this->attributes->$property;
         }
 
-        if(property_exists(__CLASS__, $property))
-        {
+        if(property_exists(__CLASS__, $property)) {
             return $this->{$property};
         }
 
@@ -259,30 +256,27 @@ class Field{
      */
     public function __set(string $property, $value)
     {
-        if($property == 'options')
-        {
+        if($property == 'options') {
             throw new \Exception('Options must be set with setOption and setOptions methods');
         }
 
-        if(property_exists(__CLASS__, $property))
-        {
+        if(property_exists(__CLASS__, $property)) {
             $this->{$property} = $value;
             return;
         }
 
         // Whenever setting value, also record the value to $this->multi_value
-        if($property == 'value')
-        {
-            if($value == ''){
+        if($property == 'value') {
+            if($value == '') {
                 $this->multi_value = [];
-            }else{
+            } else {
                 $this->multi_value = is_array($value) ? $value : [$value];
             }
         }
 
-        if($this->attributes->attributeExists($property))
-        {
+        if($this->attributes->attributeExists($property)) {
             $this->setAttribute($property, $value);
+
             return;
         }
 
@@ -297,33 +291,27 @@ class Field{
     public function getTemplate()
     {
         // Use an override template if set
-        if($this->template)
-        {
+        if($this->template) {
             return $this->template;
         }
 
         // If this is a radio or checkbox switch between multiples or single
-        if($this->attributes->type == 'checkbox' && is_array($this->options))
-        {
-            if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.checkboxes'))
-            {
+        if($this->attributes->type == 'checkbox' && is_array($this->options)) {
+            if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.checkboxes')) {
                 return $this->view_namespace.'::fields.checkboxes';
             }
             return 'form-maker::fields.checkboxes';
         }
 
         // If this is a radio or checkbox switch between multiples or single
-        if($this->attributes->type == 'radio' && is_array($this->options))
-        {
-            if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.radios'))
-            {
+        if($this->attributes->type == 'radio' && is_array($this->options)) {
+            if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.radios')) {
                 return $this->view_namespace.'::fields.radios';
             }
             return 'form-maker::fields.radios';
         }
 
-        if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.'.$this->attributes->type))
-        {
+        if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.'.$this->attributes->type)) {
             return $this->view_namespace.'::fields.'.$this->attributes->type;
         }
         return 'form-maker::fields.'.$this->attributes->type;
@@ -338,8 +326,7 @@ class Field{
      */
     public function setAttribute(string $attribute, $value)
     {
-        if($this->attributes->attributeExists($attribute))
-        {
+        if($this->attributes->attributeExists($attribute)) {
             $this->attributes->$attribute = $value;
             return;
         }
@@ -367,8 +354,7 @@ class Field{
      */
     public function addClass(string $class)
     {
-        if(trim($class) != '')
-        {
+        if(trim($class) != '') {
             $this->attributes->addClass($class);
         }
     }
@@ -394,14 +380,12 @@ class Field{
      */
     public function setOption(string $key, string $value)
     {
-        if($value == null)
-        {
+        if($value == null) {
             unset($this->options[$key]);
             return;
         }
 
-        if(is_array($value) || is_object($value) || is_resource($value))
-        {
+        if(is_array($value) || is_object($value) || is_resource($value)) {
             throw new \Exception('Option values must text');
         }
 
@@ -417,21 +401,17 @@ class Field{
      */
     public function setOptions($options)
     {
-        if($options == null)
-        {
+        if($options == null) {
             $this->options = [];
             return;
         }
 
-        if(!is_array($options))
-        {
+        if(!is_array($options)) {
             throw new \Exception('$options must be an array or null');
         }
 
-        foreach($options as $key => $value)
-        {
-            if(is_array($value) || is_object($value) || is_resource($value))
-            {
+        foreach($options as $key => $value) {
+            if(is_array($value) || is_object($value) || is_resource($value)) {
                 throw new \Exception('Option values must text');
             }
 
@@ -460,15 +440,13 @@ class Field{
      */
     public function makeView()
     {
-        if($this->error_message)
-        {
+        if($this->error_message) {
             $this->addClass('error');
         }
 
         $this->Theme->prepareFieldView($this);
 
-        if(is_object($this->CustomField))
-        {
+        if(is_object($this->CustomField)) {
             return $this->CustomField->makeView($this);
         }
 
@@ -484,8 +462,7 @@ class Field{
     {
         $this->Theme->prepareFieldView($this);
 
-        if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.display'))
-        {
+        if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.display')) {
             return View::make($this->view_namespace.'::fields.display', array('Field' => $this));
         }
         return View::make('form-maker::fields.display', array('Field' => $this));
@@ -506,8 +483,7 @@ class Field{
 
         $this->Theme->prepareFieldView($this);
 
-        if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.'.$this->attributes->type.'_option'))
-        {
+        if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.'.$this->attributes->type.'_option')) {
             return View::make($this->view_namespace.'::fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
         }
         return View::make('form-maker::fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
@@ -524,13 +500,11 @@ class Field{
      */
     public function validateFieldStructure()
     {
-        switch($this->attribute['type'])
-        {
+        switch($this->attribute['type']) {
             // TODO: Expand on this so it's more comprehensive
 
             case 'select':
-                if(!is_array($this->options) || count($this->options) == 0)
-                {
+                if(!is_array($this->options) || count($this->options) == 0) {
                     throw new \Exception('Field validation error: Field "'.$this->attributes->name.'" must have options set');
                 }
         }
@@ -544,8 +518,7 @@ class Field{
     protected function makeLabel()
     {
         // If no label use the field's name, but replace _ with spaces
-        if (trim($this->label) == '')
-        {
+        if (trim($this->label) == '') {
             // If this is changed Table::getLabel() should be updated to match
             $this->label = ucfirst(str_replace('_', ' ', $this->attributes->name));
         }
@@ -561,8 +534,7 @@ class Field{
      */
     protected function formatValue(string $value)
     {
-        if(is_array($this->options) && isset($this->options[$value]))
-        {
+        if(is_array($this->options) && isset($this->options[$value])) {
             return $this->options[$value];
         }
 
