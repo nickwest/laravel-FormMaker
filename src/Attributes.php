@@ -242,7 +242,7 @@ class Attributes{
             }
             else
             {
-                if($key == 'value' && $this->attributes['type'] == 'datetime-local')
+                if($key == 'value' && $this->attributes['type'] == 'datetime-local' && $value != null)
                 {
                     $value = date('Y-m-d\TH:i', strtotime($value));
                 }
