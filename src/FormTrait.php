@@ -145,7 +145,7 @@ trait FormTrait{
     public function isValid()
     {
         // Add required fields to field_rules
-        $field_rules = array();
+        $columns = $this->getAllColumns();
         $rules = [];
         foreach($this->Form()->getFields() as $Field)
         {
@@ -160,6 +160,30 @@ trait FormTrait{
             {
                 $rules[$Field->original_name][] = 'required';
             }
+
+            if(isset($columns[$Field->original_name]) && isset($columns[$Field->original_name]['length']))
+            {
+                $found = false;
+                foreach($rules[$Field->original_name] as $key => $rule)
+                {
+                    if(strpos($rule, 'max') === 0)
+                    {
+                        $found = true;
+                        $max = (int)substr($rule, 4);
+                        if($max > $columns[$Field->original_name]['length'])
+                        {
+                            $rules[$Field->original_name][$key] = 'max:'.$columns[$Field->original_name]['length'];
+                        }
+                        break;
+                    }
+                }
+
+                if(!$found)
+                {
+                    $rules[] = 'max:'.$columns[$Field->original_name]['length'];
+                }
+            }
+
         }
 
         // Set up the Validator
