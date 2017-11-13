@@ -146,18 +146,26 @@ trait FormTrait{
     {
         // Add required fields to field_rules
         $field_rules = array();
+        $rules = [];
         foreach($this->Form()->getFields() as $Field)
         {
-            if($Field->attributes->required)
+            $rules[$Field->original_name] = [];
+
+            if(isset($this->validation_rules[$Field->original_name]) && $this->validation_rules[$Field->original_name] != '')
             {
-                $field_rules[$Field->original_name] = array('required');
+                $rules[$Field->original_name] = explode('|', $this->validation_rules[$Field->original_name]);
+            }
+
+            if($Field->attributes->required && !in_array('required', $rules))
+            {
+                $rules[$Field->original_name][] = 'required';
             }
         }
 
         // Set up the Validator
         $Validator = Validator::make(
             $this->getAttributes(),
-            $field_rules
+            $rules
         );
 
         // Set error messages to fields
