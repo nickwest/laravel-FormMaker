@@ -164,6 +164,7 @@ class Form{
     public function toJson()
     {
         $array = [
+            'Theme' => (is_object($this->Theme) ? '\\'.get_class($this->Theme) : null),
             'url' => $this->url,
             'form_id' => $this->form_id,
             'submit_button' => $this->submit_button,
@@ -185,6 +186,7 @@ class Form{
     public function fromJson($json)
     {
         $array = json_decode($json);
+        $Theme = null;
         foreach($array as $key => $value) {
             if($key == 'Fields') {
                 foreach($value as $key2 => $array) {
@@ -192,11 +194,19 @@ class Form{
                     $Field->fromJson(json_encode($array));
                     $this->$key[$key2] = $Field;
                 }
+            } elseif($key == 'Theme' && $value != null) {
+                $Theme = new $value();
             } elseif(is_object($value)) {
                 $this->$key = (array)$value;
             } else {
                 $this->$key = $value;
             }
+        }
+
+        if($Theme != null) {
+            $this->setTheme($Theme);
+        } else {
+            $this->setTheme(new \Nickwest\FormMaker\bulma\Theme());
         }
     }
 
