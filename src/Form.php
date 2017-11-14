@@ -99,7 +99,6 @@ class Form{
     {
         $this->Theme = new DefaultTheme();
         $this->url = Request::url();
-
     }
 
     /**
@@ -395,7 +394,7 @@ class Form{
             $i = 0;
             foreach($this->display_fields as $key => $value) {
                 if($value == $before_field) {
-                    $this->display_fields = array_merge(array_slice($this->display_fields, 0, $i), array($name), array_slice($this->display_fields, $i));
+                    $this->display_fields = array_merge(array_slice($this->display_fields, 0, $i), array($name => $name), array_slice($this->display_fields, $i));
                     return;
                 }
                 $i++;
