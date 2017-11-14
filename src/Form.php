@@ -161,6 +161,45 @@ class Form{
     //     }
     // }
 
+    public function toJson()
+    {
+        $array = [
+            'url' => $this->url,
+            'form_id' => $this->form_id,
+            'submit_button' => $this->submit_button,
+            'method' => $this->method,
+            'laravel_csrf' => $this->laravel_csrf,
+            'multipart' => $this->multipart,
+            'allow_delete' => $this->allow_delete,
+            'display_fields' => $this->display_fields,
+            'Fields' => [],
+        ];
+
+        foreach($this->Fields as $key => $Field) {
+            $array['Fields'][$key] = json_decode($Field->toJson());
+        }
+
+        return json_encode($array);
+    }
+
+    public function fromJson($json)
+    {
+        $array = json_decode($json);
+        foreach($array as $key => $value) {
+            if($key == 'Fields') {
+                foreach($value as $key2 => $array) {
+                    $Field = new Field($key2);
+                    $Field->fromJson(json_encode($array));
+                    $this->$key[$key2] = $Field;
+                }
+            } elseif(is_object($value)) {
+                $this->$key = (array)$value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
+
     /**
      * Get the Fields array
      *

@@ -283,6 +283,56 @@ class Field{
         throw new \Exception('"'.$property.'" is not a valid property.');
     }
 
+    public function toJson()
+    {
+        $array = [
+            'attributes' => json_decode($this->attributes->toJson()),
+            'label' => $this->label,
+            'label_suffix' => $this->label_suffix,
+            'example' => $this->example,
+            'default_value' => $this->default_value,
+            'multi_value' => $this->multi_value,
+            'error_message' => $this->error_message,
+            'subform_data' => $this->subform_data,
+            'subform' => is_object($this->subform) ? json_decode($this->subform->toJson()) : $this->subform,
+            'is_subform' => $this->is_subform,
+            'disabled_options' => $this->disabled_options,
+            'multi_key' => $this->multi_key,
+            'note' => $this->note,
+            'is_inline' => $this->is_inline,
+            'template' => $this->template,
+            'original_name' => $this->original_name,
+            'original_id' => $this->original_id,
+            'options' => $this->options,
+            'container_class' => $this->container_class,
+            'label_class' => $this->label_class,
+            'input_wrapper_class' => $this->input_wrapper_class,
+            'options_container_class' => $this->options_container_class,
+            'option_wrapper_class' => $this->option_wrapper_class,
+            'option_label_class' => $this->option_label_class,
+            'delete_button_value' => $this->delete_button_value,
+        ];
+
+        return json_encode($array);
+    }
+
+    public function fromJson($json)
+    {
+        $array = json_decode($json);
+        foreach($array as $key => $value) {
+            if($key == 'attributes') {
+                $Attributes = new Attributes();
+                $Attributes->fromJson(json_encode($value));
+
+                $this->$key = $Attributes;
+            } elseif(is_object($value)) {
+                $this->$key = (array)$value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
+
     /**
      * Get the template that this field should use
      *

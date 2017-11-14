@@ -168,6 +168,26 @@ class Attributes{
         return $this->getString();
     }
 
+    public function toJson()
+    {
+        return json_encode([
+            'classes' => $this->classes,
+            'attributes' => $this->attributes,
+        ]);
+    }
+
+    public function fromJson($json)
+    {
+        $array = json_decode($json);
+        foreach($array as $key => $value) {
+            if(is_object($value)) {
+                $this->$key = (array)$value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
+
 
     /**
      * Add a css class
