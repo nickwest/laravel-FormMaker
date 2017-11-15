@@ -1,7 +1,7 @@
-@formmaker_component('form-maker::components.field', ['Field' => $Field])
+@formmaker_component($Field->view_namespace.'::components.field', ['Field' => $Field, 'prev_inline' => $prev_inline])
 
     @slot('field_markup')
-        @include('form-maker::pieces.label', ['Field' => $Field])
+        @include($Field->view_namespace.'::pieces.label', ['Field' => $Field])
 
         @if($Field->value == '')
             <input {!! $Field->attributes !!} />

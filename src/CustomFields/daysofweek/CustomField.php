@@ -13,7 +13,7 @@ class CustomField extends BaseCustomField
      */
     public $daysofweek = [ 'M' => 'Mon', 'T' => 'Tue', 'W' => 'Wed', 'R' => 'Thu', 'F' => 'Fri', 'S' => 'Sat', 'U' => 'Sun' ];
 
-    public function makeView(\Nickwest\FormMaker\Field $Field)
+    public function makeView(\Nickwest\FormMaker\Field $Field, bool $prev_inline = false)
     {
         return View::make('form-maker::customfields.daysofweek', ['Field' => $Field, 'daysofweek' => $this->daysofweek]);
     }

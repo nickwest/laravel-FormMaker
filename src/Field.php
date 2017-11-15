@@ -486,9 +486,10 @@ class Field{
     /**
      * Make a form view for this field
      *
+     * @var bool $prev_inline Was the previous field inline?
      * @return View
      */
-    public function makeView()
+    public function makeView(bool $prev_inline = false)
     {
         if($this->error_message) {
             $this->addClass('error');
@@ -497,10 +498,10 @@ class Field{
         $this->Theme->prepareFieldView($this);
 
         if(is_object($this->CustomField)) {
-            return $this->CustomField->makeView($this);
+            return $this->CustomField->makeView($this, $prev_inline);
         }
 
-        return View::make($this->getTemplate(), ['Field' => $this]);
+        return View::make($this->getTemplate(), ['Field' => $this, 'prev_inline' => $prev_inline]);
     }
 
     /**

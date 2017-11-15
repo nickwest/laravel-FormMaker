@@ -1,4 +1,4 @@
-@formmaker_component('form-maker::components.field', ['Field' => $Field])
+@formmaker_component($Field->view_namespace.'::components.field', ['Field' => $Field])
 
     @slot('field_markup')
         <div class="{{ $Field->option_wrapper_class }}">

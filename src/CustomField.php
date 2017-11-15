@@ -7,7 +7,7 @@
 abstract class CustomField
 {
 
-    public abstract function makeView(\Nickwest\FormMaker\Field $Field);
+    public abstract function makeView(\Nickwest\FormMaker\Field $Field, bool $prev_inline = false);
 
     public function hook_setAllFormValues(\Nickwest\FormMaker\Field $Field, $value)
     {

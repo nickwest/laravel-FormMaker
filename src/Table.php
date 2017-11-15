@@ -269,7 +269,7 @@ class Table{
      * @param string $section
      * @return View
      */
-    public function makeView(array $blade_data, string $extends = '', string $section = '')
+    public function makeView(array $blade_data = [], string $extends = '', string $section = '')
     {
         $blade_data['Table'] = $this;
         $blade_data['extends'] = $extends;
