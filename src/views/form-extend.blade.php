@@ -14,7 +14,7 @@
     @endif
     <div class="fields">
         @foreach($Form->getDisplayFields() as $Field)
-            @if($Field->is_subform != 'subform')
+            @if(!$Field->is_subform)
                 {!! $Field->makeView() !!}
             @else
                 {!! $Field->subform->makeSubformView($Field->subform_data)->render() !!}
