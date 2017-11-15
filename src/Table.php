@@ -1,7 +1,7 @@
 <?php namespace Nickwest\FormMaker;
 
 use Illuminate\Support\Facades\View;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class Table{
     /**
@@ -42,7 +42,7 @@ class Table{
     /**
      * Collection that the table will display
      *
-     * @var Illuminate\Database\Eloquent\Collection
+     * @var Illuminate\Support\Collection
      */
     protected $Collection = [];
 
@@ -253,10 +253,10 @@ class Table{
     /**
      * Set the Collection data to the Table Object
      *
-     * @param Illuminate\Database\Eloquent\Collection $Collection
+     * @param Illuminate\Support\Collection $Collection
      * @return void
      */
-    public function setData(\Illuminate\Database\Eloquent\Collection $Collection)
+    public function setData(\Illuminate\Support\Collection $Collection)
     {
         $this->Collection = $Collection;
     }
