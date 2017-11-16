@@ -4,8 +4,10 @@
     <legend>{{ $legend }}</legend>
 @endif
 
+@php($prev_inline = false)
 @foreach($Form->getDisplayFields() as $Field)
-    {!! $Field->makeView() !!}
+    {!! $Field->makeView($prev_inline) !!}
+    @php($prev_inline = $Field->is_inline ? true : false)
 @endforeach
 
 </fieldset>

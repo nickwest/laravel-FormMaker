@@ -234,7 +234,6 @@ class Form{
         }
     }
 
-
     /**
      * Get the Submit button array
      *
@@ -611,6 +610,25 @@ class Form{
 
         return $labels;
     }
+
+    /**
+     * set inline fields
+     *
+     * @param array $fields an array of field names
+     * @return void
+     * @throws \Exception
+     */
+    public function setInline(array $fields)
+    {
+        foreach($fields as $field_name) {
+            if(isset($this->Fields[$field_name])) {
+                $this->Fields[$field_name]->is_inline = true;
+            } else {
+                throw new \Exception('"'.$field_name.'" does not exist');
+            }
+        }
+    }
+
 
     // /**
     //  * Set multiple field values at once [field_name] => value

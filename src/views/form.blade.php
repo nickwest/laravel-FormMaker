@@ -3,12 +3,14 @@
         {{ csrf_field() }}
     @endif
     <div class="fields">
+        @php($prev_inline = false)
         @foreach($Form->getDisplayFields() as $Field)
             @if(!$Field->is_subform)
-                {!! $Field->makeView() !!}
+                {!! $Field->makeView($prev_inline) !!}
             @else
                 {!! $Field->subform->makeSubformView($Field->subform_data)->render() !!}
             @endif
+            @php($prev_inline = $Field->is_inline ? true: false)
         @endforeach
 
         <div class="field submit-buttons">
