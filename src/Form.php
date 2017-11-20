@@ -262,7 +262,7 @@ class Form{
      * @param string $section
      * @return View
      */
-    public function makeView(array $blade_data, string $extends = '', string $section = '')
+    public function makeView(array $blade_data = [], string $extends = '', string $section = '')
     {
         $this->validateFormStructure();
 
