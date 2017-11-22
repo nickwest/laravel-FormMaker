@@ -2,7 +2,7 @@
 
 // use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 trait TableTrait{
     /**
@@ -29,7 +29,7 @@ trait TableTrait{
     /**
      * Make a table View and return the rendered output
      *
-     * @param Illuminate\Database\Eloquent\Collection $blade_data
+     * @param Illuminate\Support\Collection $blade_data
      * @param string $extends
      * @param string $section
      * @return View
