@@ -4,7 +4,9 @@
 		<a href="{!! $Table->getLink($field_name, $row) !!}">
 	@endif
 
-    @if(is_object($row))
+    @if(isset($Table->field_replacements[$field_name]))
+        {!! $Table->field_replacements[$field_name] !!}
+    @elseif(is_object($row))
 	    {{ $row->$field_name }}
     @elseif(is_array($row))
         {{ $row[$field_name] }}

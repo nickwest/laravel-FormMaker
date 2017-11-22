@@ -12,6 +12,13 @@ class Table{
     protected $display_fields = [];
 
     /**
+     * Array of field names
+     *
+     * @var array
+     */
+    protected $field_replacements = [];
+
+    /**
      * Theme to use
      *
      * @var string
@@ -96,6 +103,18 @@ class Table{
         if(!in_array($class, $this->classes)) {
             $this->classes[] = $class;
         }
+    }
+
+    /**
+     * Add a html replacement string for a field
+     *
+     * @param string $field field name
+     * @param string $html non-escaped text to replace field value in output
+     * @return void
+     */
+    public function addFieldReplacement(string $field, string $html)
+    {
+        $this->field_replacements[$field] = $html;
     }
 
     /**
