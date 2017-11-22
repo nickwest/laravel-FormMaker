@@ -28,5 +28,5 @@
             @endif
             </p>
         </div>
-    </fieldset>
+    </div>
 </form>
