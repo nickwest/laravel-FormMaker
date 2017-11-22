@@ -285,7 +285,7 @@ trait FormTrait{
             return $this->columns;
         }
 
-        $query = 'SHOW COLUMNS FROM '.$this->table;
+        $query = 'SHOW COLUMNS FROM '.$this->getTable();
 
         foreach(DB::connection($this->connection)->select($query) as $column) {
             $this->addColumn(
