@@ -1,3 +1,3 @@
 @if($Field->note)
-    <p class="help has-text-success">{!! $Field->note !!}</p>
+    <p class="help has-text-primary">{!! $Field->note !!}</p>
 @endif
