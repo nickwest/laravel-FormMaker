@@ -127,7 +127,19 @@ trait FormTrait{
     }
 
     /**
-     * Validation of required fields and stuff
+     * Validation of form, based on requirements & extra rules
+     *
+     * @var bool
+     */
+    public function formIsValid()
+    {
+        $this->Form()->setValidationRules($this->validation_rules);
+
+        return $this->Form()->isValid();
+    }
+
+    /**
+     * Validation of model, based on field requirements & table structure & extra rules
      *
      * @var bool
      */
@@ -234,6 +246,18 @@ trait FormTrait{
                 );
             }
         }
+    }
+
+    /**
+     * Create teh Form object from  Json
+     *
+     * @param string $json
+     * @return void
+     */
+    public function generateFormFromJson(string $json)
+    {
+        $this->Form = new Form();
+        $this->Form->fromJson($json);
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php namespace Nickwest\FormMaker;
 
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Validator;
 
 use Nickwest\FormMaker\Attributes;
 
@@ -61,6 +62,13 @@ class Field{
      * @var array
      */
     protected $subform_data = [];
+
+    /**
+     * Validation rules used by Validator object.
+     *
+     * @var array
+     */
+    protected $validation_rules = [];
 
     /**
      * Blade data to pass through to the subform
@@ -542,6 +550,9 @@ class Field{
 
 
 //// HELPERS
+
+    // TODO: Add isValid() method that uses validation_rules and Validator
+
 
     /**
      * Make sure the field has all required options and stuff set

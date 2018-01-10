@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Validator;
 
 class Form{
 
@@ -183,7 +184,12 @@ class Form{
         return json_encode($array);
     }
 
-    public function fromJson($json)
+    /**
+     * Set the form from values in json
+     *
+     * @return void
+     */
+    public function fromJson(string $json)
     {
         $array = json_decode($json);
         $Theme = null;
@@ -218,6 +224,23 @@ class Form{
     public function getFields()
     {
         return $this->Fields;
+    }
+
+    /**
+     * Get the Fields array
+     *
+     * @return array
+     */
+    public function getFieldValues()
+    {
+        $values = [];
+
+        foreach($this->Fields as $Field)
+        {
+            $values[$Field->name] = $Field->value;
+        }
+
+        return $values;
     }
 
     /**
@@ -318,6 +341,58 @@ class Form{
 
         // TODO: Add any additional Form validation here
     }
+
+    /**
+     * Using validation rules, determine if form values are valid.
+     *
+     * @return
+     */
+    public function isValid()
+    {
+        $rules = [];
+        foreach($this->Fields as $Field) {
+            $rules[$Field->original_name] = [];
+
+            if(isset($Field->validation_rules) && $Field->validation_rules != '' && count($Field->validation_rules) > 0) {
+                $rules[$Field->original_name] = explode('|', $Field->validation_rules);
+            }
+
+            if($Field->attributes->required && !in_array('required', $rules)) {
+                $rules[$Field->original_name][] = 'required';
+            }
+        }
+
+        // Set up the Validator
+        $Validator = Validator::make(
+            $this->getFieldValues(),
+            $rules
+        );
+
+        // Set error messages to fields
+        if(!($success = !$Validator->fails())) {
+            foreach($Validator->errors()->toArray() as $field => $error) {
+                $this->$field->error_message = current($error);
+            }
+        }
+
+        return $success;
+    }
+
+    /**
+     * Set validation rules to Field(s).
+     *
+     * @param array $validation_rules (array indexed to field_name)
+     * @return void
+     */
+    public function setValidationRules(array $validation_rules)
+    {
+        foreach($validation_rules as $field => $rules)
+        {
+            $this->Fields[$field]->validation_rules = $rules;
+        }
+    }
+
+
 
     /**
      * Add a bunch of fields to the form, New fields will overwrite old ones with the same name
