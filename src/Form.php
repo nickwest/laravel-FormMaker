@@ -736,10 +736,11 @@ class Form{
      * Set multiple field values at once [field_name] => value
      *
      * @param array $values
+     * @param bool $ignore_invalid
      * @return void
      * @throws \Exception
      */
-    public function setValues(array $values)
+    public function setValues(array $values, bool $ignore_invalid = false)
     {
         foreach($values as $field_name => $value) {
             if(isset($this->Fields[$field_name])) {
@@ -752,7 +753,7 @@ class Form{
                 //     $this->Fields[$field_name]->value = $value;
                 // }
                 $this->Fields[$field_name]->value = $value;
-            } else {
+            } elseif(!$ignore_invalid) {
                 throw new \Exception('"'.$field_name.'" does not exist');
             }
         }
