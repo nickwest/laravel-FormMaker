@@ -6,7 +6,12 @@
 
 @php($prev_inline = false)
 @foreach($Form->getDisplayFields() as $Field)
+    @if($view_only)
+    {!! $Field->makeDisplayView($prev_inline) !!}
+    @else
     {!! $Field->makeView($prev_inline) !!}
+    @endif
+
     @php($prev_inline = $Field->is_inline ? true : false)
 @endforeach
 

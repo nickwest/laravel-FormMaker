@@ -517,14 +517,14 @@ class Field{
      *
      * @return View
      */
-    public function makeDisplayView()
+    public function makeDisplayView(bool $prev_inline = false)
     {
         $this->Theme->prepareFieldView($this);
-
         if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.display')) {
-            return View::make($this->view_namespace.'::fields.display', array('Field' => $this));
+            return View::make($this->view_namespace.'::fields.display', ['Field' => $this, 'prev_inline' => $prev_inline]);
         }
-        return View::make('form-maker::fields.display', array('Field' => $this));
+
+        return View::make('form-maker::fields.display', ['Field' => $this, 'prev_inline' => $prev_inline]);
     }
 
     /**

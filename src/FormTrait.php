@@ -54,11 +54,12 @@ trait FormTrait{
      * @param array $blade_data
      * @param string $extends
      * @param string $section
+     * @param bool $view_only
      * @return View
      */
-    public function getFormView(array $blade_data, string $extends = '', string $section = '')
+    public function getFormView(array $blade_data, string $extends = '', string $section = '', bool $view_only = false)
     {
-        return $this->Form()->makeView($blade_data, $extends, $section);
+        return $this->Form()->makeView($blade_data, $extends, $section, $view_only);
     }
 
     /**

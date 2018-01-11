@@ -283,15 +283,17 @@ class Form{
      * @param array $blade_data
      * @param string $extends
      * @param string $section
+     * @param bool $view_only
      * @return View
      */
-    public function makeView(array $blade_data = [], string $extends = '', string $section = '')
+    public function makeView(array $blade_data = [], string $extends = '', string $section = '', bool $view_only = false)
     {
         $this->validateFormStructure();
 
         $blade_data['Form'] = $this;
         $blade_data['extends'] = $extends;
         $blade_data['section'] = $section;
+        $blade_data['view_only'] = $view_only;
 
         if($extends != '') {
             if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::form-extend')) {
@@ -309,11 +311,13 @@ class Form{
      * Make a view, $blade_data is the data array to pass to View::make()
      *
      * @param array $blade_data
+     * @param bool $view_only
      * @return View
      */
-    public function makeSubformView(array $blade_data)
+    public function makeSubformView(array $blade_data, bool $view_only = false)
     {
         $blade_data['Form'] = $this;
+        $blade_data['view_only'] = $view_only;
 
         // foreach($this->display_fields as $field)
         // {
