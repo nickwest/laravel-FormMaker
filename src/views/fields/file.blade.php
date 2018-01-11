@@ -3,7 +3,11 @@
     @slot('field_markup')
         @include($Field->view_namespace.'::pieces.label', ['Field' => $Field])
 
-        @if($Field->value == '')
+        @if($view_only)
+            <div class="file-link">
+                {{ $Field->value }}
+            </div>
+        @elseif($Field->value == '')
             <input {!! $Field->attributes !!} />
         @else
             <div class="file-link">

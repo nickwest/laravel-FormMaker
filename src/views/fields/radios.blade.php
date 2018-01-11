@@ -7,7 +7,7 @@
             @endif
             @foreach($Field->options as $key => $option)
                 @if($key != '') {{-- Make this optional somehow --}}
-                    {!! $Field->makeOptionView($key) !!}
+                    {!! $Field->makeOptionView($key, $view_only) !!}
                 @endif
             @endforeach
         </div>

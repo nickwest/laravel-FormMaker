@@ -495,9 +495,10 @@ class Field{
      * Make a form view for this field
      *
      * @var bool $prev_inline Was the previous field inline?
+     * @var bool $view_only
      * @return View
      */
-    public function makeView(bool $prev_inline = false)
+    public function makeView(bool $prev_inline = false, bool $view_only = false)
     {
         if($this->error_message) {
             $this->addClass('error');
@@ -506,10 +507,10 @@ class Field{
         $this->Theme->prepareFieldView($this);
 
         if(is_object($this->CustomField)) {
-            return $this->CustomField->makeView($this, $prev_inline);
+            return $this->CustomField->makeView($this, $prev_inline, $view_only);
         }
 
-        return View::make($this->getTemplate(), ['Field' => $this, 'prev_inline' => $prev_inline]);
+        return View::make($this->getTemplate(), ['Field' => $this, 'prev_inline' => $prev_inline, 'view_only' => $view_only]);
     }
 
     /**
@@ -531,9 +532,10 @@ class Field{
      * Make an option view for this field
      *
      * @param string $key
+     * @param bool $view_only
      * @return View
      */
-    public function makeOptionView($key)
+    public function makeOptionView(string $key, bool $view_only = false)
     {
         $this->attributes->id = $this->original_id.'-'.$key;
         $this->attributes->value = $key;
@@ -543,9 +545,9 @@ class Field{
         $this->Theme->prepareFieldView($this);
 
         if($this->view_namespace != '' && View::exists($this->view_namespace.'::fields.'.$this->attributes->type.'_option')) {
-            return View::make($this->view_namespace.'::fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
+            return View::make($this->view_namespace.'::fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key, 'view_only' => $view_only));
         }
-        return View::make('form-maker::fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key));
+        return View::make('form-maker::fields.'.$this->attributes->type.'_option', array('Field' => $this, 'key' => $key, 'view_only' => $view_only));
     }
 
 

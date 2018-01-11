@@ -15,13 +15,12 @@
     <div class="fields">
         @php($prev_inline = false)
         @foreach($Form->getDisplayFields() as $Field)
-            @if(!$Field->is_subform && $view_only)
-                {!! $Field->makeDisplayView($prev_inline) !!}
-            @elseif(!$Field->is_subform)
-                {!! $Field->makeView($prev_inline) !!}
+            @if(!$Field->is_subform)
+                {!! $Field->makeView($prev_inline, $view_only) !!}
             @else
                 {!! $Field->subform->makeSubformView($Field->subform_data, $view_only)->render() !!}
             @endif
+
             @php($prev_inline = $Field->is_inline ? true: false)
         @endforeach
 

@@ -1,5 +1,9 @@
 {{-- Don't include this, use $Field->makeOptionView() instead --}}
-<label class="radio" for={{ $Field->attributes->id }}>
-    <input {!! $Field->attributes !!}>
-    {{ $Field->options[$key] }}
-</label>
+@if(!$view_only || $Field->attributes->checked)
+    <label class="radio" for={{ $Field->attributes->id }}>
+        @if(!$view_only)
+            <input {!! $Field->attributes !!}>
+        @endif
+        {{ $Field->options[$key] }}
+    </label>
+@endif
