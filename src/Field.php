@@ -291,6 +291,30 @@ class Field{
         throw new \Exception('"'.$property.'" is not a valid property.');
     }
 
+    /**
+     * Field property isset method
+     *
+     * @param string $property
+     * @return bool
+     */
+    public function __isset(string $property)
+    {
+        if($property == 'view_namespace') {
+            return true;
+        }
+
+        if($this->attributes->attributeExists($property)) {
+            return true;
+        }
+
+        if(property_exists(__CLASS__, $property)) {
+            return true;
+        }
+
+        return false;
+
+    }
+
     public function toJson()
     {
         $array = [

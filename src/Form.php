@@ -117,6 +117,21 @@ class Form{
         return null;
     }
 
+     /**
+     * Field isset check
+     *
+     * @param string $field_name
+     * @return bool
+     */
+    public function __isset(string $field_name)
+    {
+        if(isset($this->Fields[$field_name])) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Field mutator
      *
