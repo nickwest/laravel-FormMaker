@@ -118,6 +118,45 @@ class Table{
     }
 
     /**
+     * Check if a field has a replacement pattern
+     *
+     * @param string $field field name
+     * @return bool
+     */
+    public function hasFieldReplacement(string $field)
+    {
+        return isset($this->field_replacements[$field]);
+    }
+
+    /**
+     * Get a field's replacement value
+     *
+     * @param string $field field name
+     * @return string
+     */
+    public function getFieldReplacement(string $field, &$Object)
+    {
+        $pattern = '/\{([a-zA-Z0-9_]+)\}/';
+        $results = [];
+        preg_match_all($pattern, $this->field_replacements[$field], $results, PREG_PATTERN_ORDER);
+
+        if(is_array($results[0]) && is_array($results[1])) {
+            foreach($results[0] as $key => $match) {
+                if(is_object($Object) && isset($Object->{$results[1][$key]})) {
+                    $replaced = str_replace($results[0][$key], (string)$Object->{$results[1][$key]}, $this->field_replacements[$field]);
+                } elseif(is_array($Object) && isset($Object[$results[1][$key]])) {
+                    $replaced = str_replace($results[0][$key], $Object[$results[1][$key]], $this->field_replacements[$field]);
+                } else {
+                    return 'FAIL';
+                }
+            }
+        }
+
+
+        return $replaced;
+    }
+
+    /**
      * Add css classes to the table
      *
      * @param array $classes Array of CSS classes
