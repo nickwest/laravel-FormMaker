@@ -1,11 +1,10 @@
 <?php namespace Nickwest\FormMaker;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Collection;
-use Illuminate\Routing\RouteUrlGenerator;
-use Illuminate\Support\Arr;
 
 class Table{
     /**
