@@ -1,8 +1,6 @@
 <?php namespace Nickwest\FormMaker;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Collection;
 
@@ -232,18 +230,21 @@ class Table{
             throw new \Exception('Invalid route name '.$route_name);
         }
 
-        $path = '/'.$Route->uri;
+        $replaced = '/'.$Route->uri;
 
-        $pattern = preg_replace_callback('/\{(.*?)\??\}/', function ($m) use (&$parameters) {
-            if (isset($parameters[$m[1]])) {
-                return Arr::pull($parameters, $m[1]);
-            } elseif (isset($this->defaultParameters[$m[1]])) {
-                return $this->defaultParameters[$m[1]];
+        $pattern = '/\{(.*?)\??\}/';
+        $results = [];
+        preg_match_all($pattern, $replaced, $results, PREG_PATTERN_ORDER);
+
+        if(is_array($results[0]) && is_array($results[1])) {
+            foreach($results[0] as $key => $match) {
+                if(isset($parameters[$results[1][$key]])) {
+                    $replaced = str_replace($results[0][$key], $parameters[$results[1][$key]], $replaced);
+                }
             }
-            return $m[0];
-        }, $path);
+        }
 
-        $this->linking_patterns[$field_name] = $pattern;
+        $this->linking_patterns[$field_name] = $replaced;
     }
 
     /**
