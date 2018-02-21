@@ -1,8 +1,11 @@
 <?php namespace Nickwest\FormMaker;
 
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Collection;
+use Illuminate\Routing\RouteUrlGenerator;
+use Illuminate\Support\Arr;
 
 class Table{
     /**
@@ -230,13 +233,16 @@ class Table{
             throw new \Exception('Invalid route name '.$route_name);
         }
 
-        $pattern = '/'.$Route->uri;
+        $path = '/'.$Route->uri;
 
-        foreach($parameters as $key => $value) {
-            if(strpos($pattern, '{'.$key.'}') !== false) {
-                $pattern = str_replace('{'.$key.'}', $value, $pattern);
+        $pattern = preg_replace_callback('/\{(.*?)\??\}/', function ($m) use (&$parameters) {
+            if (isset($parameters[$m[1]])) {
+                return Arr::pull($parameters, $m[1]);
+            } elseif (isset($this->defaultParameters[$m[1]])) {
+                return $this->defaultParameters[$m[1]];
             }
-        }
+            return $m[0];
+        }, $path);
 
         $this->linking_patterns[$field_name] = $pattern;
     }
