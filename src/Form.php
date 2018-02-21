@@ -372,7 +372,7 @@ class Form{
         foreach($this->Fields as $Field) {
             $rules[$Field->original_name] = [];
 
-            if(isset($Field->validation_rules) && $Field->validation_rules != '' && count($Field->validation_rules) > 0) {
+            if(isset($Field->validation_rules) && is_array($Field->validation_rules) && count($Field->validation_rules) > 0) {
                 $rules[$Field->original_name] = explode('|', $Field->validation_rules);
             }
 
