@@ -230,7 +230,7 @@ class Table{
             throw new \Exception('Invalid route name '.$route_name);
         }
 
-        $pattern = $Route->uri;
+        $pattern = '/'.$Route->uri;
 
         foreach($parameters as $key => $value) {
             if(strpos($pattern, '{'.$key.'}') !== false) {
