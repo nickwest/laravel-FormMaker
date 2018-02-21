@@ -1,6 +1,7 @@
 <?php namespace Nickwest\FormMaker;
 
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Collection;
 
 class Table{
@@ -159,6 +160,8 @@ class Table{
     /**
      * Set a linking pattern
      *
+     * @param string $field_name
+     * @param string $pattern
      * @return void
      */
     public function setLinkingPattern(string $field_name, string $pattern = '')
@@ -168,6 +171,33 @@ class Table{
                 unset($this->linking_patterns[$field_name]);
             }
             return;
+        }
+
+        $this->linking_patterns[$field_name] = $pattern;
+    }
+
+
+    /**
+     * Set a linking pattern by route name
+     *
+     * @param string $field_name
+     * @param string $route_name
+     * @param array $parameters keys to replace by value
+     * @return void
+     */
+    public function setLinkingPatternByRoute(string $field_name, string $route_name, array $parameters=[])
+    {
+        $Route = Route::getRoutes()->getByName($route_name);
+        if($Route == null) {
+            throw new \Exception('Invalid route name '.$route_name);
+        }
+
+        $pattern = $Route->uri;
+
+        foreach($parameters as $key => $value) {
+            if(strpos($pattern, '{'.$key.'}') !== false) {
+                $pattern = str_replace('{'.$key.'}', $value, $pattern);
+            }
         }
 
         $this->linking_patterns[$field_name] = $pattern;
