@@ -24,6 +24,7 @@
             @php($prev_inline = $Field->is_inline ? true: false)
         @endforeach
 
+        @if(!$view_only)
         <div class="field submit-buttons">
             <p class="control">
             @if(count($Form->getSubmitButtons()) > 0)
@@ -39,6 +40,7 @@
             @endif
             </p>
         </div>
+        @endif
     </fieldset>
 </form>
 

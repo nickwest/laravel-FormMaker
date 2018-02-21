@@ -612,14 +612,16 @@ class Form{
      */
     public function setDisplayFields(array $field_names)
     {
+        $fields = [];
         // TODO: add validation on field_names?
         foreach($field_names as $field) {
             if(!isset($this->Fields[$field])) {
                 throw new \Exception('"'.$field.'" is not a valid field name');
             }
+            $fields[$field] = $field;
         }
 
-        $this->display_fields = $field_names;
+        $this->display_fields = $fields;
     }
 
     /**
@@ -646,7 +648,7 @@ class Form{
      * Remove a single field from the form
      *
      * @param array $field_name
-     * @return void
+     * @return array
      */
     public function getDisplayFields()
     {
