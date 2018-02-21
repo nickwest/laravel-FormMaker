@@ -141,18 +141,17 @@ class Table{
         $results = [];
         preg_match_all($pattern, $this->field_replacements[$field], $results, PREG_PATTERN_ORDER);
 
+        $replaced = $this->field_replacements[$field];
+
         if(is_array($results[0]) && is_array($results[1])) {
             foreach($results[0] as $key => $match) {
                 if(is_object($Object) && isset($Object->{$results[1][$key]})) {
                     $replaced = str_replace($results[0][$key], (string)$Object->{$results[1][$key]}, $this->field_replacements[$field]);
                 } elseif(is_array($Object) && isset($Object[$results[1][$key]])) {
                     $replaced = str_replace($results[0][$key], $Object[$results[1][$key]], $this->field_replacements[$field]);
-                } else {
-                    return 'FAIL';
                 }
             }
         }
-
 
         return $replaced;
     }
