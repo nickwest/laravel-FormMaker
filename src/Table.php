@@ -223,7 +223,7 @@ class Table{
      * @param array $parameters keys to replace by value
      * @return void
      */
-    public function setLinkingPatternByRoute(string $field_name, string $route_name, array $parameters=[])
+    public function setLinkingPatternByRoute(string $field_name, string $route_name, array $parameters=[], $query_string=[])
     {
         $Route = Route::getRoutes()->getByName($route_name);
         if($Route == null) {
@@ -242,6 +242,14 @@ class Table{
                     $replaced = str_replace($results[0][$key], $parameters[$results[1][$key]], $replaced);
                 }
             }
+        }
+
+        if(count($query_string) > 0){
+            $pieces = [];
+            foreach($query_string as $key => $value){
+                $pieces[] = $key.'='.$value;
+            }
+            $replaced = $replaced.'?'.implode('&', $pieces);
         }
 
         $this->linking_patterns[$field_name] = $replaced;
