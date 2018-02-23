@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Collection;
 
+use Maatwebsite\Excel\Facades\Excel;
+
 class Table{
     /**
      * Array of field names
@@ -53,6 +55,13 @@ class Table{
      * @var Illuminate\Support\Collection
      */
     protected $Collection = [];
+
+    /**
+     * Excel Config values from client
+     *
+     * @var array
+     */
+    protected $excel_config = [];
 
 
     /**
@@ -391,5 +400,95 @@ class Table{
             return View::make($this->Theme->view_namespace.'::table', $blade_data);
         }
         return View::make('form-maker::table', $blade_data);
+    }
+
+    /**
+     * Export this to excel
+     *
+     * @param string $title
+     * @param array $config
+     * @return void
+     */
+    public function exportToExcel(string $title, array $config)
+    {
+        $this->excel_config = $config;
+
+        foreach($this->display_fields as $field){
+            $headings[] = $this->getLabel($field);
+        }
+
+        $export = array_merge([$headings], $this->Collection->map(function($item){
+            $collection = new Collection($item);
+            return $collection->only($this->display_fields)->all();
+        })->toArray());
+
+        Excel::create($title, function($Excel) use ($title, $config, $export) {
+            $Excel->setTitle($title)
+                    ->setCreator($this->config('Creator', ''))
+                    ->setCompany($this->config('Company', ''))
+                    ->setDescription($this->config('Description', ''));
+
+            $Excel->sheet($title, function($Sheet) use ($config, $export){
+                // Set font
+                $Sheet->setFontFamily($this->config('FontFamily', 'Calibri'));
+                $Sheet->setFontSize($this->config('FontSize', 16));
+                $Sheet->setFontBold($this->config('FontBold', false));
+
+                // Set up the page
+                $Sheet->sethorizontalCentered($this->config('horizontalCentered', false));
+                $Sheet->setfitToPage($this->config('fitToPage', false));
+                $Sheet->setfitToHeight($this->config('fitToHeight', false));
+                $Sheet->setfitToWidth($this->config('fitToWidth', true));
+                $Sheet->setpaperSize($this->config('paperSize', 1));
+
+                // Set margins
+                $Sheet->setPageMargin($this->config('PageMargin', array(0.7, 0.25, 0.25, 0.25)));
+
+                // Populate data
+                $Sheet->fromArray($export, null, 'A1', false, false);
+
+                $highest_col = $Sheet->getHighestColumn();
+
+                $total_rows = count($export);
+
+                // Format all rows as text
+                $Sheet->setColumnFormat(array(
+                    'A1:'.$highest_col.$total_rows => '@',
+                ));
+
+                // Add borders
+                if($this->config('borders', false)){
+                    $Sheet->setBorder('A1:'.$highest_col.$total_rows, 'thin');
+                }
+
+                // Make the first row bold
+                $Sheet->cell('A1:'.$highest_col.'1', function($cells){
+                    $cells->setFontWeight('bold');
+                });
+
+                // Zebra rows
+                if($this->config('zebraRows', true)) {
+                    for($i = 2; $i <= $total_rows; $i++){
+                        if($i % 2 == 0){
+                            $Sheet->cell('A'.$i.':'.$highest_col.$i, function($cells){
+                                $cells->setBackground('#EEEEEE');
+                            });
+                        }
+                    }
+                }
+
+                // Verticle align
+                $Sheet->cell('A1:'.$highest_col.$total_rows, function($cells){
+                    $cells->setValignment('top');
+                });
+
+            });
+
+        })->export('xls');
+    }
+
+    protected function config(string $key, $default)
+    {
+        return (isset($this->excel_config[$key]) ? $this->excel_config[$key] : $default);
     }
 }
