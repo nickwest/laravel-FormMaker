@@ -70,6 +70,20 @@ class Form{
     public $method = 'post';
 
     /**
+     * Form classes (applied to form element)
+     *
+     * @var string
+     */
+    public $classes = '';
+
+    /**
+     * Form id attribute (applied to form element)
+     *
+     * @var string
+     */
+    public $id_attr = '';
+
+    /**
      * Use Laravel csrf_field() method for creating a CSRF field in the form?
      * Note: This will elegantly fail if the csrf_field() method is not available.
      *
