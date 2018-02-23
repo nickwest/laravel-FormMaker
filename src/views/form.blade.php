@@ -6,13 +6,14 @@
         @php($prev_inline = false)
         @foreach($Form->getDisplayFields() as $Field)
             @if(!$Field->is_subform)
-                {!! $Field->makeView($prev_inline) !!}
+                {!! $Field->makeView($prev_inline, $view_only) !!}
             @else
-                {!! $Field->subform->makeSubformView($Field->subform_data)->render() !!}
+                {!! $Field->subform->makeSubformView($Field->subform_data, $view_only)->render() !!}
             @endif
             @php($prev_inline = $Field->is_inline ? true: false)
         @endforeach
 
+        @if(!$view_only)
         <div class="field submit-buttons">
             <p class="control">
             @if(count($Form->getSubmitButtons()) > 0)
@@ -28,5 +29,6 @@
             @endif
             </p>
         </div>
+        @endif
     </div>
 </form>
