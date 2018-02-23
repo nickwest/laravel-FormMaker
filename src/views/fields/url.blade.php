@@ -5,7 +5,7 @@
 
 {{--  Custom view only view  --}}
 @if($view_only)
-@formmaker_component($Field->view_namespace.'::components.field', ['Field' => $Field, 'prev_inline' => $prev_inline])
+    @formmaker_component($Field->view_namespace.'::components.field', ['Field' => $Field, 'prev_inline' => $prev_inline])
 
     @slot('field_markup')
         @formmaker_include($Field->view_namespace.'::pieces.label', ['Field' => $Field])
@@ -17,9 +17,9 @@
         @formmaker_include($Field->view_namespace.'::pieces.note')
     @endslot
 
-@endcomponent
+    @endcomponent
 
-{{--  Use default input template for non-view only --}}
+    {{--  Use default input template for non-view only --}}
 @else
     @include("form-maker::pieces.default-input")
 @endif

@@ -4,7 +4,7 @@
         @include($Field->view_namespace.'::pieces.label', ['Field' => $Field])
 
         @if($view_only)
-            <div class="file-link">
+            <div class="file-link value">
                 {{ $Field->value }}
             </div>
         @elseif($Field->value == '')

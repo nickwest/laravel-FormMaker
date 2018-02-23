@@ -3,7 +3,7 @@
     @slot('field_markup')
         @formmaker_include($Field->view_namespace.'::pieces.label', ['Field' => $Field])
 
-        <div class="{{ $Field->input_wrapper_class }}">
+        <div class="{{ $Field->input_wrapper_class.($view_only ? ' value' : '') }}">
             @if($view_only)
                 {!! nl2br($Field->value) !!}
             @else

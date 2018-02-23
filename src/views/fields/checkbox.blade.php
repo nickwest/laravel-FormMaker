@@ -7,7 +7,7 @@
                 <label class="{{ $Field->option_label_class }}" for={{ $Field->attributes->id }}>
                     {{ $Field->label }}
                 </label>
-                {{ $Field->value }}
+                <div class="value">{{ $Field->value }}</div>
             </div>
         @else
             <div class="{{ $Field->option_wrapper_class }}">
