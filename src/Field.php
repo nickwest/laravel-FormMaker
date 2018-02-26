@@ -166,14 +166,14 @@ class Field{
      *
      * @var string
      */
-    protected $options_container_class = '';
+    protected $options_container_class = 'checkbox';
 
     /**
      * Class(es) for the field's containing div
      *
      * @var string
      */
-    protected $option_wrapper_class = '';
+    protected $option_wrapper_class = 'option';
 
     /**
      * Class(es) for the field's containing div
