@@ -3,13 +3,13 @@
     @slot('field_markup')
         @formmaker_include($Field->view_namespace.'::pieces.label', ['Field' => $Field])
 
-        @if($view_only)
-            <div class="{{ $Field->input_wrapper_class.($view_only ? ' value' : '') }}">
+        <div class="{{ $Field->input_wrapper_class.($view_only ? ' value' : '') }}">
+            @if($view_only)
                 {!! nl2br($Field->value) !!}
-            </div>
-        @else
-            <textarea {!! $Field->attributes !!}>{!! $Field->value !!}</textarea>
-        @endif
+            @else
+                <textarea class="{{ $Field->attributes->class }}" id="{{ $Field->attributes->id }}" name="{{ $Field->attributes->name }}" class="{{ $Field->attributes->class }}" placeholder="{{ $Field->attributes->placeholder }}">{!! $Field->value !!}</textarea>
+            @endif
+        </div>
 
         @formmaker_include($Field->view_namespace.'::pieces.example')
         @formmaker_include($Field->view_namespace.'::pieces.error')

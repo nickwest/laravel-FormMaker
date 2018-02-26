@@ -1,8 +1,8 @@
 @formmaker_component($Field->view_namespace.'::components.field', ['Field' => $Field, 'prev_inline' => $prev_inline])
 
     @slot('field_markup')
-        <input {!! $Field->attributes !!}>
         <label class="{{ $Field->label_class }}" for={{ $Field->attributes->id }}>
+            <input {!! $Field->attributes !!}>
             {{ $Field->label }}
         </label>
 

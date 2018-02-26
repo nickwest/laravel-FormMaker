@@ -98,6 +98,8 @@ class Attributes{
         'checked', 'disabled', 'multiple', 'readonly', 'required', 'selected'
     ];
 
+    public $multi_key = null;
+
     /**
      * Keep track of classes separately so we can build it all pretty like
      *
@@ -227,6 +229,7 @@ class Attributes{
             $this->attributes['class'] = '';
         }
 
+
         foreach($this->attributes as $key => $value) {
             // Skip invalid attributes (they're not HTML valid, so don't ouput them)
             if(!$this->isValidAttribute($key)) {
@@ -237,8 +240,13 @@ class Attributes{
                 $value = implode(' ', $this->classes);
             }
 
-            if($key == 'name' && ($this->attributes['type'] == 'checkbox' || (isset($this->attributes['multiple']) && $this->attributes['multiple']))) {
-                $value .= '[]';
+            if($key == 'name'){
+                if($this->attributes['type'] == 'checkbox' || (isset($this->attributes['multiple']) && $this->attributes['multiple'])) {
+                    $value .= '[]';
+                }
+                if($this->multi_key !== null && $this->multi_key !== false){
+                    $value .= '['.($this->multi_key !== true ? $this->multi_key : '').']';
+                }
             }
 
             if(in_array($key, $this->flat_attributes)) {

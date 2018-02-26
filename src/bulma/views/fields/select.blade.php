@@ -12,11 +12,13 @@
                 @endforeach
             </div>
         @else
-            <select {!! $Field->attributes !!}>
+        <div class="{{ $Field->input_wrapper_class }}{{ $Field->multiple ? ' is-multiple' : '' }}">
+                <select {!! $Field->attributes !!}>
                 @foreach($Field->options as $key => $value)
                     @formmaker_include($Field->view_namespace.'::fields.select_option')
                 @endforeach
             </select>
+        </div>
         @endif
 
         @formmaker_include($Field->view_namespace.'::pieces.example')

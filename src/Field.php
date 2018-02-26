@@ -92,13 +92,6 @@ class Field{
     protected $disabled_options = [];
 
     /**
-     * A set key to use if this is a multi field
-     *
-     * @var string
-     */
-    protected $multi_key;
-
-    /**
      * A note to display below the field (Accepts HTML markup)
      *
      * @var string
@@ -203,6 +196,10 @@ class Field{
      */
     protected $CustomField = null;
 
+    protected $legacy_properties = [
+        'is_required' => 'required',
+    ];
+
     /**
      * Constructor
      *
@@ -264,6 +261,10 @@ class Field{
      */
     public function __set(string $property, $value)
     {
+        if(isset($this->legacy_properties[$property])){
+            $property = $this->legacy_properties[$property];
+        }
+
         if($property == 'options') {
             throw new \Exception('Options must be set with setOption and setOptions methods');
         }
@@ -280,6 +281,11 @@ class Field{
             } else {
                 $this->multi_value = is_array($value) ? $value : [$value];
             }
+        }
+
+        if(property_exists($this->attributes, $property)){
+            $this->attributes->$property = $value;
+            return;
         }
 
         if($this->attributes->attributeExists($property)) {
@@ -329,7 +335,6 @@ class Field{
             'subform' => is_object($this->subform) ? json_decode($this->subform->toJson()) : $this->subform,
             'is_subform' => $this->is_subform,
             'disabled_options' => $this->disabled_options,
-            'multi_key' => $this->multi_key,
             'note' => $this->note,
             'is_inline' => $this->is_inline,
             'template' => $this->template,

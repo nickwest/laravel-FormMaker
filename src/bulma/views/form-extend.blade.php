@@ -32,11 +32,11 @@
                     <input name="{{ $button['name'] }}" id="submit_button_{{ $button['name'] }}" class="button is-success {{ $button['class'] }}" type="submit" value="{{ $button['label'] }} "/>
                 @endforeach
             @else
-                <input name="submit_button" id="submit_button_save" class="submit-green save" type="submit" value="{{ (isset($Form->submit_button) ? $Form->submit_button : 'Save') }} "/>
+                <input name="submit_button" id="submit_button_save" class="button is-success" type="submit" value="{{ (isset($Form->submit_button) ? $Form->submit_button : 'Save') }} "/>
             @endif
 
             @if($Form->getAllowDelete())
-                <input name="submit_button" id="submit_button_delete" class="submit-red delete" type="submit" value="{{ (isset($Form->delete_button) ? $Form->delete_button : 'Delete') }}" />
+                <input name="submit_button" id="submit_button_delete" class="button is-danger" type="submit" value="{{ (isset($Form->delete_button) ? $Form->delete_button : 'Delete') }}" />
             @endif
             </p>
         </div>
