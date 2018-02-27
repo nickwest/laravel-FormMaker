@@ -18,10 +18,10 @@
             <p class="control">
             @if(count($Form->getSubmitButtons()) > 0)
                 @foreach($Form->getSubmitButtons() as $button)
-                    <input name="{{ $button['name'] }}" id="submit_button_{{ $button['name'] }}" class="button is-success {{ $button['class'] }}" type="submit" value="{{ $button['label'] }} "/>
+                    <input name="{{ $button['name'] }}" id="submit_button_{{ $button['name'] }}" class="button is-success {{ $button['class'] }}" type="submit" value="{{ $button['label'] }}"/>
                 @endforeach
             @else
-                <input name="submit_button" id="submit_button_save" class="button is-success" type="submit" value="{{ (isset($Form->submit_button) ? $Form->submit_button : 'Save') }} "/>
+                <input name="submit_button" id="submit_button_save" class="button is-success" type="submit" value="{{ (isset($Form->submit_button) ? $Form->submit_button : 'Save') }}"/>
             @endif
 
             @if($Form->getAllowDelete())
