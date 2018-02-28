@@ -5,13 +5,17 @@
 
         @if($view_only)
             <div class="file-link value">
+                @if($Field->link != '' && $Field->value != '')<a href="{{ $Field->link }}">@endif
                 {{ $Field->value }}
+                @if($Field->link != '' && $Field->value != '')</a>@endif
             </div>
         @elseif($Field->value == '')
             <input {!! $Field->attributes !!} />
         @else
             <div class="file-link">
+                @if($Field->link != '' && $Field->value != '')<a href="{{ $Field->link }}">@endif
                 {{ $Field->value }}
+                @if($Field->link != '' && $Field->value != '')</a>@endif
                 <input type="submit" value="{{ $Field->delete_button_value }}" name="{{ $Field->attributes->name }}" />
             </div>
         @endif

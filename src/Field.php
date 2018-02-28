@@ -106,6 +106,13 @@ class Field{
     protected $is_inline;
 
     /**
+     * Add a link below the field. Link's name will be equal to field's value
+     *
+     * @var string
+     */
+    protected $link = '';
+
+    /**
      * The template that this field should use
      *
      * @var string
