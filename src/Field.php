@@ -252,6 +252,11 @@ class Field{
         }
 
         if(property_exists(__CLASS__, $property)) {
+            if($property == 'attributes'){
+                if(count($this->options) > 1 && $this->multi_key == ''){
+                    $this->multi_key = true;
+                }
+            }
             return $this->{$property};
         }
 

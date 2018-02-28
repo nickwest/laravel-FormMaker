@@ -241,7 +241,7 @@ class Attributes{
             }
 
             if($key == 'name'){
-                if($this->attributes['type'] == 'checkbox' || (isset($this->attributes['multiple']) && $this->attributes['multiple'])) {
+                if((isset($this->attributes['multiple']) && $this->attributes['multiple'])) {
                     $value .= '[]';
                 }
                 if($this->multi_key !== null && $this->multi_key !== false){
