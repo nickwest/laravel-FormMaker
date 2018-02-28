@@ -227,9 +227,13 @@ trait FormTrait{
                 if((!isset($this->{$Field->original_name}) || ($this->{$Field->original_name} == '' && $this->{$Field->original_name} !== 0)) && $this->Form()->{$Field->original_name}->default_value != '') {
                     $this->Form()->{$Field->original_name}->value = $this->Form()->{$Field->original_name}->default_value;
                 } else {
-                    $values = array();
-                    foreach(explode($this->multi_delimiter, $this->{$Field->original_name}) as $value) {
-                        $values[$value] = $value;
+                    if(!is_array($this->{$Field->original_name})){
+                        $values = array();
+                        foreach(explode($this->multi_delimiter, $this->{$Field->original_name}) as $value) {
+                            $values[$value] = $value;
+                        }
+                    }else{
+                        $values = $this->{$Field->original_name};
                     }
 
                     $this->Form()->{$Field->original_name} = $values;
