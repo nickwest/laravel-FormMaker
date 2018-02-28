@@ -105,7 +105,7 @@ trait FormTrait{
                 }
 
                 $this->Form()->{$field_name} = $value;
-                if($this->Form()->{$field_name}->multiple || $this->Form()->{$field_name}->type == 'checkbox') {
+                if(is_array($value)) {
                     $this->{$field_name} = implode($this->multi_delimiter, $value);
                 } else {
                     $this->{$field_name} = $value;
