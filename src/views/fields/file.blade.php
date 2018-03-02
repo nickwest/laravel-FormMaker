@@ -16,7 +16,7 @@
                 @if($Field->link != '' && $Field->value != '')<a href="{{ $Field->link }}">@endif
                 {{ $Field->value }}
                 @if($Field->link != '' && $Field->value != '')</a>@endif
-                <input type="submit" value="{{ $Field->delete_button_value }}" name="{{ $Field->attributes->name }}" />
+                <input type="submit" value="{{ $Field->delete_button_value }}" name="{{ $Field->attributes->name.($Field->attributes->multi_key ? ($Field->attributes->multi_key === true ? '[]' : '['.$Field->attributes->multi_key.']') : '') }}" />
             </div>
         @endif
 

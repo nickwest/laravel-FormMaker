@@ -326,9 +326,18 @@ class Form{
 
         // Check if this form should be multipart
         foreach($this->Fields as $Field){
+            if($this->multipart == true){
+                break;
+            }
+
             if($Field->attributes->type == 'file'){
                 $this->multipart = true;
-                break;
+            }elseif($Field->is_subform){
+                foreach($Field->subform->Fields as $SubField){
+                    if($SubField->attributes->type == 'file'){
+                        $this->multipart = true;
+                    }
+                }
             }
         }
 
