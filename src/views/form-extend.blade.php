@@ -8,7 +8,7 @@
 
 @yield('above_form')
 
-<form method="{{ $Form->method }}" action="{{ $Form->url }}" id="{{ $Form->id_attr }}"{{ ($Form->multipart ? ' enctype="multipart/form-data"' : '') }}>
+<form method="{{ $Form->method }}" action="{{ $Form->url }}" id="{{ $Form->id_attr }}"{!! ($Form->multipart ? ' enctype="multipart/form-data"' : '') !!}>
     @if($Form->laravel_csrf && function_exists('csrf_field'))
         {{ csrf_field() }}
     @endif
