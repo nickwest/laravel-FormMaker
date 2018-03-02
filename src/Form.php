@@ -324,6 +324,14 @@ class Form{
         $blade_data['section'] = $section;
         $blade_data['view_only'] = $view_only;
 
+        // Check if this form should be multipart
+        foreach($this->Fields as $Field){
+            if($Field->attributes->type == 'file'){
+                $this->multipart = true;
+                break;
+            }
+        }
+
         if($extends != '') {
             if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::form-extend')) {
                 return View::make($this->Theme->view_namespace.'::form-extend', $blade_data);
