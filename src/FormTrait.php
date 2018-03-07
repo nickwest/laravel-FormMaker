@@ -107,8 +107,6 @@ trait FormTrait{
                 $this->Form()->{$field_name} = $value;
                 if(is_array($value)) {
                     $this->{$field_name} = implode($this->multi_delimiter, $value);
-                } elseif($value === null && $this->{$field_name}->default !== null) {
-                    $this->{$field_name} = $this->{$field_name}->default;
                 } else {
                     $this->{$field_name} = $value;
                 }
@@ -127,6 +125,14 @@ trait FormTrait{
                 $this->{$Field->original_name} = null;
             }
         }
+
+        // Set Default values to fields that are null
+        foreach($this->Form()->getFields() as $Field){
+            if($this->{$Field->original_name} === null && $Field->default_value !== null ){
+                $this->{$Field->original_name} = $Field->default_value;
+            }
+        }
+
     }
 
     /**
