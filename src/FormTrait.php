@@ -107,6 +107,8 @@ trait FormTrait{
                 $this->Form()->{$field_name} = $value;
                 if(is_array($value)) {
                     $this->{$field_name} = implode($this->multi_delimiter, $value);
+                } elseif($value === null && $this->{$field_name}->default !== null) {
+                    $this->{$field_name} = $this->{$field_name}->default;
                 } else {
                     $this->{$field_name} = $value;
                 }
