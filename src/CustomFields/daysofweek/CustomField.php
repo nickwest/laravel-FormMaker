@@ -1,4 +1,5 @@
 <?php
+
 namespace Nickwest\FormMaker\CustomFields\daysofweek;
 
 use Nickwest\FormMaker\CustomField as BaseCustomField;
@@ -11,7 +12,7 @@ class CustomField extends BaseCustomField
      *
      * @var array
      */
-    public $daysofweek = [ 'M' => 'Mon', 'T' => 'Tue', 'W' => 'Wed', 'R' => 'Thu', 'F' => 'Fri', 'S' => 'Sat', 'U' => 'Sun' ];
+    public $daysofweek = ['M' => 'Mon', 'T' => 'Tue', 'W' => 'Wed', 'R' => 'Thu', 'F' => 'Fri', 'S' => 'Sat', 'U' => 'Sun'];
 
     public function makeView(\Nickwest\FormMaker\Field $Field, bool $prev_inline = false, bool $view_only = false)
     {
@@ -21,8 +22,8 @@ class CustomField extends BaseCustomField
     public function hook_setAllFormValues(\Nickwest\FormMaker\Field $Field, $value)
     {
         $data = explode('|', $value);
-        foreach($this->daysofweek as $key => $day) {
-            if(in_array($key, $data)) {
+        foreach ($this->daysofweek as $key => $day) {
+            if (in_array($key, $data)) {
                 $return[$key] = 1;
             } else {
                 $return[$key] = 0;
@@ -33,8 +34,6 @@ class CustomField extends BaseCustomField
 
     public function hook_setPostValues($value)
     {
-        return implode('|',$value);
+        return implode('|', $value);
     }
-
-
 }

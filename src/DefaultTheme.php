@@ -1,8 +1,12 @@
-<?php namespace Nickwest\FormMaker;
+<?php
 
-class DefaultTheme extends \Nickwest\FormMaker\Theme
+namespace Nickwest\FormMaker;
+
+use Nickwest\FormMaker\Theme;
+
+class DefaultTheme extends Theme
 {
-	public function view_namespace() : string
+	public function view_namespace(): string
 	{
 		return 'form-maker';
 	}

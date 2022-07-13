@@ -1,10 +1,13 @@
-<?php namespace Nickwest\FormMaker;
+<?php
+
+namespace Nickwest\FormMaker;
 
 // use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Collection;
 
-trait TableTrait{
+trait TableTrait
+{
     /**
      * Table object see Nickwest\FormMaker\Table
      *
@@ -19,7 +22,7 @@ trait TableTrait{
      */
     public function Table()
     {
-        if(!is_object($this->TableObject)) {
+        if (!is_object($this->TableObject)) {
             $this->TableObject = new Table();
         }
 
@@ -29,7 +32,8 @@ trait TableTrait{
     /**
      * Make a table View and return the rendered output
      *
-     * @param Illuminate\Support\Collection $blade_data
+     * @param \Illuminate\Support\Collection $Collection
+     * @param array $blade_data
      * @param string $extends
      * @param string $section
      * @return View
@@ -40,8 +44,4 @@ trait TableTrait{
 
         return $this->TableObject->makeview($blade_data, $extends, $section);
     }
-
-
 }
-
-?>

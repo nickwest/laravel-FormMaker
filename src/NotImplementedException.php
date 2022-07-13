@@ -1,4 +1,7 @@
-<?php namespace Nickwest\FormMaker;
+<?php
+
+namespace Nickwest\FormMaker;
 
 class NotImplementedException extends \Exception
-{}
+{
+}

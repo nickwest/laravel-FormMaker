@@ -1,9 +1,12 @@
-<?php namespace Nickwest\FormMaker;
+<?php
+
+namespace Nickwest\FormMaker;
 
 use \Illuminate\Database\Eloquent\Model;
 use \Illuminate\Support\Facades\Event;
 
-class FormObserver {
+class FormObserver
+{
 
     /**
      * Fire the namespaced form event
@@ -14,7 +17,7 @@ class FormObserver {
      */
     protected function fireFormEvent($event, Model $model)
     {
-        return Event::until('form.'.$event, [$model]);
+        return Event::until('form.' . $event, [$model]);
     }
 
     /**
@@ -30,7 +33,7 @@ class FormObserver {
             return;
         }
 
-        if($model->isValid()) {
+        if ($model->isValid()) {
             // Fire the versioning.passed event.
             $this->fireFormEvent('passed', $model);
         } else {
@@ -38,7 +41,5 @@ class FormObserver {
 
             return false;
         }
-
     }
-
 }

@@ -1,4 +1,6 @@
-<?php namespace Nickwest\FormMaker;
+<?php
+
+namespace Nickwest\FormMaker;
 
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
@@ -6,7 +8,8 @@ use Illuminate\Support\Collection;
 
 use Maatwebsite\Excel\Facades\Excel;
 
-class Table{
+class Table
+{
     /**
      * Array of field names
      *
@@ -24,9 +27,9 @@ class Table{
     /**
      * Theme to use
      *
-     * @var string
+     * @var object
      */
-    protected $Theme = 'core';
+    protected $Theme = null;
 
     /**
      * Array of labels, keyed by field_name
@@ -82,7 +85,7 @@ class Table{
      */
     public function __get($property)
     {
-        if($property == 'view_namespace') {
+        if ($property == 'view_namespace') {
             return $this->Theme->view_namespace();
         }
 
@@ -97,7 +100,7 @@ class Table{
      */
     public function setDisplayFields(array $field_names)
     {
-        foreach($field_names as $field_name) {
+        foreach ($field_names as $field_name) {
             $this->display_fields[$field_name] = $field_name;
         }
     }
@@ -110,7 +113,7 @@ class Table{
      */
     public function addClass(string $class)
     {
-        if(!in_array($class, $this->classes)) {
+        if (!in_array($class, $this->classes)) {
             $this->classes[] = $class;
         }
     }
@@ -152,11 +155,11 @@ class Table{
 
         $replaced = $this->field_replacements[$field];
 
-        if(is_array($results[0]) && is_array($results[1])) {
-            foreach($results[0] as $key => $match) {
-                if(is_object($Object) && isset($Object->{$results[1][$key]})) {
+        if (is_array($results[0]) && is_array($results[1])) {
+            foreach ($results[0] as $key => $match) {
+                if (is_object($Object) && isset($Object->{$results[1][$key]})) {
                     $replaced = str_replace($results[0][$key], (string)$Object->{$results[1][$key]}, $this->field_replacements[$field]);
-                } elseif(is_array($Object) && isset($Object[$results[1][$key]])) {
+                } elseif (is_array($Object) && isset($Object[$results[1][$key]])) {
                     $replaced = str_replace($results[0][$key], $Object[$results[1][$key]], $this->field_replacements[$field]);
                 }
             }
@@ -173,8 +176,8 @@ class Table{
      */
     public function addClasses(array $classes)
     {
-        foreach($classes as $class) {
-            if(!in_array($class, $this->classes)) {
+        foreach ($classes as $class) {
+            if (!in_array($class, $this->classes)) {
                 $this->classes[] = $class;
             }
         }
@@ -188,7 +191,7 @@ class Table{
      */
     public function removeClass(string $class)
     {
-        if(in_array($class, $this->classes)) {
+        if (in_array($class, $this->classes)) {
             $remove = [$class];
             $this->classes = array_diff($this->classes, $remove);
         }
@@ -213,8 +216,8 @@ class Table{
      */
     public function setLinkingPattern(string $field_name, string $pattern = '')
     {
-        if($pattern == '') {
-            if(isset($this->linking_patterns[$field_name])) {
+        if ($pattern == '') {
+            if (isset($this->linking_patterns[$field_name])) {
                 unset($this->linking_patterns[$field_name]);
             }
             return;
@@ -232,33 +235,33 @@ class Table{
      * @param array $parameters keys to replace by value
      * @return void
      */
-    public function setLinkingPatternByRoute(string $field_name, string $route_name, array $parameters=[], $query_string=[])
+    public function setLinkingPatternByRoute(string $field_name, string $route_name, array $parameters = [], $query_string = [])
     {
         $Route = Route::getRoutes()->getByName($route_name);
-        if($Route == null) {
-            throw new \Exception('Invalid route name '.$route_name);
+        if ($Route == null) {
+            throw new \Exception('Invalid route name ' . $route_name);
         }
 
-        $replaced = '/'.$Route->uri;
+        $replaced = '/' . $Route->uri;
 
         $pattern = '/\{(.*?)\??\}/';
         $results = [];
         preg_match_all($pattern, $replaced, $results, PREG_PATTERN_ORDER);
 
-        if(is_array($results[0]) && is_array($results[1])) {
-            foreach($results[0] as $key => $match) {
-                if(isset($parameters[$results[1][$key]])) {
+        if (is_array($results[0]) && is_array($results[1])) {
+            foreach ($results[0] as $key => $match) {
+                if (isset($parameters[$results[1][$key]])) {
                     $replaced = str_replace($results[0][$key], $parameters[$results[1][$key]], $replaced);
                 }
             }
         }
 
-        if(count($query_string) > 0){
+        if (count($query_string) > 0) {
             $pieces = [];
-            foreach($query_string as $key => $value){
-                $pieces[] = $key.'='.$value;
+            foreach ($query_string as $key => $value) {
+                $pieces[] = $key . '=' . $value;
             }
-            $replaced = $replaced.'?'.implode('&', $pieces);
+            $replaced = $replaced . '?' . implode('&', $pieces);
         }
 
         $this->linking_patterns[$field_name] = $replaced;
@@ -286,7 +289,7 @@ class Table{
     {
         $link = false;
 
-        if(isset($this->linking_patterns[$field_name])) {
+        if (isset($this->linking_patterns[$field_name])) {
             $link = $this->linking_patterns[$field_name];
             $replacement = [];
 
@@ -294,11 +297,11 @@ class Table{
             $results = [];
             preg_match_all($pattern, $this->linking_patterns[$field_name], $results, PREG_PATTERN_ORDER);
 
-            if(is_array($results[0]) && is_array($results[1])) {
-                foreach($results[0] as $key => $match) {
-                    if(is_object($Object) && isset($Object->{$results[1][$key]})) {
+            if (is_array($results[0]) && is_array($results[1])) {
+                foreach ($results[0] as $key => $match) {
+                    if (is_object($Object) && isset($Object->{$results[1][$key]})) {
                         $link = str_replace($results[0][$key], (string)$Object->{$results[1][$key]}, $link);
-                    } elseif(is_array($Object) && isset($Object[$results[1][$key]])) {
+                    } elseif (is_array($Object) && isset($Object[$results[1][$key]])) {
                         $link = str_replace($results[0][$key], $Object[$results[1][$key]], $link);
                     } else {
                         return false;
@@ -341,18 +344,18 @@ class Table{
      */
     public function setLabels(array $labels)
     {
-        foreach($labels as $field_name => $label) {
-            if(isset($this->display_fields[$field_name])) {
+        foreach ($labels as $field_name => $label) {
+            if (isset($this->display_fields[$field_name])) {
                 $this->labels[$field_name] = $label;
             } else {
-                throw new \Exception('"'.$field_name.'" not set as a display field');
+                throw new \Exception('"' . $field_name . '" not set as a display field');
             }
         }
     }
 
     public function getLabel($field_name)
     {
-        if(isset($this->labels[$field_name])) {
+        if (isset($this->labels[$field_name])) {
             return $this->labels[$field_name];
         }
 
@@ -387,17 +390,17 @@ class Table{
 
         $this->Theme->prepareTableView($this);
 
-        if($extends != '') {
+        if ($extends != '') {
 
-            if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::table-extend')) {
-                return View::make($this->Theme->view_namespace.'::table-extend', $blade_data);
+            if ($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace . '::table-extend')) {
+                return View::make($this->Theme->view_namespace . '::table-extend', $blade_data);
             }
 
             return View::make('form-maker::table-extend', $blade_data);
         }
 
-        if($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace.'::table')) {
-            return View::make($this->Theme->view_namespace.'::table', $blade_data);
+        if ($this->Theme->view_namespace != '' && View::exists($this->Theme->view_namespace . '::table')) {
+            return View::make($this->Theme->view_namespace . '::table', $blade_data);
         }
         return View::make('form-maker::table', $blade_data);
     }
@@ -413,22 +416,22 @@ class Table{
     {
         $this->excel_config = $config;
 
-        foreach($this->display_fields as $field){
+        foreach ($this->display_fields as $field) {
             $headings[] = $this->getLabel($field);
         }
 
-        $export = array_merge([$headings], $this->Collection->map(function($item){
+        $export = array_merge([$headings], $this->Collection->map(function ($item) {
             $collection = new Collection($item);
             return $collection->only($this->display_fields)->all();
         })->toArray());
 
-        Excel::create($title, function($Excel) use ($title, $config, $export) {
+        Excel::create($title, function ($Excel) use ($title, $config, $export) {
             $Excel->setTitle($title)
-                    ->setCreator($this->config('Creator', ''))
-                    ->setCompany($this->config('Company', ''))
-                    ->setDescription($this->config('Description', ''));
+                ->setCreator($this->config('Creator', ''))
+                ->setCompany($this->config('Company', ''))
+                ->setDescription($this->config('Description', ''));
 
-            $Excel->sheet($title, function($Sheet) use ($config, $export){
+            $Excel->sheet($title, function ($Sheet) use ($config, $export) {
                 // Set font
                 $Sheet->setFontFamily($this->config('FontFamily', 'Calibri'));
                 $Sheet->setFontSize($this->config('FontSize', 16));
@@ -453,24 +456,24 @@ class Table{
 
                 // Format all rows as text
                 $Sheet->setColumnFormat(array(
-                    'A1:'.$highest_col.$total_rows => '@',
+                    'A1:' . $highest_col . $total_rows => '@',
                 ));
 
                 // Add borders
-                if($this->config('borders', false)){
-                    $Sheet->setBorder('A1:'.$highest_col.$total_rows, 'thin');
+                if ($this->config('borders', false)) {
+                    $Sheet->setBorder('A1:' . $highest_col . $total_rows, 'thin');
                 }
 
                 // Make the first row bold
-                $Sheet->cell('A1:'.$highest_col.'1', function($cells){
+                $Sheet->cell('A1:' . $highest_col . '1', function ($cells) {
                     $cells->setFontWeight('bold');
                 });
 
                 // Zebra rows
-                if($this->config('zebraRows', true)) {
-                    for($i = 2; $i <= $total_rows; $i++){
-                        if($i % 2 == 0){
-                            $Sheet->cell('A'.$i.':'.$highest_col.$i, function($cells){
+                if ($this->config('zebraRows', true)) {
+                    for ($i = 2; $i <= $total_rows; $i++) {
+                        if ($i % 2 == 0) {
+                            $Sheet->cell('A' . $i . ':' . $highest_col . $i, function ($cells) {
                                 $cells->setBackground('#EEEEEE');
                             });
                         }
@@ -478,12 +481,10 @@ class Table{
                 }
 
                 // Verticle align
-                $Sheet->cell('A1:'.$highest_col.$total_rows, function($cells){
+                $Sheet->cell('A1:' . $highest_col . $total_rows, function ($cells) {
                     $cells->setValignment('top');
                 });
-
             });
-
         })->export('xls');
     }
 

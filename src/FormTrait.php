@@ -1,10 +1,13 @@
-<?php namespace Nickwest\FormMaker;
+<?php
+
+namespace Nickwest\FormMaker;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Collection;
 
-trait FormTrait{
+trait FormTrait
+{
     /**
      * Form object see Nickwest\FormMaker\Form
      *
@@ -41,7 +44,7 @@ trait FormTrait{
      */
     public function Form()
     {
-        if(!is_object($this->Form)) {
+        if (!is_object($this->Form)) {
             $this->Form = new Form();
         }
 
@@ -69,7 +72,7 @@ trait FormTrait{
      * @param array $options
      * @return View
      */
-    public function getFieldView(string $field_name, $options=array())
+    public function getFieldView(string $field_name, $options = array())
     {
         return $this->Form()->$field_name->makeView($options);
     }
@@ -81,7 +84,7 @@ trait FormTrait{
      * @param array $options
      * @return View
      */
-    public function getFieldDisplayView($field_name, $options=array())
+    public function getFieldDisplayView($field_name, $options = array())
     {
         return $this->Form()->$field_name->makeDisplayView($options);
     }
@@ -94,18 +97,19 @@ trait FormTrait{
      * @param array $post_data
      * @return void
      */
-    public function setPostValues($post_data){
-        foreach($post_data as $field_name => $value) {
-            if($this->isColumn($field_name) && $this->isFillable($field_name)) {
-                if(is_object($this->Form()->{$field_name}->CustomField)) {
+    public function setPostValues($post_data)
+    {
+        foreach ($post_data as $field_name => $value) {
+            if ($this->isColumn($field_name) && $this->isFillable($field_name)) {
+                if (is_object($this->Form()->{$field_name}->CustomField)) {
                     try {
                         $value = $this->Form()->{$field_name}->CustomField->hook_setPostValues($value);
+                    } catch (NotImplementedException $e) {
                     }
-                    catch(NotImplementedException $e){}
                 }
 
                 $this->Form()->{$field_name} = $value;
-                if(is_array($value)) {
+                if (is_array($value)) {
                     $this->{$field_name} = implode($this->multi_delimiter, $value);
                 } else {
                     $this->{$field_name} = $value;
@@ -114,25 +118,24 @@ trait FormTrait{
         }
 
         // Make sure no Form fields were omitted from the post array (checkboxes can be when none are set)
-        foreach($this->Form()->getDisplayFields() as $Field) {
-            if(isset($post_data[$Field->name]) || !$this->isFillable($Field->original_name)) {
+        foreach ($this->Form()->getDisplayFields() as $Field) {
+            if (isset($post_data[$Field->name]) || !$this->isFillable($Field->original_name)) {
                 continue;
             }
 
             // If they were omitted set it to null
-            if($this->Form()->{$Field->original_name} != '') {
+            if ($this->Form()->{$Field->original_name} != '') {
                 $this->Form()->{$Field->original_name} = null;
                 $this->{$Field->original_name} = null;
             }
         }
 
         // Set Default values to fields that are null
-        foreach($this->Form()->getFields() as $Field){
-            if($this->{$Field->original_name} === null && $Field->default_value !== null ){
+        foreach ($this->Form()->getFields() as $Field) {
+            if ($this->{$Field->original_name} === null && $Field->default_value !== null) {
                 $this->{$Field->original_name} = $Field->default_value;
             }
         }
-
     }
 
     /**
@@ -157,35 +160,34 @@ trait FormTrait{
         // Add required fields to field_rules
         $columns = $this->getAllColumns();
         $rules = [];
-        foreach($this->Form()->getFields() as $Field) {
+        foreach ($this->Form()->getFields() as $Field) {
             $rules[$Field->original_name] = [];
 
-            if(isset($this->validation_rules[$Field->original_name]) && $this->validation_rules[$Field->original_name] != '') {
+            if (isset($this->validation_rules[$Field->original_name]) && $this->validation_rules[$Field->original_name] != '') {
                 $rules[$Field->original_name] = explode('|', $this->validation_rules[$Field->original_name]);
             }
 
-            if($Field->attributes->required && !in_array('required', $rules)) {
+            if ($Field->attributes->required && !in_array('required', $rules)) {
                 $rules[$Field->original_name][] = 'required';
             }
 
-            if(isset($columns[$Field->original_name]) && isset($columns[$Field->original_name]['length'])) {
+            if (isset($columns[$Field->original_name]) && isset($columns[$Field->original_name]['length'])) {
                 $found = false;
-                foreach($rules[$Field->original_name] as $key => $rule) {
-                    if(strpos($rule, 'max') === 0) {
+                foreach ($rules[$Field->original_name] as $key => $rule) {
+                    if (strpos($rule, 'max') === 0) {
                         $found = true;
                         $max = (int)substr($rule, 4);
-                        if($max > $columns[$Field->original_name]['length']) {
-                            $rules[$Field->original_name][$key] = 'max:'.$columns[$Field->original_name]['length'];
+                        if ($max > $columns[$Field->original_name]['length']) {
+                            $rules[$Field->original_name][$key] = 'max:' . $columns[$Field->original_name]['length'];
                         }
                         break;
                     }
                 }
 
-                if(!$found) {
-                    $rules[] = 'max:'.$columns[$Field->original_name]['length'];
+                if (!$found) {
+                    $rules[] = 'max:' . $columns[$Field->original_name]['length'];
                 }
             }
-
         }
 
         // Set up the Validator
@@ -195,8 +197,8 @@ trait FormTrait{
         );
 
         // Set error messages to fields
-        if(!($success = !$Validator->fails())) {
-            foreach($Validator->errors()->toArray() as $field => $error) {
+        if (!($success = !$Validator->fails())) {
+            foreach ($Validator->errors()->toArray() as $field => $error) {
                 $this->Form()->$field->error_message = current($error);
             }
         }
@@ -211,36 +213,36 @@ trait FormTrait{
      */
     public function setAllFormValues()
     {
-        foreach($this->Form()->getFields() as $Field) {
-            if(is_object($Field->CustomField)) {
+        foreach ($this->Form()->getFields() as $Field) {
+            if (is_object($Field->CustomField)) {
                 try {
                     // This is so bad... I'm sorry.
                     $this->Form()->{$Field->original_name}->value =
-                        $Field->CustomField->hook_setAllFormValues($Field, (
-                            isset($this->{$Field->original_name})
-                            ? $this->{$Field->original_name}
-                            : (
-                                $this->Form()->{$Field->original_name}->default_value != ''
-                                ? $this->Form()->{$Field->original_name}->default_value
-                                : ''
+                        $Field->CustomField->hook_setAllFormValues(
+                            $Field,
+                            (isset($this->{$Field->original_name})
+                                ? $this->{$Field->original_name}
+                                : ($this->Form()->{$Field->original_name}->default_value != ''
+                                    ? $this->Form()->{$Field->original_name}->default_value
+                                    : ''
+                                )
                             )
-                        )
-                    );
+                        );
                     continue;
+                } catch (NotImplementedException $e) {
                 }
-                catch(NotImplementedException $e){}
             }
 
-            if($Field->type == 'checkbox' || $Field->multiple) {
-                if((!isset($this->{$Field->original_name}) || ($this->{$Field->original_name} == '' && $this->{$Field->original_name} !== 0)) && $this->Form()->{$Field->original_name}->default_value != '') {
+            if ($Field->type == 'checkbox' || $Field->multiple) {
+                if ((!isset($this->{$Field->original_name}) || ($this->{$Field->original_name} == '' && $this->{$Field->original_name} !== 0)) && $this->Form()->{$Field->original_name}->default_value != '') {
                     $this->Form()->{$Field->original_name}->value = $this->Form()->{$Field->original_name}->default_value;
                 } else {
-                    if(!is_array($this->{$Field->original_name})){
+                    if (!is_array($this->{$Field->original_name})) {
                         $values = array();
-                        foreach(explode($this->multi_delimiter, $this->{$Field->original_name}) as $value) {
+                        foreach (explode($this->multi_delimiter, $this->{$Field->original_name}) as $value) {
                             $values[$value] = $value;
                         }
-                    }else{
+                    } else {
                         $values = $this->{$Field->original_name};
                     }
 
@@ -248,15 +250,13 @@ trait FormTrait{
                 }
             } else {
                 $this->Form()->{$Field->original_name} =
-                (
-                    isset($this->{$Field->original_name})
-                    ? $this->{$Field->original_name}
-                    : (
-                        $this->Form()->{$Field->original_name}->default_value != ''
-                        ? $this->Form()->{$Field->original_name}->default_value
-                        : ''
-                    )
-                );
+                    (isset($this->{$Field->original_name})
+                        ? $this->{$Field->original_name}
+                        : ($this->Form()->{$Field->original_name}->default_value != ''
+                            ? $this->Form()->{$Field->original_name}->default_value
+                            : ''
+                        )
+                    );
             }
         }
     }
@@ -281,11 +281,11 @@ trait FormTrait{
      */
     public function isColumn($field_name)
     {
-        if(sizeof($this->valid_columns) <= 0) {
+        if (sizeof($this->valid_columns) <= 0) {
             $this->getAllColumns();
         }
 
-        if(isset($this->valid_columns[$field_name])) {
+        if (isset($this->valid_columns[$field_name])) {
             return true;
         }
 
@@ -301,7 +301,7 @@ trait FormTrait{
     {
         $columns = $this->getAllColumns();
 
-        foreach($columns as $column) {
+        foreach ($columns as $column) {
             $this->Form()->addField($column['name']);
             $this->Form()->{$column['name']}->setOptions($column['values']);
             $this->Form()->{$column['name']}->attributes->maxlength = $column['length'];
@@ -318,13 +318,13 @@ trait FormTrait{
      */
     protected function getAllColumns()
     {
-        if(count($this->columns) > 0) {
+        if (count($this->columns) > 0) {
             return $this->columns;
         }
 
-        $query = 'SHOW COLUMNS FROM '.$this->getTable();
+        $query = 'SHOW COLUMNS FROM ' . $this->getTable();
 
-        foreach(DB::connection($this->connection)->select($query) as $column) {
+        foreach (DB::connection($this->connection)->select($query) as $column) {
             $this->addColumn(
                 $column->Field,
                 $this->getType($column->Type),
@@ -380,8 +380,8 @@ trait FormTrait{
         );
 
 
-        foreach($types as $key) {
-            if(strpos($type, $key) === 0) {
+        foreach ($types as $key) {
+            if (strpos($type, $key) === 0) {
                 return $key;
             }
         }
@@ -395,12 +395,12 @@ trait FormTrait{
      */
     private function getLength($type)
     {
-        if(strpos($type, 'enum') === 0) {
+        if (strpos($type, 'enum') === 0) {
             return;
         }
 
-        if(strpos($type, '(') !== false) {
-            return substr($type, strpos($type, '(')+1, strpos($type, ')') - strpos($type, '(')-1);
+        if (strpos($type, '(') !== false) {
+            return substr($type, strpos($type, '(') + 1, strpos($type, ')') - strpos($type, '(') - 1);
         }
 
         $lengths = array(
@@ -411,12 +411,11 @@ trait FormTrait{
 
         );
 
-        foreach($lengths as $key => $length) {
-            if(strpos($type, $key) === 0) {
+        foreach ($lengths as $key => $length) {
+            if (strpos($type, $key) === 0) {
                 return $length;
             }
         }
-
     }
 
     /**
@@ -426,22 +425,24 @@ trait FormTrait{
      * @param bool $nullable
      * @return array
      */
-    private function getEnumOptions($type, $nullable=false)
+    private function getEnumOptions($type, $nullable = false)
     {
-        if(strpos($type, 'enum') !== 0) {
+        if (strpos($type, 'enum') !== 0) {
             return;
         }
-        $values = explode(',', str_replace("'", '', substr($type, strpos($type, '(')+1, strpos($type, ')') - strpos($type, '(')-1)));
+        $values = explode(',', str_replace("'", '', substr($type, strpos($type, '(') + 1, strpos($type, ')') - strpos($type, '(') - 1)));
 
-        foreach($values as $value) {
-            if($value == '') {
+        $return_array = [];
+
+        foreach ($values as $value) {
+            if ($value == '') {
                 $return_array[$value] = $this->blank_select_text;
             } else {
                 $return_array[$value] = $value;
             }
         }
 
-        if(!isset($return_array['']) && $nullable) {
+        if (!isset($return_array['']) && $nullable) {
             $return_array = array_merge(['' => $this->blank_select_text], $return_array);
         }
 
@@ -456,8 +457,8 @@ trait FormTrait{
      */
     private function getFormTypeFromColumnType($type)
     {
-        switch($type) {
-            // TODO: Expand on this with more HTML5 field types
+        switch ($type) {
+                // TODO: Expand on this with more HTML5 field types
             case 'enum':
                 return 'select';
 
@@ -471,6 +472,4 @@ trait FormTrait{
                 return 'text';
         }
     }
-
-
 }

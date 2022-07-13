@@ -1,4 +1,9 @@
-<?php namespace Nickwest\FormMaker;
+<?php
+
+namespace Nickwest\FormMaker;
+
+use Nickwest\FormMaker\Field;
+
 
 /*
     Could change this over to use Laravels Event system, but that would introduce more dependencies
@@ -7,9 +12,9 @@
 abstract class CustomField
 {
 
-    public abstract function makeView(\Nickwest\FormMaker\Field $Field, bool $prev_inline = false);
+    public abstract function makeView(Field $Field, bool $prev_inline = false);
 
-    public function hook_setAllFormValues(\Nickwest\FormMaker\Field $Field, $value)
+    public function hook_setAllFormValues(Field $Field, $value)
     {
         return;
     }
@@ -18,5 +23,4 @@ abstract class CustomField
     {
         throw new NotImplementedException();
     }
-
 }

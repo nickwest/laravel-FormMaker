@@ -9,12 +9,12 @@
     ],
     "license": "MIT",
     "require": {
-        "php": ">=7.0",
-        "illuminate/support": "5.5.*",
-        "illuminate/database": "5.5.*",
-        "illuminate/validation": "5.5.*",
-        "nesbot/carbon": "^1.21",
-        "maatwebsite/excel": "^2.1"
+        "php": "^8.0.2",
+        "illuminate/support": "^9.2",
+        "illuminate/database": "^9.2",
+        "illuminate/validation": "^9.2",
+        "nesbot/carbon": "^2.0",
+        "maatwebsite/excel": "^3.1"
     },
     "autoload": {
         "classmap": [
@@ -26,8 +26,9 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "fzaninotto/faker": "~1.4",
-        "phpunit/phpunit": "~6.0"
+        "fakerphp/faker": "^1.9.1",
+        "orchestra/testbench": "^7.1",
+        "phpunit/phpunit": "^9.5.10"
     },
     "extra": {
         "laravel": {

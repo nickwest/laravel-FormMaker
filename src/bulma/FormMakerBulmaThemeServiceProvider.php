@@ -1,8 +1,11 @@
-<?php namespace Nickwest\FormMaker\bulma;
+<?php
+
+namespace Nickwest\FormMaker\bulma;
 
 use Illuminate\Support\ServiceProvider;
 
-class FormMakerBulmaThemeServiceProvider extends ServiceProvider {
+class FormMakerBulmaThemeServiceProvider extends ServiceProvider
+{
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -18,7 +21,7 @@ class FormMakerBulmaThemeServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__.'/views', 'form-maker-bulma');
+        $this->loadViewsFrom(__DIR__ . '/views', 'form-maker-bulma');
     }
 
     /**
@@ -40,5 +43,4 @@ class FormMakerBulmaThemeServiceProvider extends ServiceProvider {
     {
         return [];
     }
-
 }

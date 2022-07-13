@@ -3,11 +3,14 @@
 use Nickwest\FormMaker\Form;
 use Nickwest\FormMaker\Field;
 
-class FormTest extends PHPUnit_Framework_TestCase
+class FormTest extends \Orchestra\Testbench\TestCase
 {
 	protected $test_fields;
 
-	function setUp(){
+	public function setUp(): void
+	{
+		parent::setUp();
+
 		$this->Form = new Form;
 
 		$this->test_fields = array('First Field', 'WeirdCharacters!@#$%^&*()_+\'\\', 'Third field', 'My Special Field');
@@ -91,8 +94,4 @@ class FormTest extends PHPUnit_Framework_TestCase
 		$this->assertContainsOnly('Nickwest\FormMaker\Field', $this->Form->getFields());
 		$this->assertSame(null, $this->Form->{'First Field'});
 	}
-
-
 }
-
-?>
